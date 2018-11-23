@@ -31,6 +31,7 @@
 #define ID_VIEW_APPLOOK_OFF_2007_AQUA   218
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
+#define IDD_DDAY_ADD_DIALOG             316
 #define IDC_MESSAGE                     1001
 #define IDC_BUTTON1                     1002
 #define IDC_BUTTON2                     1003
@@ -73,16 +74,19 @@
 #define IDC_NUM_OF_DDAY                 1053
 #define IDC_DDAY_FINISH                 1054
 #define IDC_WISE_SAYING                 1055
-#define IDC_DATETIMEPICKER1             1056
-#define IDC_DATETIMEPICKER2             1057
+#define IDC_TODO_START                  1056
+#define IDC_TODO_END                    1057
+#define IDC_MONTHCALENDAR1              1057
+#define IDC_EDIT_DDAY_TITLE             1058
+#define IDC_EDIT_DDAY_MEMO              1059
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        316
+#define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1057
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

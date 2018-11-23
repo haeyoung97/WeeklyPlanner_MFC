@@ -6,6 +6,8 @@
 #include "afxwin.h"
 #include "atlimage.h"
 #include "afxcmn.h"
+#include "atltime.h"
+#include "afxdtctl.h"
 
 
 class CWeeklyPlannerView : public CFormView
@@ -50,7 +52,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
-	CButton m_MessagemodifyBtn;
+	CButton m_btnMessagemodify;
 	afx_msg void OnClickedMessageModifyButton();
 	bool m_bModifyBtn;
 	CEdit m_EditMessage;
@@ -77,6 +79,13 @@ public:
 	afx_msg void OnClickedTodoCheckbox6();
 	afx_msg void OnClickedTodoCheckbox7();
 	afx_msg void OnClickedTodoCheckbox8();
+	CTime m_todoStart;
+	CTime m_todoEnd;
+	CButton m_btnaddTodo;
+	afx_msg void OnEnChangeAddTodoMemo();
+	afx_msg void OnBnClickedAddTodoButton();
+	CButton m_btnaddDday;
+	afx_msg void OnClickedDdayAddButton();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
