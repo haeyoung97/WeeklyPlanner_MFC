@@ -189,6 +189,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DdayAddDlg.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -198,6 +199,7 @@
     <ClInclude Include="WeeklyPlannerView.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DdayAddDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -220,6 +222,7 @@
     <Image Include="UserImages.bmp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="res\WeeklyPlanner.rc2" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -166,6 +166,9 @@ protected:
 // 구현입니다.
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+//	virtual BOOL OnInitDialog();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 CAboutDlg::CAboutDlg() : CDialogEx(IDD_ABOUTBOX)
@@ -210,3 +213,42 @@ void CWeeklyPlannerApp::SaveCustomState()
 
 
 
+
+
+//BOOL CAboutDlg::OnInitDialog()
+//{
+//	CDialogEx::OnInitDialog();
+//
+//	// TODO:  여기에 추가 초기화 작업을 추가합니다.
+//	GetDlgItem(IDOK)->SendMessage(WM_KILLFOCUS, NULL);
+//	return FALSE;  // return TRUE unless you set the focus to a control
+//				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
+//}
+
+
+BOOL CAboutDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+
+		if ((GetDlgItem(IDC_MESSAGE) == GetFocus()))
+		{
+			CEdit* edit = (CEdit*)GetDlgItem(IDC_MESSAGE);
+			int nLen = edit->GetWindowTextLength();
+			edit->SetSel(nLen, nLen);
+			edit->ReplaceSel(_T("\r\n"));
+		}
+		if ((GetDlgItem(IDC_ADD_TODO_MEMO) == GetFocus())) {
+			CEdit* edit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
+			int nLen = edit->GetWindowTextLength();
+			edit->SetSel(nLen, nLen);
+			edit->ReplaceSel(_T("\r\n"));
+		}
+	}
+
+
+
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}

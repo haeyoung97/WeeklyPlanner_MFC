@@ -12,6 +12,7 @@
 #include "WeeklyPlannerDoc.h"
 #include "WeeklyPlannerView.h"
 
+#include "DdayAddDlg.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -34,6 +35,9 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_TODO_CHECKBOX6, &CWeeklyPlannerView::OnClickedTodoCheckbox6)
 	ON_BN_CLICKED(IDC_TODO_CHECKBOX7, &CWeeklyPlannerView::OnClickedTodoCheckbox7)
 	ON_BN_CLICKED(IDC_TODO_CHECKBOX8, &CWeeklyPlannerView::OnClickedTodoCheckbox8)
+	ON_EN_CHANGE(IDC_ADD_TODO_MEMO, &CWeeklyPlannerView::OnEnChangeAddTodoMemo)
+	ON_BN_CLICKED(IDC_ADD_TODO_BUTTON, &CWeeklyPlannerView::OnBnClickedAddTodoButton)
+	ON_BN_CLICKED(IDC_DDAY_ADD_BUTTON, &CWeeklyPlannerView::OnClickedDdayAddButton)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -42,6 +46,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	: CFormView(IDD_WEEKLYPLANNER_FORM)
 	, m_bModifyBtn(false)
 	, m_nTodoDone(0)
+	, m_todoStart(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	
@@ -56,7 +61,7 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
 	//  DDX_Text(pDX, IDC_MESSAGE, m_strMessage);
-	DDX_Control(pDX, IDC_MESSAGE_MODIFY_BUTTON, m_MessagemodifyBtn);
+	DDX_Control(pDX, IDC_MESSAGE_MODIFY_BUTTON, m_btnMessagemodify);
 	DDX_Control(pDX, IDC_MESSAGE, m_EditMessage);
 	DDX_Control(pDX, IDC_PROFILE_PHOTO, m_ProfilePhoto);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX1, m_TodoCheck1);
@@ -68,6 +73,10 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TODO_CHECKBOX6, m_TodoCheck6);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX7, m_TodoCheck7);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX8, m_TodoCheck8);
+	DDX_DateTimeCtrl(pDX, IDC_TODO_START, m_todoStart);
+	DDX_DateTimeCtrl(pDX, IDC_TODO_END, m_todoEnd);
+	DDX_Control(pDX, IDC_ADD_TODO_BUTTON, m_btnaddTodo);
+	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnaddDday);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -131,13 +140,13 @@ void CWeeklyPlannerView::OnClickedMessageModifyButton()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!m_bModifyBtn) { //수정 일때
 		m_EditMessage.EnableWindow(true);
-		m_MessagemodifyBtn.SetWindowText(_T("적용"));
+		m_btnMessagemodify.SetWindowText(_T("적용"));
 		m_bModifyBtn = true;
 
 	}
 	else {
 		m_EditMessage.EnableWindow(false);
-		m_MessagemodifyBtn.SetWindowText(_T("수정"));
+		m_btnMessagemodify.SetWindowText(_T("수정"));
 
 		m_bModifyBtn = false;
 	}
@@ -177,6 +186,7 @@ BOOL CWeeklyPlannerView::PreTranslateMessage(MSG* pMsg)
 			edit->SetSel(nLen, nLen);
 			edit->ReplaceSel(_T("\r\n"));
 		}
+
 	}
 
 
@@ -234,3 +244,39 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
 
 
 
+
+
+void CWeeklyPlannerView::OnEnChangeAddTodoMemo()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CFormView::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+void CWeeklyPlannerView::OnBnClickedAddTodoButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CEdit* Editmemo = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
+	CString m_strTodomemo;
+	Editmemo->GetWindowTextW(m_strTodomemo);
+
+
+
+	//버튼 클릭 후 공간 비우기
+
+
+	// DB에 올리기
+}
+
+
+void CWeeklyPlannerView::OnClickedDdayAddButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	CDdayAddDlg m_ddayaddDlg;
+	m_ddayaddDlg.DoModal();
+}
