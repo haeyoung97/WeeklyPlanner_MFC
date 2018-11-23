@@ -24,14 +24,27 @@ IMPLEMENT_DYNCREATE(CWeeklyPlannerView, CFormView)
 BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_WM_CONTEXTMENU()
 	ON_WM_RBUTTONUP()
+	ON_BN_CLICKED(IDC_MESSAGE_MODIFY_BUTTON, &CWeeklyPlannerView::OnClickedMessageModifyButton)
+	ON_EN_CHANGE(IDC_MESSAGE, &CWeeklyPlannerView::OnEnChangeMessage)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX1, &CWeeklyPlannerView::OnClickedTodoCheckbox1)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX2, &CWeeklyPlannerView::OnClickedTodoCheckbox2)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX3, &CWeeklyPlannerView::OnClickedTodoCheckbox3)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX4, &CWeeklyPlannerView::OnClickedTodoCheckbox4)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX5, &CWeeklyPlannerView::OnClickedTodoCheckbox5)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX6, &CWeeklyPlannerView::OnClickedTodoCheckbox6)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX7, &CWeeklyPlannerView::OnClickedTodoCheckbox7)
+	ON_BN_CLICKED(IDC_TODO_CHECKBOX8, &CWeeklyPlannerView::OnClickedTodoCheckbox8)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
 
 CWeeklyPlannerView::CWeeklyPlannerView()
 	: CFormView(IDD_WEEKLYPLANNER_FORM)
+	, m_bModifyBtn(false)
+	, m_nTodoDone(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
+	
 
 }
 
@@ -42,6 +55,19 @@ CWeeklyPlannerView::~CWeeklyPlannerView()
 void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
+	//  DDX_Text(pDX, IDC_MESSAGE, m_strMessage);
+	DDX_Control(pDX, IDC_MESSAGE_MODIFY_BUTTON, m_MessagemodifyBtn);
+	DDX_Control(pDX, IDC_MESSAGE, m_EditMessage);
+	DDX_Control(pDX, IDC_PROFILE_PHOTO, m_ProfilePhoto);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX1, m_TodoCheck1);
+	DDX_Control(pDX, IDC_TODO_ACHIVE_PROGRESS, m_TodoAchivePrgs);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX2, m_TodoCheck2);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX3, m_TodoCheck3);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX4, m_TodoCheck4);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX5, m_TodoCheck5);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX6, m_TodoCheck6);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX7, m_TodoCheck7);
+	DDX_Control(pDX, IDC_TODO_CHECKBOX8, m_TodoCheck8);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -57,6 +83,8 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	CFormView::OnInitialUpdate();
 	GetParentFrame()->RecalcLayout();
 	ResizeParentToFit();
+
+	m_TodoAchivePrgs.SetRange(0, 1000);
 
 }
 
@@ -96,3 +124,113 @@ CWeeklyPlannerDoc* CWeeklyPlannerView::GetDocument() const // 디버그되지 않은 버
 
 
 // CWeeklyPlannerView 메시지 처리기
+
+
+void CWeeklyPlannerView::OnClickedMessageModifyButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (!m_bModifyBtn) { //수정 일때
+		m_EditMessage.EnableWindow(true);
+		m_MessagemodifyBtn.SetWindowText(_T("적용"));
+		m_bModifyBtn = true;
+
+	}
+	else {
+		m_EditMessage.EnableWindow(false);
+		m_MessagemodifyBtn.SetWindowText(_T("수정"));
+
+		m_bModifyBtn = false;
+	}
+
+
+
+}
+
+
+void CWeeklyPlannerView::OnEnChangeMessage()
+{
+	// TODO:  RICHEDIT 컨트롤인 경우, 이 컨트롤은
+	// CFormView::OnInitDialog() 함수를 재지정 
+	//하고 마스크에 OR 연산하여 설정된 ENM_CHANGE 플래그를 지정하여 CRichEditCtrl().SetEventMask()를 호출하지 않으면
+	// 이 알림 메시지를 보내지 않습니다.
+
+	// TODO:  여기에 컨트롤 알림 처리기 코드를 추가합니다.
+}
+
+
+BOOL CWeeklyPlannerView::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+
+		if ((GetDlgItem(IDC_MESSAGE) == GetFocus()))
+		{
+			CEdit* edit = (CEdit*)GetDlgItem(IDC_MESSAGE);
+			int nLen = edit->GetWindowTextLength();
+			edit->SetSel(nLen, nLen);
+			edit->ReplaceSel(_T("\r\n"));
+		}
+		if ((GetDlgItem(IDC_ADD_TODO_MEMO) == GetFocus())) {
+			CEdit* edit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
+			int nLen = edit->GetWindowTextLength();
+			edit->SetSel(nLen, nLen);
+			edit->ReplaceSel(_T("\r\n"));
+		}
+	}
+
+
+	return CFormView::PreTranslateMessage(pMsg);
+}
+
+
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox1()
+{UpdateTodoProgressBar(&m_TodoCheck1);}
+
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox2()
+{UpdateTodoProgressBar(&m_TodoCheck2);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox3()
+{UpdateTodoProgressBar(&m_TodoCheck3);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox4()
+{UpdateTodoProgressBar(&m_TodoCheck4);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox5()
+{UpdateTodoProgressBar(&m_TodoCheck5);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox6()
+{UpdateTodoProgressBar(&m_TodoCheck6);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox7()
+{UpdateTodoProgressBar(&m_TodoCheck7);}
+
+
+void CWeeklyPlannerView::OnClickedTodoCheckbox8()
+{UpdateTodoProgressBar(&m_TodoCheck8);}
+
+void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
+{
+	if (m_checkBtn->GetCheck() == BST_CHECKED) {
+		m_nTodoDone++;
+		m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + 125);
+	}
+	else if (m_checkBtn->GetCheck() == BST_UNCHECKED) {
+		m_nTodoDone--;
+		m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - 125);
+
+	}
+
+}
+
+
+

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "afxdialogex.h"
+#include <atlimage.h>
 #include "WeeklyPlanner.h"
 #include "MainFrm.h"
 
