@@ -3,6 +3,9 @@
 //
 
 #pragma once
+#include "afxwin.h"
+#include "atlimage.h"
+#include "afxcmn.h"
 
 
 class CWeeklyPlannerView : public CFormView
@@ -46,6 +49,34 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	CButton m_MessagemodifyBtn;
+	afx_msg void OnClickedMessageModifyButton();
+	bool m_bModifyBtn;
+	CEdit m_EditMessage;
+	afx_msg void OnEnChangeMessage();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	CStatic m_ProfilePhoto;
+	CImage m_ProfileImg;
+	afx_msg void OnClickedTodoCheckbox1();
+	int m_nTodoDone;
+	CButton m_TodoCheck1;
+	CProgressCtrl m_TodoAchivePrgs;
+	void UpdateTodoProgressBar(CButton* m_checkBtn);
+	CButton m_TodoCheck2;
+	CButton m_TodoCheck3;
+	CButton m_TodoCheck4;
+	CButton m_TodoCheck5;
+	CButton m_TodoCheck6;
+	CButton m_TodoCheck7;
+	CButton m_TodoCheck8;
+	afx_msg void OnClickedTodoCheckbox2();
+	afx_msg void OnClickedTodoCheckbox3();
+	afx_msg void OnClickedTodoCheckbox4();
+	afx_msg void OnClickedTodoCheckbox5();
+	afx_msg void OnClickedTodoCheckbox6();
+	afx_msg void OnClickedTodoCheckbox7();
+	afx_msg void OnClickedTodoCheckbox8();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

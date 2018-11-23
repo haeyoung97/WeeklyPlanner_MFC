@@ -1,9 +1,1 @@
-﻿  stdafx.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\atlplus.h(26): warning C4467: ATL 특성은 사용되지 않습니다.
-  WeeklyPlannerView.cpp
-  WeeklyPlannerDoc.cpp
-  WeeklyPlanner.cpp
-  MainFrm.cpp
-  코드를 생성하고 있습니다...
-  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\WeeklyPlanner_MFC_2018\x64\Debug\WeeklyPlanner.exe
-  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\WeeklyPlanner_MFC_2018\x64\Debug\WeeklyPlanner.pdb (Partial PDB)
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppClean.targets(76,5): warning : 'c:\users\u3797\desktop\weeklyplanner_mfc_2018\weeklyplanner_mfc\weeklyplanner\x64\debug\weeklyplanner.pch' 파일은 다른 프로세스에서 사용 중이므로 프로세스에서 액세스할 수 없습니다.
