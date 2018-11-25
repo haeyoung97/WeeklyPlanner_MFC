@@ -1,4 +1,4 @@
-
+		
 // WeeklyPlannerView.cpp : CWeeklyPlannerView 클래스의 구현
 //
 
@@ -38,6 +38,8 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_EN_CHANGE(IDC_ADD_TODO_MEMO, &CWeeklyPlannerView::OnEnChangeAddTodoMemo)
 	ON_BN_CLICKED(IDC_ADD_TODO_BUTTON, &CWeeklyPlannerView::OnBnClickedAddTodoButton)
 	ON_BN_CLICKED(IDC_DDAY_ADD_BUTTON, &CWeeklyPlannerView::OnClickedDdayAddButton)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_TODO_START, &CWeeklyPlannerView::OnDtnDatetimechangeTodoStart)
+	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_TODO_END, &CWeeklyPlannerView::OnDtnDatetimechangeTodoEnd)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -46,10 +48,10 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	: CFormView(IDD_WEEKLYPLANNER_FORM)
 	, m_bModifyBtn(false)
 	, m_nTodoDone(0)
-	, m_todoStart(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-	
+
+	m_bChecked[8] = { true };
 
 }
 
@@ -60,7 +62,6 @@ CWeeklyPlannerView::~CWeeklyPlannerView()
 void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 {
 	CFormView::DoDataExchange(pDX);
-	//  DDX_Text(pDX, IDC_MESSAGE, m_strMessage);
 	DDX_Control(pDX, IDC_MESSAGE_MODIFY_BUTTON, m_btnMessagemodify);
 	DDX_Control(pDX, IDC_MESSAGE, m_EditMessage);
 	DDX_Control(pDX, IDC_PROFILE_PHOTO, m_ProfilePhoto);
@@ -73,10 +74,11 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TODO_CHECKBOX6, m_TodoCheck6);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX7, m_TodoCheck7);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX8, m_TodoCheck8);
-	DDX_DateTimeCtrl(pDX, IDC_TODO_START, m_todoStart);
-	DDX_DateTimeCtrl(pDX, IDC_TODO_END, m_todoEnd);
 	DDX_Control(pDX, IDC_ADD_TODO_BUTTON, m_btnaddTodo);
 	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnaddDday);
+	DDX_Control(pDX, IDC_TODO_START, m_todoStart);
+	DDX_Control(pDX, IDC_TODO_END, m_todoEnd);
+	//  DDX_Control(pDX, IDC_ADD_TODO_MEMO, m_Todomemo);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -260,14 +262,48 @@ void CWeeklyPlannerView::OnEnChangeAddTodoMemo()
 void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CEdit* Editmemo = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
-	CString m_strTodomemo;
-	Editmemo->GetWindowTextW(m_strTodomemo);
+	CString str, strStart, strEnd, m_strTodomemo;
+	GetDlgItemText(IDC_ADD_TODO_MEMO, m_strTodomemo);
+	GetDlgItemText(IDC_TODO_START, strStart);
+	GetDlgItemText(IDC_TODO_END, strEnd);
 
+	str += strStart; str += " ~ "; str += strEnd;
+	str += "  :  ";
+	str += m_strTodomemo;
+
+	int i = 0;
+	while(1) {
+		if (m_bChecked[i]) {
+			m_bChecked[i] = false;
+			break;
+		}
+		if (i == 7)
+			break;
+		i++;
+	}
+	if (i == 0)
+		m_TodoCheck1.SetWindowText(str);
+	else if (i == 1)
+		m_TodoCheck2.SetWindowText(str);
+	else if (i == 2)
+		m_TodoCheck3.SetWindowText(str);
+	else if (i == 3)
+		m_TodoCheck4.SetWindowText(str);
+	else if (i == 4)
+		m_TodoCheck5.SetWindowText(str);
+	else if (i == 5)
+		m_TodoCheck6.SetWindowText(str);
+	else if (i == 6)
+		m_TodoCheck7.SetWindowText(str);
+	else if (i == 7)
+		m_TodoCheck8.SetWindowText(str);
+	else
+		AfxMessageBox(_T("일정을 추가할 수 없습니다."));
 
 
 	//버튼 클릭 후 공간 비우기
-
+	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
+	pEdit->SetWindowText(_T(" "));
 
 	// DB에 올리기
 }
@@ -279,4 +315,22 @@ void CWeeklyPlannerView::OnClickedDdayAddButton()
 
 	CDdayAddDlg m_ddayaddDlg;
 	m_ddayaddDlg.DoModal();
+}
+
+
+void CWeeklyPlannerView::OnDtnDatetimechangeTodoStart(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	*pResult = 0;
+}
+
+
+void CWeeklyPlannerView::OnDtnDatetimechangeTodoEnd(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMDATETIMECHANGE pDTChange = reinterpret_cast<LPNMDATETIMECHANGE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	UpdateData(TRUE);
+	*pResult = 0;
 }
