@@ -40,6 +40,14 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_DDAY_ADD_BUTTON, &CWeeklyPlannerView::OnClickedDdayAddButton)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_TODO_START, &CWeeklyPlannerView::OnDtnDatetimechangeTodoStart)
 	ON_NOTIFY(DTN_DATETIMECHANGE, IDC_TODO_END, &CWeeklyPlannerView::OnDtnDatetimechangeTodoEnd)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON1, &CWeeklyPlannerView::OnClickedTodoDeleteButton1)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON2, &CWeeklyPlannerView::OnClickedTodoDeleteButton2)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON3, &CWeeklyPlannerView::OnClickedTodoDeleteButton3)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON4, &CWeeklyPlannerView::OnClickedTodoDeleteButton4)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON5, &CWeeklyPlannerView::OnClickedTodoDeleteButton5)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON6, &CWeeklyPlannerView::OnClickedTodoDeleteButton6)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON7, &CWeeklyPlannerView::OnClickedTodoDeleteButton7)
+	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON8, &CWeeklyPlannerView::OnClickedTodoDeleteButton8)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -48,6 +56,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	: CFormView(IDD_WEEKLYPLANNER_FORM)
 	, m_bModifyBtn(false)
 	, m_nTodoDone(0)
+	, m_todoEnd(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -76,9 +85,8 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TODO_CHECKBOX8, m_TodoCheck8);
 	DDX_Control(pDX, IDC_ADD_TODO_BUTTON, m_btnaddTodo);
 	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnaddDday);
-	DDX_Control(pDX, IDC_TODO_START, m_todoStart);
-	DDX_Control(pDX, IDC_TODO_END, m_todoEnd);
-	//  DDX_Control(pDX, IDC_ADD_TODO_MEMO, m_Todomemo);
+	DDX_DateTimeCtrl(pDX, IDC_TODO_START, m_todoStart);
+	DDX_DateTimeCtrl(pDX, IDC_TODO_END, m_todoEnd);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -264,9 +272,8 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CString str, strStart, strEnd, m_strTodomemo;
 	GetDlgItemText(IDC_ADD_TODO_MEMO, m_strTodomemo);
-	GetDlgItemText(IDC_TODO_START, strStart);
-	GetDlgItemText(IDC_TODO_END, strEnd);
-
+	strStart.Format(_T("%d:%d"), m_todoStart.GetHour(), m_todoStart.GetMinute());
+	strEnd.Format(_T("%d:%d"), m_todoEnd.GetHour(), m_todoEnd.GetMinute());
 	str += strStart; str += " ~ "; str += strEnd;
 	str += "  :  ";
 	str += m_strTodomemo;
@@ -333,4 +340,68 @@ void CWeeklyPlannerView::OnDtnDatetimechangeTodoEnd(NMHDR *pNMHDR, LRESULT *pRes
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	UpdateData(TRUE);
 	*pResult = 0;
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton1()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[0] = true;
+	m_TodoCheck1.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton2()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[1] = true;
+	m_TodoCheck2.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton3()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[2] = true;
+	m_TodoCheck3.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton4()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[3] = true;
+	m_TodoCheck4.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton5()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[4] = true;
+	m_TodoCheck5.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton6()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[5] = true;
+	m_TodoCheck6.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton7()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[6] = true;
+	m_TodoCheck7.SetWindowText(_T("_______________________________"));
+}
+
+
+void CWeeklyPlannerView::OnClickedTodoDeleteButton8()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_bChecked[7] = true;
+	m_TodoCheck8.SetWindowText(_T("_______________________________"));
 }
