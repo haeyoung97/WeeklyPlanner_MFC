@@ -1,10 +1,2 @@
-﻿  stdafx.cpp
-c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\atlplus.h(26): warning C4467: ATL 특성은 사용되지 않습니다.
-  WeeklyPlannerView.cpp
-  WeeklyPlannerDoc.cpp
-  WeeklyPlanner.cpp
-  MainFrm.cpp
-  DdayAddDlg.cpp
-  코드를 생성하고 있습니다...
-  WeeklyPlanner.vcxproj -> C:\Users\박해영\Documents\GitHub\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.exe
+﻿  WeeklyPlanner.vcxproj -> C:\Users\박해영\Documents\GitHub\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.exe
   WeeklyPlanner.vcxproj -> C:\Users\박해영\Documents\GitHub\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.pdb (Partial PDB)

@@ -242,7 +242,7 @@ BEGIN
 END
 
 IDD_WEEKLYPLANNER_FORM DIALOGEX 0, 0, 593, 252
-STYLE DS_SETFONT | WS_CHILD
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_DISABLED
 FONT 9, "휴먼편지체", 400, 0, 0x81
 BEGIN
     GROUPBOX        "",IDC_STATIC,10,15,110,228
@@ -250,21 +250,21 @@ BEGIN
     CONTROL         "",IDC_PROFILE_PHOTO,"Static",SS_BLACKFRAME,20,29,90,90
     EDITTEXT        IDC_MESSAGE,20,128,90,57,ES_MULTILINE | ES_AUTOHSCROLL | WS_DISABLED
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX1,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,33,161,10
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,150,33,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX2,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,50,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,50,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX3,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,67,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,67,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX4,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,84,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,84,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX5,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,101,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,101,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX6,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,118,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,118,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX7,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,135,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,135,161,10
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX8,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,152,161,10
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,152,161,10
     CTEXT           "~",IDC_STATIC,235,174,11,11
     EDITTEXT        IDC_ADD_TODO_MEMO,174,189,159,30,ES_MULTILINE | ES_AUTOHSCROLL
     PUSHBUTTON      "입력",IDC_ADD_TODO_BUTTON,313,173,20,12

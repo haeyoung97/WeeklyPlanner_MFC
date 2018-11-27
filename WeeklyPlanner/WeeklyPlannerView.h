@@ -63,7 +63,7 @@ public:
 	int m_nTodoDone;
 	CButton m_TodoCheck1;
 	CProgressCtrl m_TodoAchivePrgs;
-	void UpdateTodoProgressBar(CButton* m_checkBtn);
+	void UpdateTodoProgressBar(CButton* m_checkBtn, int index);
 	CButton m_TodoCheck2;
 	CButton m_TodoCheck3;
 	CButton m_TodoCheck4;
@@ -96,6 +96,7 @@ public:
 	afx_msg void OnClickedTodoDeleteButton6();
 	afx_msg void OnClickedTodoDeleteButton7();
 	afx_msg void OnClickedTodoDeleteButton8();
+	CButton* m_arrayTodoCheck[8];
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

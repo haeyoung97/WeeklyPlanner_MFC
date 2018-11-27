@@ -61,6 +61,15 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	// TODO: 여기에 생성 코드를 추가합니다.
 
 	m_bChecked[8] = { true };
+	m_arrayTodoCheck[0] = &m_TodoCheck1;
+	m_arrayTodoCheck[1] = &m_TodoCheck2;
+	m_arrayTodoCheck[2] = &m_TodoCheck3;
+	m_arrayTodoCheck[3] = &m_TodoCheck4;
+	m_arrayTodoCheck[4] = &m_TodoCheck5;
+	m_arrayTodoCheck[5] = &m_TodoCheck6;
+	m_arrayTodoCheck[6] = &m_TodoCheck7;
+	m_arrayTodoCheck[7] = &m_TodoCheck8;
+
 
 }
 
@@ -207,49 +216,84 @@ BOOL CWeeklyPlannerView::PreTranslateMessage(MSG* pMsg)
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox1()
-{UpdateTodoProgressBar(&m_TodoCheck1);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck1, 0);
+}
 
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox2()
-{UpdateTodoProgressBar(&m_TodoCheck2);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck2, 1);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox3()
-{UpdateTodoProgressBar(&m_TodoCheck3);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck3, 2);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox4()
-{UpdateTodoProgressBar(&m_TodoCheck4);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck4, 3);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox5()
-{UpdateTodoProgressBar(&m_TodoCheck5);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck5, 4);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox6()
-{UpdateTodoProgressBar(&m_TodoCheck6);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck6, 5);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox7()
-{UpdateTodoProgressBar(&m_TodoCheck7);}
+{
+	UpdateTodoProgressBar(&m_TodoCheck7, 6);
+}
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox8()
-{UpdateTodoProgressBar(&m_TodoCheck8);}
-
-void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
 {
-	if (m_checkBtn->GetCheck() == BST_CHECKED) {
-		m_nTodoDone++;
-		m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + 125);
-	}
-	else if (m_checkBtn->GetCheck() == BST_UNCHECKED) {
-		m_nTodoDone--;
-		m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - 125);
+	UpdateTodoProgressBar(&m_TodoCheck8, 7);
+}
 
+void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn, int index)
+{	
+	int i = 8, j = 0, cnt = 0;
+	while (i--) {
+		if (!m_bChecked[j])
+			cnt++;
+		j++;
 	}
-
+	int percent = 1000 / cnt;
+	int remainder = 1000 - percent*(cnt - 1);
+	if (cnt == index - 1) {
+		if (m_checkBtn->GetCheck() == BST_CHECKED && !m_bChecked[index]) {
+			m_nTodoDone++;
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + remainder);
+		}
+		else if (m_checkBtn->GetCheck() == BST_UNCHECKED && !m_bChecked[index]) {
+			m_nTodoDone--;
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - remainder);
+		}
+	}
+	else {
+		if (m_checkBtn->GetCheck() == BST_CHECKED && !m_bChecked[index]) {
+			m_nTodoDone++;
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + percent);
+		}
+		else if (m_checkBtn->GetCheck() == BST_UNCHECKED && !m_bChecked[index]) {
+			m_nTodoDone--;
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - percent);
+		}
+	}
+	
 }
 
 
@@ -284,33 +328,22 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 			m_bChecked[i] = false;
 			break;
 		}
-		if (i == 7)
+		if (i == 8) {
 			break;
+		}
 		i++;
 	}
-	if (i == 0)
-		m_TodoCheck1.SetWindowText(str);
-	else if (i == 1)
-		m_TodoCheck2.SetWindowText(str);
-	else if (i == 2)
-		m_TodoCheck3.SetWindowText(str);
-	else if (i == 3)
-		m_TodoCheck4.SetWindowText(str);
-	else if (i == 4)
-		m_TodoCheck5.SetWindowText(str);
-	else if (i == 5)
-		m_TodoCheck6.SetWindowText(str);
-	else if (i == 6)
-		m_TodoCheck7.SetWindowText(str);
-	else if (i == 7)
-		m_TodoCheck8.SetWindowText(str);
+
+	if (i <= 7) {
+		m_arrayTodoCheck[i]->SetWindowText(str);
+		m_arrayTodoCheck[i]->EnableWindow(true);
+	}
 	else
 		AfxMessageBox(_T("일정을 추가할 수 없습니다."));
 
-
 	//버튼 클릭 후 공간 비우기
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
-	pEdit->SetWindowText(_T(" "));
+	pEdit->SetWindowText(_T(""));
 
 	// DB에 올리기
 }
@@ -347,7 +380,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton1()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[0] = true;
-	m_TodoCheck1.SetWindowText(_T("_______________________________"));
+	int i = 1;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -355,7 +397,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton2()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[1] = true;
-	m_TodoCheck2.SetWindowText(_T("_______________________________"));
+	int i = 2;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -363,7 +414,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton3()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[2] = true;
-	m_TodoCheck3.SetWindowText(_T("_______________________________"));
+	int i = 3;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -371,7 +431,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton4()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[3] = true;
-	m_TodoCheck4.SetWindowText(_T("_______________________________"));
+	int i = 4;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -379,7 +448,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton5()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[4] = true;
-	m_TodoCheck5.SetWindowText(_T("_______________________________"));
+	int i = 5;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -387,7 +465,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton6()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[5] = true;
-	m_TodoCheck6.SetWindowText(_T("_______________________________"));
+	int i = 6;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 
@@ -395,7 +482,16 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton7()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[6] = true;
-	m_TodoCheck7.SetWindowText(_T("_______________________________"));
+	int i = 7;
+	while (i<8) {
+		CString str;
+		m_arrayTodoCheck[i]->GetWindowText(str);
+		m_arrayTodoCheck[i - 1]->SetWindowText(str);
+		m_bChecked[i - 1] = m_bChecked[i];
+		i++;
+	}
+	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
+	m_bChecked[7] = true;
 }
 
 

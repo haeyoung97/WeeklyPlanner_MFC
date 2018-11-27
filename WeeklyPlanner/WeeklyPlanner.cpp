@@ -80,6 +80,7 @@ BOOL CWeeklyPlannerApp::InitInstance()
 	}
 
 	AfxEnableControlContainer();
+	//AfxInitRichEdit();
 
 	EnableTaskbarInteraction(FALSE);
 
