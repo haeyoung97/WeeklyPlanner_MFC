@@ -98,6 +98,7 @@ public:
 	afx_msg void OnClickedTodoDeleteButton8();
 	CButton* m_arrayTodoCheck[8];
 	afx_msg void OnDblclkProfilePhoto();
+	int m_checkCnt;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

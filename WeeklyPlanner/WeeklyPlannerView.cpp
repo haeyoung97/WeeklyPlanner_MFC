@@ -59,6 +59,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_bModifyBtn(false)
 	, m_nTodoDone(0)
 	, m_todoEnd(0)
+	, m_checkCnt(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -71,8 +72,6 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	m_arrayTodoCheck[5] = &m_TodoCheck6;
 	m_arrayTodoCheck[6] = &m_TodoCheck7;
 	m_arrayTodoCheck[7] = &m_TodoCheck8;
-
-
 }
 
 CWeeklyPlannerView::~CWeeklyPlannerView()
@@ -219,6 +218,12 @@ BOOL CWeeklyPlannerView::PreTranslateMessage(MSG* pMsg)
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox1()
 {
+	if (m_TodoCheck1.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck1.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck1, 0);
 }
 
@@ -226,42 +231,84 @@ void CWeeklyPlannerView::OnClickedTodoCheckbox1()
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox2()
 {
+	if (m_TodoCheck2.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck2.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck2, 1);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox3()
 {
+	if (m_TodoCheck3.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck3.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck3, 2);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox4()
 {
+	if (m_TodoCheck4.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck4.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck4, 3);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox5()
 {
+	if (m_TodoCheck5.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck5.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck5, 4);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox6()
 {
+	if (m_TodoCheck6.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck6.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck6, 5);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox7()
 {
+	if (m_TodoCheck7.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck7.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck7, 6);
 }
 
 
 void CWeeklyPlannerView::OnClickedTodoCheckbox8()
 {
+	if (m_TodoCheck8.GetCheck() == BST_CHECKED) {
+		m_checkCnt++;
+	}
+	else if (m_TodoCheck8.GetCheck() == BST_UNCHECKED) {
+		m_checkCnt--;
+	}
 	UpdateTodoProgressBar(&m_TodoCheck8, 7);
 }
 
@@ -275,10 +322,10 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn, int index)
 	}
 	int percent = 1000 / cnt;
 	int remainder = 1000 - percent*(cnt - 1);
-	if (cnt == index - 1) {
+	if (cnt - 1 == index) {
 		if (m_checkBtn->GetCheck() == BST_CHECKED && !m_bChecked[index]) {
 			m_nTodoDone++;
-			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + remainder);
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.SetPos(0)*(m_checkCnt - 1) + remainder);
 		}
 		else if (m_checkBtn->GetCheck() == BST_UNCHECKED && !m_bChecked[index]) {
 			m_nTodoDone--;
@@ -288,14 +335,13 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn, int index)
 	else {
 		if (m_checkBtn->GetCheck() == BST_CHECKED && !m_bChecked[index]) {
 			m_nTodoDone++;
-			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() + percent);
+			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.SetPos(0)*(m_checkCnt-1) + percent);
 		}
 		else if (m_checkBtn->GetCheck() == BST_UNCHECKED && !m_bChecked[index]) {
 			m_nTodoDone--;
 			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - percent);
 		}
 	}
-
 }
 
 
@@ -339,6 +385,7 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	if (i <= 7) {
 		m_arrayTodoCheck[i]->SetWindowText(str);
 		m_arrayTodoCheck[i]->EnableWindow(true);
+		UpdateTodoProgressBar(m_arrayTodoCheck[i], i);
 	}
 	else
 		AfxMessageBox(_T("일정을 추가할 수 없습니다."));
@@ -388,10 +435,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton1()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck1, 1);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -405,10 +461,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton2()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck2, 2);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -422,10 +487,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton3()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck3, 3);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -439,10 +513,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton4()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck4, 4);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -456,10 +539,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton5()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck5, 5);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -473,10 +565,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton6()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck6, 6);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -490,10 +591,19 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton7()
 		m_arrayTodoCheck[i]->GetWindowText(str);
 		m_arrayTodoCheck[i - 1]->SetWindowText(str);
 		m_bChecked[i - 1] = m_bChecked[i];
+		if (m_arrayTodoCheck[i]->GetCheck() == BST_UNCHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(false);
+		else if (m_arrayTodoCheck[i]->GetCheck() == BST_CHECKED)
+			m_arrayTodoCheck[i - 1]->SetCheck(true);
+		boolean isEnabled = m_arrayTodoCheck[i]->IsWindowEnabled();
+		m_arrayTodoCheck[i - 1]->EnableWindow(isEnabled);
 		i++;
 	}
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck7, 7);
 	m_arrayTodoCheck[7]->SetWindowText(_T("_______________________________"));
 	m_bChecked[7] = true;
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 
@@ -501,7 +611,11 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton8()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[7] = true;
+	m_checkCnt--;
+	UpdateTodoProgressBar(&m_TodoCheck8, 8);
 	m_TodoCheck8.SetWindowText(_T("_______________________________"));
+	m_arrayTodoCheck[7]->SetCheck(false);
+	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
 void CWeeklyPlannerView::OnDblclkProfilePhoto()
