@@ -29,4 +29,5 @@ public:
 	CButton m_btnDdayOK;
 	afx_msg void OnBnClickedOk();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedCancel();
 };

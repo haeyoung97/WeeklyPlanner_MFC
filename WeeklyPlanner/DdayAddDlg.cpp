@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CDdayAddDlg, CDialogEx)
 	//ON_EN_CHANGE(IDC_EDIT2, &CDdayAddDlg::OnEnChangeEdit2)
 	ON_EN_CHANGE(IDC_EDIT_DDAY_MEMO, &CDdayAddDlg::OnEnChangeEditDdayMemo)
 	ON_BN_CLICKED(IDOK, &CDdayAddDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, &CDdayAddDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -113,4 +114,11 @@ BOOL CDdayAddDlg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void CDdayAddDlg::OnBnClickedCancel()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CDialogEx::OnCancel();
 }

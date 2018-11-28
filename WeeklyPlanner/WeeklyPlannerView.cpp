@@ -1,4 +1,4 @@
-		
+
 // WeeklyPlannerView.cpp : CWeeklyPlannerView 클래스의 구현
 //
 
@@ -13,6 +13,8 @@
 #include "WeeklyPlannerView.h"
 
 #include "DdayAddDlg.h"
+#include "ProfileModifyDlg.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -264,7 +266,7 @@ void CWeeklyPlannerView::OnClickedTodoCheckbox8()
 }
 
 void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn, int index)
-{	
+{
 	int i = 8, j = 0, cnt = 0;
 	while (i--) {
 		if (!m_bChecked[j])
@@ -293,7 +295,7 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn, int index)
 			m_TodoAchivePrgs.SetPos(m_TodoAchivePrgs.GetPos() - percent);
 		}
 	}
-	
+
 }
 
 
@@ -323,7 +325,7 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	str += m_strTodomemo;
 
 	int i = 0;
-	while(1) {
+	while (1) {
 		if (m_bChecked[i]) {
 			m_bChecked[i] = false;
 			break;
@@ -500,4 +502,11 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton8()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_bChecked[7] = true;
 	m_TodoCheck8.SetWindowText(_T("_______________________________"));
+}
+
+void CWeeklyPlannerView::OnDblclkProfilePhoto()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CProfileModifyDlg m_dlgProfileModify;
+	m_dlgProfileModify.DoModal();
 }
