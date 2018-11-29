@@ -13,6 +13,7 @@
 #include "WeeklyPlannerView.h"
 
 #include "DdayAddDlg.h"
+
 //#include "ProfileModifyDlg.h"
 
 #ifdef _DEBUG
@@ -51,6 +52,7 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON7, &CWeeklyPlannerView::OnClickedTodoDeleteButton7)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON8, &CWeeklyPlannerView::OnClickedTodoDeleteButton8)
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_OPEN, &CWeeklyPlannerView::OnBnClickedButtonProfileOpen)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -117,11 +119,11 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	m_TodoAchivePrgs.SetRange(0, 1000);
 
-	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	/*CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
 
-	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 128, 128, LR_LOADMAP3DCOLORS);
-	m_pDefaultPicture->SetBitmap(hbmp);
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 180, 180, LR_LOADMAP3DCOLORS);
+	m_pDefaultPicture->SetBitmap(hbmp);*/
 }
 
 void CWeeklyPlannerView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -635,11 +637,39 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton8()
 void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.bmp, *.jpg, *.png)|모든파일(*.*)|*.*||");
+	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.bmp, *.jpg, *.png)|*.bmp; *.jpg; *.png|모든파일(*.*)|*.*||");
 	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter);
 	if (IDOK == dlg.DoModal())
 	{
-		m_strProfilePath = dlg.GetFileName();
+		m_strProfilePath = dlg.GetPathName();
+		CString ProfileName = dlg.GetFileName();
+		//CStatic* m_profilePicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+
+		//CImage profileImage;
+		//profileImage.Load(m_strProfilePath);
+		//profileImage.Save(ProfileName, ImageFormatBMP);
+		HBITMAP img = (HBITMAP)::LoadImage(NULL, m_strProfilePath, IMAGE_BITMAP, 180, 180, LR_LOADFROMFILE);
+
+		//CBitmap bitmap;
+		//bitmap.Attach(profileImage);
+
+		//CImage img;
+		//img.Load(_T("res\\1.png"));
+		//img.BItBlt(pDC, x, y);
 
 	}
+}
+
+void CWeeklyPlannerView::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CFormView::OnPaint()을(를) 호출하지 마십시오.
+
+	//프로필 디폴트 등록
+	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
+
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 180, 180, LR_LOADMAP3DCOLORS);
+	m_pDefaultPicture->SetBitmap(hbmp);
 }

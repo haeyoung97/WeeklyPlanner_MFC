@@ -37,11 +37,13 @@
 
 
 
-
 #include <atlbase.h>
 #include <afxoledb.h>
 #include <atlplus.h>
 #include <atlimage.h>
+
+#include <afxtoolbarimages.h>
+
 
 
 
