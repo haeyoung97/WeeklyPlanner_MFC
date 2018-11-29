@@ -13,7 +13,7 @@
 #include "WeeklyPlannerView.h"
 
 #include "DdayAddDlg.h"
-#include "ProfileModifyDlg.h"
+//#include "ProfileModifyDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON6, &CWeeklyPlannerView::OnClickedTodoDeleteButton6)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON7, &CWeeklyPlannerView::OnClickedTodoDeleteButton7)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON8, &CWeeklyPlannerView::OnClickedTodoDeleteButton8)
+	ON_BN_CLICKED(IDC_BUTTON_PROFILE_OPEN, &CWeeklyPlannerView::OnBnClickedButtonProfileOpen)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -60,6 +61,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_nTodoDone(0)
 	, m_todoEnd(0)
 	, m_checkCnt(0)
+	, m_strProfilePath(_T(""))
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -618,9 +620,21 @@ void CWeeklyPlannerView::OnClickedTodoDeleteButton8()
 	m_arrayTodoCheck[7]->EnableWindow(false);
 }
 
-void CWeeklyPlannerView::OnDblclkProfilePhoto()
+/*void CWeeklyPlannerView::OnDblclkProfilePhoto()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CProfileModifyDlg m_dlgProfileModify;
 	m_dlgProfileModify.DoModal();
+}*/
+
+void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.bmp, *.jpg, *.png)|모든파일(*.*)|*.*||");
+	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter);
+	if (IDOK == dlg.DoModal())
+	{
+		m_strProfilePath = dlg.GetFileName();
+
+	}
 }
