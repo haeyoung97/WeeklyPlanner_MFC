@@ -101,6 +101,7 @@ public:
 	int m_checkCnt;
 	afx_msg void OnBnClickedButtonProfileOpen();
 	CString m_strProfilePath;
+	afx_msg void OnPaint();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
