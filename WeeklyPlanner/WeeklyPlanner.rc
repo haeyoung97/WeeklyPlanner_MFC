@@ -86,6 +86,8 @@ IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 
 IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
 
+IDC_BITMAP_PROFILE_DEFAULT BITMAP                  "C:\\Users\\정상아\\Desktop\\default_Image.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -247,7 +249,7 @@ FONT 9, "휴먼편지체", 400, 0, 0x81
 BEGIN
     GROUPBOX        "",IDC_STATIC,10,15,110,228
     GROUPBOX        "DAILY TODO LIST",IDC_STATIC,130,15,223,228
-    CONTROL         "",IDC_PROFILE_PHOTO,"Static",SS_BLACKFRAME | SS_NOTIFY,20,36,90,83
+    CONTROL         "",IDC_PROFILE_PHOTO,"Static",SS_BITMAP | SS_NOTIFY,20,36,90,83
     EDITTEXT        IDC_MESSAGE,20,128,90,57,ES_MULTILINE | ES_AUTOHSCROLL | WS_DISABLED
     CONTROL         "_______________________________",IDC_TODO_CHECKBOX1,
                     "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,150,33,161,10

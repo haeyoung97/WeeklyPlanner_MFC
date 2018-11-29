@@ -33,6 +33,8 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_DDAY_ADD_DIALOG             316
 #define IDD_DIALOG_PROFILE_MODIFY       318
+#define IDB_BITMAP1                     320
+#define IDC_BITMAP_PROFILE_DEFAULT      320
 #define IDC_MESSAGE                     1001
 #define IDC_BUTTON1                     1002
 #define IDC_BUTTON2                     1003
@@ -91,7 +93,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        320
+#define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           310

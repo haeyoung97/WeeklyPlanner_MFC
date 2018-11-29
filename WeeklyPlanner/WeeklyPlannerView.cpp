@@ -117,6 +117,11 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	m_TodoAchivePrgs.SetRange(0, 1000);
 
+	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
+
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 128, 128, LR_LOADMAP3DCOLORS);
+	m_pDefaultPicture->SetBitmap(hbmp);
 }
 
 void CWeeklyPlannerView::OnRButtonUp(UINT /* nFlags */, CPoint point)
