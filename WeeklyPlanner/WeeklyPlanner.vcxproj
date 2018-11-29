@@ -217,6 +217,7 @@
     <ResourceCompile Include="WeeklyPlanner.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\default_Image.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\WeeklyPlanner.ico" />
