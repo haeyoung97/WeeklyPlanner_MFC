@@ -86,7 +86,7 @@ IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 
 IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
 
-IDC_BITMAP_PROFILE_DEFAULT BITMAP                  "C:\\Users\\Á¤»ó¾Æ\\Desktop\\default_Image.bmp"
+IDC_BITMAP_PROFILE_DEFAULT BITMAP                  "res\\default_Image.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////

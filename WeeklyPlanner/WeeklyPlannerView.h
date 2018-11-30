@@ -97,11 +97,13 @@ public:
 	afx_msg void OnClickedTodoDeleteButton7();
 	afx_msg void OnClickedTodoDeleteButton8();
 	CButton* m_arrayTodoCheck[8];
-	//afx_msg void OnDblclkProfilePhoto();
 	int m_checkCnt;
 	afx_msg void OnBnClickedButtonProfileOpen();
 	CString m_strProfilePath;
 	afx_msg void OnPaint();
+	void MoveCheckboxStr(int i);
+	CDateTimeCtrl m_cTodoStart;
+	CDateTimeCtrl m_cTodoEnd;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
