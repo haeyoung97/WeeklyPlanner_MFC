@@ -42,6 +42,9 @@
     <ClInclude Include="DdayAddDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ProfileModifyDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WeeklyPlanner.cpp">
@@ -60,6 +63,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="DdayAddDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ProfileModifyDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -82,6 +88,12 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\Toolbar256.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\default_Image.bmp">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\default_Image.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

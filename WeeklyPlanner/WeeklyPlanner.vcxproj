@@ -191,6 +191,7 @@
   <ItemGroup>
     <ClInclude Include="DdayAddDlg.h" />
     <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="ProfileModifyDlg.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -201,6 +202,7 @@
   <ItemGroup>
     <ClCompile Include="DdayAddDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="ProfileModifyDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -215,6 +217,8 @@
     <ResourceCompile Include="WeeklyPlanner.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\default_Image.bmp" />
+    <Image Include="res\default_Image.bmp" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\WeeklyPlanner.ico" />

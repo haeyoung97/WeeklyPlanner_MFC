@@ -32,6 +32,9 @@
 #define ID_VIEW_APPLOOK_WINDOWS_7       219
 #define IDS_EDIT_MENU                   306
 #define IDD_DDAY_ADD_DIALOG             316
+#define IDD_DIALOG_PROFILE_MODIFY       318
+#define IDB_BITMAP1                     320
+#define IDC_BITMAP_PROFILE_DEFAULT      320
 #define IDC_MESSAGE                     1001
 #define IDC_BUTTON1                     1002
 #define IDC_BUTTON2                     1003
@@ -77,16 +80,23 @@
 #define IDC_TODO_START                  1056
 #define IDC_TODO_END                    1057
 #define IDC_MONTHCALENDAR1              1057
+#define IDC_MONTHCALENDAR               1057
 #define IDC_EDIT_DDAY_TITLE             1058
 #define IDC_EDIT_DDAY_MEMO              1059
+#define IDC_BUTTON_MODIFY_CANCLE        1060
+#define IDC_BUTTON_IMAGEFILE_OPEN       1061
+#define IDC_BUTTON_MODIFY_APPLY         1062
+#define IDC_PROFILE_MODAL               1064
+#define IDC_BUTTON_PROFILE_OPEN         1065
+#define IDC_BUTTON_PROFILE_DELETE       1066
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        318
+#define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1059
+#define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

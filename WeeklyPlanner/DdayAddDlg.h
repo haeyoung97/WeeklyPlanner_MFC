@@ -1,5 +1,8 @@
 #pragma once
 #include "afxwin.h"
+#include "afxdtctl.h"
+#include "WeeklyPlannerView.h"
+#include "atltime.h"
 
 
 // CDdayAddDlg 대화 상자입니다.
@@ -29,4 +32,11 @@ public:
 	CButton m_btnDdayOK;
 	afx_msg void OnBnClickedOk();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnBnClickedCancel();
+	afx_msg void OnMcnSelchangeMonthcalendar1(NMHDR *pNMHDR, LRESULT *pResult);
+	CMonthCalCtrl m_ctrlDdayCal;
+	afx_msg void OnMcnSelchangeMonthcalendar(NMHDR *pNMHDR, LRESULT *pResult);
+	CWeeklyPlannerView* pView;
+	CTime tSelected;
+	CTime tNow;
 };

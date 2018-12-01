@@ -8,7 +8,7 @@
 #include "afxcmn.h"
 #include "atltime.h"
 #include "afxdtctl.h"
-
+#include "WeeklyPlannerDoc.h"
 
 class CWeeklyPlannerView : public CFormView
 {
@@ -64,7 +64,7 @@ public:
 	int m_nTodoDone;
 	CButton m_TodoCheck1;
 	CProgressCtrl m_TodoAchivePrgs;
-	void UpdateTodoProgressBar(CButton* m_checkBtn);
+	void UpdateTodoProgressBar(CButton* m_checkBtn, int index);
 	CButton m_TodoCheck2;
 	CButton m_TodoCheck3;
 	CButton m_TodoCheck4;
@@ -79,13 +79,34 @@ public:
 	afx_msg void OnClickedTodoCheckbox6();
 	afx_msg void OnClickedTodoCheckbox7();
 	afx_msg void OnClickedTodoCheckbox8();
-	CTime m_todoStart;
-	CTime m_todoEnd;
 	CButton m_btnaddTodo;
 	afx_msg void OnEnChangeAddTodoMemo();
 	afx_msg void OnBnClickedAddTodoButton();
 	CButton m_btnaddDday;
 	afx_msg void OnClickedDdayAddButton();
+	bool m_bChecked[8];
+	afx_msg void OnDtnDatetimechangeTodoStart(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnDtnDatetimechangeTodoEnd(NMHDR *pNMHDR, LRESULT *pResult);
+	CTime m_todoStart;
+	CTime m_todoEnd;
+	afx_msg void OnClickedTodoDeleteButton1();
+	afx_msg void OnClickedTodoDeleteButton2();
+	afx_msg void OnClickedTodoDeleteButton3();
+	afx_msg void OnClickedTodoDeleteButton4();
+	afx_msg void OnClickedTodoDeleteButton5();
+	afx_msg void OnClickedTodoDeleteButton6();
+	afx_msg void OnClickedTodoDeleteButton7();
+	afx_msg void OnClickedTodoDeleteButton8();
+	CButton* m_arrayTodoCheck[8];
+	int m_checkCnt;
+	afx_msg void OnBnClickedButtonProfileOpen();
+	CString m_strProfilePath;
+	afx_msg void OnPaint();
+	void MoveCheckboxStr(int i);
+	CDateTimeCtrl m_cTodoStart;
+	CDateTimeCtrl m_cTodoEnd;
+	afx_msg void OnClickedButtonProfileDelete();
+	CTime m_timeNewDday;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
