@@ -8,6 +8,7 @@
 #include "afxcmn.h"
 #include "atltime.h"
 #include "afxdtctl.h"
+#include "WeeklyPlannerDoc.h"
 
 class CWeeklyPlannerView : public CFormView
 {
@@ -105,6 +106,9 @@ public:
 	CDateTimeCtrl m_cTodoStart;
 	CDateTimeCtrl m_cTodoEnd;
 	afx_msg void OnClickedButtonProfileDelete();
+	CTime m_timeNewDday;
+	CString m_strNewDdayTitle;
+	CString m_strNewDdayMemo;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

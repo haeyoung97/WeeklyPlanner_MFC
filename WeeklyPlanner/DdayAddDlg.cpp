@@ -2,9 +2,12 @@
 //
 
 #include "stdafx.h"
+
+#include "MainFrm.h"
 #include "WeeklyPlanner.h"
 #include "DdayAddDlg.h"
 #include "afxdialogex.h"
+#include "WeeklyPlannerView.h"
 
 // CDdayAddDlg 대화 상자입니다.
 
@@ -12,6 +15,7 @@ IMPLEMENT_DYNAMIC(CDdayAddDlg, CDialogEx)
 
 CDdayAddDlg::CDdayAddDlg(CWnd* pParent /*=NULL*/)
 	: CDialogEx(IDD_DDAY_ADD_DIALOG, pParent)
+	, pView(NULL)
 {
 
 }
@@ -23,8 +27,11 @@ CDdayAddDlg::~CDdayAddDlg()
 void CDdayAddDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_EDIT_DDAY_MEMO, m_editDdayMemo);
+	//  DDX_Control(pDX, IDC_EDIT_DDAY_MEMO, m_editDdayMemo);
 	DDX_Control(pDX, IDOK, m_btnDdayOK);
+	DDX_Control(pDX, IDC_MONTHCALENDAR1, m_ctrlDdayCal);
+	DDX_Control(pDX, IDC_EDIT_DDAY_TITLE, m_editNewDdayTitle);
+	DDX_Control(pDX, IDC_EDIT_DDAY_MEMO, m_editNewDdayMemo);
 }
 
 
@@ -77,6 +84,9 @@ BOOL CDdayAddDlg::OnInitDialog()
 
 	// TODO:  여기에 추가 초기화 작업을 추가합니다.
 	GetDlgItem(IDOK)->SendMessage(WM_KILLFOCUS, NULL);
+	CMainFrame * pFrame = (CMainFrame*)AfxGetMainWnd();
+	pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
 }
@@ -85,12 +95,14 @@ BOOL CDdayAddDlg::OnInitDialog()
 void CDdayAddDlg::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	//if (GetDlgItem(IDC_DDAY_TITLE)->GetDlgItemTextW(IDC_DDAY_TITLE) != 0 && GetDlgItem(IDC_DDAY_MEMO)->GetDlgItemTextW != 0) {
 
-	//}
-
-
-
+	//pView 통해 WeeklyPlannerView의 m_timeNewDday, m_strNewDdayTitle, m_strNewDdayMemo에  값 전달
+	CTime tSelected;
+	m_ctrlDdayCal.GetCurSel(tSelected);
+	pView->m_timeNewDday = tSelected;
+	m_editNewDdayTitle.GetWindowText(pView->m_strNewDdayTitle);
+	m_editNewDdayMemo.GetWindowText(pView->m_strNewDdayMemo);
+	
 	CDialogEx::OnOK();
 }
 

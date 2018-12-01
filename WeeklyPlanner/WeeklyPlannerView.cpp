@@ -65,6 +65,9 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_todoEnd(0)
 	, m_checkCnt(0)
 	, m_strProfilePath(_T(""))
+	, m_timeNewDday(0)
+	, m_strNewDdayTitle(_T(""))
+	, m_strNewDdayMemo(_T(""))
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
