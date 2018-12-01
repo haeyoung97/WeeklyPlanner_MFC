@@ -104,6 +104,7 @@ public:
 	void MoveCheckboxStr(int i);
 	CDateTimeCtrl m_cTodoStart;
 	CDateTimeCtrl m_cTodoEnd;
+	afx_msg void OnClickedButtonProfileDelete();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
