@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_TODO_DELETE_BUTTON8, &CWeeklyPlannerView::OnClickedTodoDeleteButton8)
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_OPEN, &CWeeklyPlannerView::OnBnClickedButtonProfileOpen)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BUTTON_PROFILE_DELETE, &CWeeklyPlannerView::OnClickedButtonProfileDelete)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -560,21 +561,31 @@ void CWeeklyPlannerView::MoveCheckboxStr(int i)
 void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+	//dimx, dimy : image size;
+	int dimx = 150;
+	int dimy = 160;
 	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.bmp, *.jpg, *.png)|*.bmp; *.jpg; *.png|모든파일(*.*)|*.*||");
 	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter);
 	if (IDOK == dlg.DoModal())
 	{
 		m_strProfilePath = dlg.GetPathName();
-		CString ProfileName = dlg.GetFileName();
-		//CStatic* m_profilePicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 
-		//CImage profileImage;
-		//profileImage.Load(m_strProfilePath);
-		//profileImage.Save(ProfileName, ImageFormatBMP);
-		HBITMAP img = (HBITMAP)::LoadImage(NULL, m_strProfilePath, IMAGE_BITMAP, 180, 180, LR_LOADFROMFILE);
+		CImage profileImage;
+		profileImage.Load(m_strProfilePath);
 
-		//CBitmap bitmap;
-		//bitmap.Attach(profileImage);
+		CDC *screenDC = GetDC();
+		CDC mDC;
+		mDC.CreateCompatibleDC(screenDC);
+		CBitmap bitmap;
+		bitmap.CreateCompatibleBitmap(screenDC, dimx, dimy);
+		CBitmap *bmp = mDC.SelectObject(&bitmap);
+		mDC.SetStretchBltMode(HALFTONE);
+		profileImage.StretchBlt(mDC.m_hDC, 0, 0, dimx, dimy, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
+		mDC.SelectObject(bmp);
+
+		((CStatic*)GetDlgItem(IDC_PROFILE_PHOTO))->SetBitmap((HBITMAP)bitmap.Detach());
+		ReleaseDC(screenDC);
 
 		//CImage img;
 		//img.Load(_T("res\\1.png"));
@@ -597,3 +608,14 @@ void CWeeklyPlannerView::OnPaint()
 	m_pDefaultPicture->SetBitmap(hbmp);
 }
 
+
+
+void CWeeklyPlannerView::OnClickedButtonProfileDelete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
+
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 140, 140, LR_LOADMAP3DCOLORS);
+	m_pDefaultPicture->SetBitmap(hbmp);
+}
