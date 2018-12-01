@@ -102,11 +102,15 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TODO_CHECKBOX7, m_TodoCheck7);
 	DDX_Control(pDX, IDC_TODO_CHECKBOX8, m_TodoCheck8);
 	DDX_Control(pDX, IDC_ADD_TODO_BUTTON, m_btnaddTodo);
-	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnaddDday);
+	//  DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnaddDday);
 	DDX_DateTimeCtrl(pDX, IDC_TODO_START, m_todoStart);
 	DDX_DateTimeCtrl(pDX, IDC_TODO_END, m_todoEnd);
 	DDX_Control(pDX, IDC_TODO_START, m_cTodoStart);
 	DDX_Control(pDX, IDC_TODO_END, m_cTodoEnd);
+	DDX_Control(pDX, IDC_DDAY_LIST_CNTL, m_ctrlDdayList);
+	DDX_Control(pDX, IDC_DDAY_DELETE_BUTTON, m_btnDeleteDday);
+	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnAddDday);
+	DDX_Control(pDX, IDC_DDAY_MODIFY_BUTTON, m_btnModifyDday);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -141,6 +145,28 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 180, 180, LR_LOADMAP3DCOLORS);
 	m_pDefaultPicture->SetBitmap(hbmp);*/
+
+
+	//List Control 설정
+	CRect list_rect;
+	m_ctrlDdayList.GetWindowRect(&list_rect);
+	m_ctrlDdayList.EnableScrollBar(FALSE);
+	LPWSTR list[3] = { _T("D"), _T("제목"), _T("DAY") };
+	double nWidth[3] = { list_rect.Width()*0.2, 0, list_rect.Width()*0.3 };
+	nWidth[1] = list_rect.Width() - nWidth[0] - nWidth[2]-3;
+	m_ctrlDdayList.GetHeaderCtrl()->EnableWindow(false);
+
+	//List Column 설정
+	for (int i = 0; i < 3; i++) {
+		m_ctrlDdayList.InsertColumn(i, list[i], LVCFMT_CENTER, nWidth[i]);
+	}
+	m_ctrlDdayList.SetExtendedStyle(m_ctrlDdayList.GetExtendedStyle() | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+
+	((CButton*)GetDlgItem(IDC_DDAY_DELETE_BUTTON))->EnableWindow(FALSE);
+	((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
+
+
+
 }
 
 void CWeeklyPlannerView::OnRButtonUp(UINT /* nFlags */, CPoint point)

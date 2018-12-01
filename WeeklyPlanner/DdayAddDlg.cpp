@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CDdayAddDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_DDAY_MEMO, &CDdayAddDlg::OnEnChangeEditDdayMemo)
 	ON_BN_CLICKED(IDOK, &CDdayAddDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CDdayAddDlg::OnBnClickedCancel)
+//	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 
@@ -98,12 +99,26 @@ void CDdayAddDlg::OnBnClickedOk()
 
 	//pView 통해 WeeklyPlannerView의 m_timeNewDday, m_strNewDdayTitle, m_strNewDdayMemo에  값 전달
 	CTime tSelected;
+	CString strDdayTitle, strDdayMemo, strTmp;
+	CListCtrl* ctrlDdayList = &(pView->m_ctrlDdayList);
+
+	int nCount =ctrlDdayList->GetItemCount();
+	nCount++;
+
+
 	m_ctrlDdayCal.GetCurSel(tSelected);
 	pView->m_timeNewDday = tSelected;
-	m_editNewDdayTitle.GetWindowText(pView->m_strNewDdayTitle);
-	m_editNewDdayMemo.GetWindowText(pView->m_strNewDdayMemo);
-	
+
+	m_editNewDdayTitle.GetWindowText(strDdayTitle);
+	strTmp.Format(_T("%s"), strDdayTitle);	
+
+	ctrlDdayList->InsertItem(nCount, strTmp);
+	ctrlDdayList->SetItem(nCount, 1, LVIF_TEXT,strDdayTitle, 0, 0, 0, 0);
+	ctrlDdayList->SetItem(nCount, 2, LVIF_TEXT, strDdayTitle, 0, 0, 0, 0);
+
 	CDialogEx::OnOK();
+	UpdateData(TRUE);
+
 }
 
 
@@ -134,3 +149,13 @@ void CDdayAddDlg::OnBnClickedCancel()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	CDialogEx::OnCancel();
 }
+
+
+//void CDdayAddDlg::OnDestroy()
+//{
+//	CDialogEx::OnDestroy();
+//
+//	pView->UpdateData(TRUE);
+//
+//	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+//}
