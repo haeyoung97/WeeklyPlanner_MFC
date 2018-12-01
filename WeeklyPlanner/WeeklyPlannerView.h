@@ -82,7 +82,7 @@ public:
 	CButton m_btnaddTodo;
 	afx_msg void OnEnChangeAddTodoMemo();
 	afx_msg void OnBnClickedAddTodoButton();
-	CButton m_btnaddDday;
+//	CButton m_btnaddDday;
 	afx_msg void OnClickedDdayAddButton();
 	bool m_bChecked[8];
 	afx_msg void OnDtnDatetimechangeTodoStart(NMHDR *pNMHDR, LRESULT *pResult);
@@ -109,6 +109,10 @@ public:
 	CTime m_timeNewDday;
 	CString m_strNewDdayTitle;
 	CString m_strNewDdayMemo;
+	CListCtrl m_ctrlDdayList;
+	CButton m_btnDeleteDday;
+	CButton m_btnAddDday;
+	CButton m_btnModifyDday;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

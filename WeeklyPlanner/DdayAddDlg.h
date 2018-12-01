@@ -36,4 +36,5 @@ public:
 	CMonthCalCtrl m_ctrlDdayCal;
 	CEdit m_editNewDdayTitle;
 	CEdit m_editNewDdayMemo;
+//	afx_msg void OnDestroy();
 };
