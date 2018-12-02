@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_DELETE, &CWeeklyPlannerView::OnClickedButtonProfileDelete)
 //	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
 //ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
+ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -708,3 +709,14 @@ void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 //	*pResult = 0;
 //
 //}
+
+
+void CWeeklyPlannerView::OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	bool m_bListValid = m_ctrlDdayList.GetItemCount();
+	m_btnDeleteDday.EnableWindow(m_bListValid);
+	m_btnModifyDday.EnableWindow(m_bListValid);
+	*pResult = 0;
+}
