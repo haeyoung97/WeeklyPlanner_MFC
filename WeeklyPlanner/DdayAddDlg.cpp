@@ -93,17 +93,23 @@ void CDdayAddDlg::OnBnClickedOk()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
+	UpdateData(TRUE);
 	//pView 통해 WeeklyPlannerView의 m_timeNewDday, m_strNewDdayTitle, m_strNewDdayMemo에  값 전달
 	CTime tSelected, nowTime;
 	CString strDdayTitle, strDday, strTmp;
 	CListCtrl* ctrlDdayList = &(pView->m_ctrlDdayList);
 
-	int nCount =ctrlDdayList->GetItemCount();
-	int cnt = nCount++;
+	int nCount =ctrlDdayList->GetItemCount()+1;
+	int index;
 	nowTime = CTime::GetCurrentTime();
 	m_ctrlDdayCal.GetCurSel(tSelected);
+	strDdayTitle.Empty();
+	strDday.Empty();
+	strTmp.Empty();
+
 	
 	CTimeSpan dDay = tSelected - nowTime;
+	//*******************
 	int m_dDay = dDay.GetTotalSeconds();
 	if (dDay > 0)
 		strDday.Format(_T("D-%d"), abs(m_dDay / (24 * 60 * 60) + 1));
@@ -112,6 +118,7 @@ void CDdayAddDlg::OnBnClickedOk()
 	else
 		strDday.Format(_T("D+%d"), abs(m_dDay / (24 * 60 * 60)));
 	pView->m_strNewDdayDate = strDday;
+	//********************
 
 	strTmp = tSelected.Format(_T("%Y-%m-%d"));
 	pView->m_timeNewDday = strTmp;
@@ -119,12 +126,14 @@ void CDdayAddDlg::OnBnClickedOk()
 	m_editNewDdayTitle.GetWindowText(strDdayTitle);
 	pView->m_strNewDdayTitle = strDdayTitle;
 	
-	ctrlDdayList->InsertItem(cnt, strDday);
-	ctrlDdayList->SetItem(cnt, 1, LVIF_TEXT, strDdayTitle, 0, 0, 0, NULL);
-	ctrlDdayList->SetItem(cnt, 2, LVIF_TEXT, strTmp, 0, 0, 0, NULL);
+	index = ctrlDdayList->InsertItem(nCount, strTmp);
+	//ctrlDdayList->SetItem(index, 0, LVIF_TEXT, strDday, 0, 0, 0, NULL);
+	ctrlDdayList->SetItem(index, 1, LVIF_TEXT, strDdayTitle, 0, 0, 0, NULL);
+	ctrlDdayList->SetItem(index, 2, LVIF_TEXT, strDday, 0, 0, 0, NULL);
 
 	CDialogEx::OnOK();
-	UpdateData(TRUE);
+
+
 }
 
 

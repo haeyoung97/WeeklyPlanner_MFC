@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_OPEN, &CWeeklyPlannerView::OnBnClickedButtonProfileOpen)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_DELETE, &CWeeklyPlannerView::OnClickedButtonProfileDelete)
+//	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
+//ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -68,6 +70,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_timeNewDday(_T(""))
 	, m_strNewDdayTitle(_T(""))
 	, m_strNewDdayDate(_T(""))
+	, m_bSortAscending(false)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -151,9 +154,9 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	CRect list_rect;
 	m_ctrlDdayList.GetWindowRect(&list_rect);
 	m_ctrlDdayList.EnableScrollBar(FALSE);
-	LPWSTR list[3] = { _T(" D-day "), _T("제목"),_T("Date") };
-	double nWidth[3] = { list_rect.Width()*0.2, 0.0 ,list_rect.Width()*0.3};
-	nWidth[1] = list_rect.Width() - nWidth[0] - nWidth[2];
+	LPWSTR list[3] = { _T("마감 일자"), _T("제목"),_T("남은 날짜") };
+	double nWidth[3] = { list_rect.Width()*0.25, 0.0 ,list_rect.Width()*0.2};
+	nWidth[1] = list_rect.Width() - nWidth[0] - nWidth[2]-3;
 	m_ctrlDdayList.GetHeaderCtrl()->EnableWindow(FALSE);
 
 	//List Column 설정
@@ -648,3 +651,60 @@ void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 140, 140, LR_LOADMAP3DCOLORS);
 	m_pDefaultPicture->SetBitmap(hbmp);
 }
+
+
+//void CWeeklyPlannerView::OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
+//{
+//	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	NM_LISTVIEW * pNMListView = (NM_LISTVIEW *)pNMHDR;
+//	int iColumn = 2;
+//
+//	int nItem = m_ctrlDdayList.GetItemCount();
+//	CString ** arStr = new CString*[nItem];
+//	for (int i = 0; i < nItem; i++) {
+//		arStr[i] = new CString(m_ctrlDdayList.GetItemText(i, iColumn));
+//		m_ctrlDdayList.SetItemData(i, (LPARAM)arStr[i]);
+//	}
+//
+//	//첫번째 인수는 위에서 만든 함수, 두번째인수는 정렬 방식
+//	m_ctrlDdayList.SortItems(CompareFunc, (LPARAM)m_bSortAscending);
+//
+//	for (int i = 0; i < nItem; i++) {
+//		delete arStr[i];
+//	}
+//	delete[]arStr;
+//
+//	UpdateData(TRUE);
+//
+//	*pResult = 0;
+//}
+
+
+//void CWeeklyPlannerView::OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
+//{
+//	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+//	NM_LISTVIEW * pNMListView = (NM_LISTVIEW *)pNMHDR;
+//	int iColumn = 2;
+//
+//	int nItem = m_ctrlDdayList.GetItemCount();
+//	CString ** arStr = new CString*[nItem];
+//	for (int i = 0; i < nItem; i++) {
+//		arStr[i] = new CString(m_ctrlDdayList.GetItemText(i, iColumn));
+//		m_ctrlDdayList.SetItemData(i, (LPARAM)arStr[i]);
+//	}
+//
+//	//첫번째 인수는 위에서 만든 함수, 두번째인수는 정렬 방식
+//	m_ctrlDdayList.SortItems(CompareFunc, (LPARAM)m_bSortAscending);
+//
+//	for (int i = 0; i < nItem; i++) {
+//		delete arStr[i];
+//	}
+//	delete[]arStr;
+//
+//	UpdateData(TRUE);
+//
+//	*pResult = 0;
+//
+//}

@@ -113,6 +113,9 @@ public:
 	CButton m_btnDeleteDday;
 	CButton m_btnAddDday;
 	CButton m_btnModifyDday;
+//	afx_msg void OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
+	bool m_bSortAscending;
+//	afx_msg void OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
