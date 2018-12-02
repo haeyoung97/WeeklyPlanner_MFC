@@ -54,7 +54,7 @@ protected:
 public:
 	CButton m_btnMessagemodify;
 	afx_msg void OnClickedMessageModifyButton();
-	bool m_bModifyBtn;
+//	bool m_bModifyBtn;
 	CEdit m_EditMessage;
 	afx_msg void OnEnChangeMessage();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -112,11 +112,16 @@ public:
 	CListCtrl m_ctrlDdayList;
 	CButton m_btnDeleteDday;
 	CButton m_btnAddDday;
-	CButton m_btnModifyDday;
+//	CButton m_btnModifyDday;
 //	afx_msg void OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
-	bool m_bSortAscending;
+//	bool m_bSortAscending;
 //	afx_msg void OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
+	afx_msg void OnBnClickedDdayDeleteButton();
+	bool m_bModifyBtn;
+	int m_nDdayListSelectedItem;
+	afx_msg void OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

@@ -1,10 +1,1 @@
-﻿  WeeklyPlannerView.cpp
-c:\users\u3797\desktop\weeklyplanner_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(165): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\u3797\desktop\weeklyplanner_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(718): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
-  코드를 생성하고 있습니다...
-  건너뛰고 있습니다... (관련된 변경 내용 없음)
-  WeeklyPlanner.cpp
-  MainFrm.cpp
-  DdayAddDlg.cpp
-  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\weeklyplanner_Project\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.exe
-  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\weeklyplanner_Project\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.pdb (Partial PDB)
+﻿

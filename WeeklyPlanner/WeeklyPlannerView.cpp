@@ -57,13 +57,16 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 //	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
 //ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
 ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
+ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
+ON_BN_CLICKED(IDC_DDAY_DELETE_BUTTON, &CWeeklyPlannerView::OnBnClickedDdayDeleteButton)
+ON_NOTIFY(NM_CLICK, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnClickDdayListCntl)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
 
 CWeeklyPlannerView::CWeeklyPlannerView()
 	: CFormView(IDD_WEEKLYPLANNER_FORM)
-	, m_bModifyBtn(false)
+	//, m_bModifyBtn(false)
 	, m_nTodoDone(0)
 	, m_todoEnd(0)
 	, m_checkCnt(0)
@@ -71,7 +74,9 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_timeNewDday(_T(""))
 	, m_strNewDdayTitle(_T(""))
 	, m_strNewDdayDate(_T(""))
-	, m_bSortAscending(false)
+	//, m_bSortAscending(false)
+	, m_bModifyBtn(false)
+	, m_nDdayListSelectedItem(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -114,7 +119,7 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DDAY_LIST_CNTL, m_ctrlDdayList);
 	DDX_Control(pDX, IDC_DDAY_DELETE_BUTTON, m_btnDeleteDday);
 	DDX_Control(pDX, IDC_DDAY_ADD_BUTTON, m_btnAddDday);
-	DDX_Control(pDX, IDC_DDAY_MODIFY_BUTTON, m_btnModifyDday);
+//	DDX_Control(pDX, IDC_DDAY_MODIFY_BUTTON, m_btnModifyDday);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -167,7 +172,7 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	m_ctrlDdayList.SetExtendedStyle(m_ctrlDdayList.GetExtendedStyle() | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
 
 	((CButton*)GetDlgItem(IDC_DDAY_DELETE_BUTTON))->EnableWindow(FALSE);
-	((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
+	//((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
 
 
 
@@ -715,8 +720,41 @@ void CWeeklyPlannerView::OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pR
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	*pResult = 0;
+}
+
+
+void CWeeklyPlannerView::OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	bool m_bListValid = m_ctrlDdayList.GetItemCount();
 	m_btnDeleteDday.EnableWindow(m_bListValid);
-	m_btnModifyDday.EnableWindow(m_bListValid);
+//	m_btnModifyDday.EnableWindow(m_bListValid);
+	UpdateData(TRUE);
+
+	*pResult = 0;
+}
+
+
+void CWeeklyPlannerView::OnBnClickedDdayDeleteButton()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_nDdayListSelectedItem >= 0) {
+		m_ctrlDdayList.DeleteItem(m_nDdayListSelectedItem);
+		m_nDdayListSelectedItem = -1;
+	}
+	if (m_ctrlDdayList.GetItemCount() == 0) {
+		m_btnDeleteDday.EnableWindow(FALSE);
+	}
+	UpdateData(TRUE);
+}
+
+void CWeeklyPlannerView::OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_nDdayListSelectedItem = pNMItemActivate->iItem;
+
 	*pResult = 0;
 }
