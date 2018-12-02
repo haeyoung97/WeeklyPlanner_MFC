@@ -106,9 +106,9 @@ public:
 	CDateTimeCtrl m_cTodoStart;
 	CDateTimeCtrl m_cTodoEnd;
 	afx_msg void OnClickedButtonProfileDelete();
-	CTime m_timeNewDday;
+	CString m_timeNewDday;
 	CString m_strNewDdayTitle;
-	CString m_strNewDdayMemo;
+	CString m_strNewDdayDate;
 	CListCtrl m_ctrlDdayList;
 	CButton m_btnDeleteDday;
 	CButton m_btnAddDday;

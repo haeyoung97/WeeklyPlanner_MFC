@@ -33,8 +33,7 @@ public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnBnClickedCancel();
 	CWeeklyPlannerView* pView;
-	CMonthCalCtrl m_ctrlDdayCal;
 	CEdit m_editNewDdayTitle;
 	CEdit m_editNewDdayMemo;
-//	afx_msg void OnDestroy();
+	CMonthCalCtrl m_ctrlDdayCal;
 };

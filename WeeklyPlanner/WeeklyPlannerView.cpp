@@ -65,9 +65,9 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_todoEnd(0)
 	, m_checkCnt(0)
 	, m_strProfilePath(_T(""))
-	, m_timeNewDday(0)
+	, m_timeNewDday(_T(""))
 	, m_strNewDdayTitle(_T(""))
-	, m_strNewDdayMemo(_T(""))
+	, m_strNewDdayDate(_T(""))
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -151,10 +151,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	CRect list_rect;
 	m_ctrlDdayList.GetWindowRect(&list_rect);
 	m_ctrlDdayList.EnableScrollBar(FALSE);
-	LPWSTR list[3] = { _T("D"), _T("제목"), _T("DAY") };
-	double nWidth[3] = { list_rect.Width()*0.2, 0, list_rect.Width()*0.3 };
-	nWidth[1] = list_rect.Width() - nWidth[0] - nWidth[2]-3;
-	m_ctrlDdayList.GetHeaderCtrl()->EnableWindow(false);
+	LPWSTR list[3] = { _T(" D-day "), _T("제목"),_T("Date") };
+	double nWidth[3] = { list_rect.Width()*0.2, 0.0 ,list_rect.Width()*0.3};
+	nWidth[1] = list_rect.Width() - nWidth[0] - nWidth[2];
+	m_ctrlDdayList.GetHeaderCtrl()->EnableWindow(FALSE);
 
 	//List Column 설정
 	for (int i = 0; i < 3; i++) {
