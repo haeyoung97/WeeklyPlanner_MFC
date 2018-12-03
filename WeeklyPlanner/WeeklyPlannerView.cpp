@@ -11,7 +11,7 @@
 
 #include "WeeklyPlannerDoc.h"
 #include "WeeklyPlannerView.h"
-
+#include "SoundPlayer.h"
 #include "DdayAddDlg.h"
 
 #ifdef _DEBUG
@@ -56,6 +56,9 @@ ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemcha
 ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
 ON_BN_CLICKED(IDC_DDAY_DELETE_BUTTON, &CWeeklyPlannerView::OnBnClickedDdayDeleteButton)
 ON_NOTIFY(NM_CLICK, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnClickDdayListCntl)
+ON_BN_CLICKED(IDC_PAUSE_SONG, &CWeeklyPlannerView::OnClickedPauseSong)
+ON_BN_CLICKED(IDC_PREV_SONG, &CWeeklyPlannerView::OnClickedPrevSong)
+ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -72,6 +75,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_bModifyBtn(false)
 	, m_nDdayListSelectedItem(0)
 	, percent(1000)
+	, m_nPlayPause(0)
+	, m_nPlayIndex(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -131,6 +136,9 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TODO_DELETE_BUTTON6, m_TodoBtn6);
 	DDX_Control(pDX, IDC_TODO_DELETE_BUTTON7, m_TodoBtn7);
 	DDX_Control(pDX, IDC_TODO_DELETE_BUTTON8, m_TodoBtn8);
+	DDX_Control(pDX, IDC_PAUSE_SONG, m_btnPlayPause);
+	DDX_Control(pDX, IDC_PLAYLIST, m_soundPlayList);
+	DDX_Control(pDX, IDC_MUSIC_INFO, m_strSongName);
 }
 
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
@@ -184,6 +192,13 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	((CButton*)GetDlgItem(IDC_DDAY_DELETE_BUTTON))->EnableWindow(FALSE);
 	//((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
 
+
+	//SoundList 설정
+	m_soundPlayList.InsertColumn(0, L"제목", LVCFMT_CENTER, 600);
+	for (int i = 0; i < m_soundSP.m_nSoundIndex; i++)
+	{
+		m_soundPlayList.InsertItem(i, m_soundSP.m_strSoundName[i]);
+	}
 }
 
 void CWeeklyPlannerView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -749,4 +764,56 @@ void CWeeklyPlannerView::OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
 	m_nDdayListSelectedItem = pNMItemActivate->iItem;
 
 	*pResult = 0;
+}
+
+
+void CWeeklyPlannerView::OnClickedPauseSong()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_nPlayPause == 0)
+	{
+		//AfxMessageBox(_T("음악음악"));
+		m_soundSP.SoundPlay(m_nPlayIndex);
+		m_nPlayPause = 1;
+		m_btnPlayPause.SetWindowText(_T("■"));
+		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+
+	}
+	else
+	{
+		//AfxMessageBox(_T("음악종료종료"));
+		m_soundSP.SoundStop();
+		m_nPlayPause = 0;
+		m_btnPlayPause.SetWindowText(_T("▶"));
+		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	}
+
+}
+
+
+void CWeeklyPlannerView::OnClickedPrevSong()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_soundSP.SoundStop();
+	if (m_nPlayIndex > 0 && m_nPlayIndex <= m_soundSP.m_nSoundIndex)
+	{
+		m_nPlayIndex -= 1;
+		m_soundSP.SoundPlay(m_nPlayIndex);
+		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	}
+
+}
+
+
+void CWeeklyPlannerView::OnClickedNextSong()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	m_soundSP.SoundStop();
+
+	if (m_nPlayIndex >= 0 && m_nPlayIndex < m_soundSP.m_nSoundIndex)
+	{
+		m_nPlayIndex += 1;
+		m_soundSP.SoundPlay(m_nPlayIndex);
+		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	}
 }
