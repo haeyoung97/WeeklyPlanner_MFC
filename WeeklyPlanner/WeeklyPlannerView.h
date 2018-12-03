@@ -54,7 +54,6 @@ protected:
 public:
 	CButton m_btnMessagemodify;
 	afx_msg void OnClickedMessageModifyButton();
-//	bool m_bModifyBtn;
 	CEdit m_EditMessage;
 	afx_msg void OnEnChangeMessage();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -64,7 +63,7 @@ public:
 	int m_nTodoDone;
 	CButton m_TodoCheck1;
 	CProgressCtrl m_TodoAchivePrgs;
-	void UpdateTodoProgressBar(CButton* m_checkBtn, int index);
+	void UpdateTodoProgressBar(CButton* m_checkBtn);
 	CButton m_TodoCheck2;
 	CButton m_TodoCheck3;
 	CButton m_TodoCheck4;
@@ -82,7 +81,6 @@ public:
 	CButton m_btnaddTodo;
 	afx_msg void OnEnChangeAddTodoMemo();
 	afx_msg void OnBnClickedAddTodoButton();
-//	CButton m_btnaddDday;
 	afx_msg void OnClickedDdayAddButton();
 	bool m_bChecked[8];
 	afx_msg void OnDtnDatetimechangeTodoStart(NMHDR *pNMHDR, LRESULT *pResult);
@@ -98,6 +96,7 @@ public:
 	afx_msg void OnClickedTodoDeleteButton7();
 	afx_msg void OnClickedTodoDeleteButton8();
 	CButton* m_arrayTodoCheck[8];
+	CButton* m_arrayTodoBtn[8];
 	int m_checkCnt;
 	afx_msg void OnBnClickedButtonProfileOpen();
 	CString m_strProfilePath;
@@ -112,16 +111,21 @@ public:
 	CListCtrl m_ctrlDdayList;
 	CButton m_btnDeleteDday;
 	CButton m_btnAddDday;
-//	CButton m_btnModifyDday;
-//	afx_msg void OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
-//	bool m_bSortAscending;
-//	afx_msg void OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedDdayDeleteButton();
 	bool m_bModifyBtn;
 	int m_nDdayListSelectedItem;
 	afx_msg void OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult);
+	int percent;
+	CButton m_TodoBtn1;
+	CButton m_TodoBtn2;
+	CButton m_TodoBtn3;
+	CButton m_TodoBtn4;
+	CButton m_TodoBtn5;
+	CButton m_TodoBtn6;
+	CButton m_TodoBtn7;
+	CButton m_TodoBtn8;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

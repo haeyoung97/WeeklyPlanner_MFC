@@ -160,8 +160,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	cs.style &= ~WS_THICKFRAME;     //크기를 늘렸다 줄렸다하는 기능을 비활성화
 	cs.style &= ~WS_MAXIMIZEBOX;	//최대화 아이콘 없앰
 
-
-
 	return TRUE;
 }
 
