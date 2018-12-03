@@ -9,6 +9,7 @@
 #include "atltime.h"
 #include "afxdtctl.h"
 #include "WeeklyPlannerDoc.h"
+#include "SoundPlayer.h"
 
 class CWeeklyPlannerView : public CFormView
 {
@@ -126,6 +127,16 @@ public:
 	CButton m_TodoBtn6;
 	CButton m_TodoBtn7;
 	CButton m_TodoBtn8;
+	afx_msg void OnClickedPauseSong();
+	afx_msg void OnClickedPrevSong();
+	afx_msg void OnClickedNextSong();
+//	CSoundPlayer m_soundSP;
+	int m_nPlayPause;
+	int m_nPlayIndex;
+	CButton m_btnPlayPause;
+	CSoundPlayer m_soundSP;
+	CListCtrl m_soundPlayList;
+	CStatic m_strSongName;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

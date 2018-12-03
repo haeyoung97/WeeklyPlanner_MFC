@@ -193,6 +193,7 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="ProfileModifyDlg.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="WeeklyPlanner.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="DdayAddDlg.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="ProfileModifyDlg.cpp" />
+    <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
