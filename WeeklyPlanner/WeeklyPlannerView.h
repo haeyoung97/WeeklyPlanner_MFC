@@ -137,6 +137,8 @@ public:
 	CSoundPlayer m_soundSP;
 	CListCtrl m_soundPlayList;
 	CStatic m_strSongName;
+	afx_msg void OnBnClickedSongs();
+	afx_msg void OnBnClickedButtonSoundDelete();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

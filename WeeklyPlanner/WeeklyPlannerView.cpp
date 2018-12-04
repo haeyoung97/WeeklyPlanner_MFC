@@ -59,6 +59,8 @@ ON_NOTIFY(NM_CLICK, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnClickDdayListCntl
 ON_BN_CLICKED(IDC_PAUSE_SONG, &CWeeklyPlannerView::OnClickedPauseSong)
 ON_BN_CLICKED(IDC_PREV_SONG, &CWeeklyPlannerView::OnClickedPrevSong)
 ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
+ON_BN_CLICKED(IDC_SONGS, &CWeeklyPlannerView::OnBnClickedSongs)
+ON_BN_CLICKED(IDC_BUTTON_SOUND_DELETE, &CWeeklyPlannerView::OnBnClickedButtonSoundDelete)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -769,6 +771,7 @@ void CWeeklyPlannerView::OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CWeeklyPlannerView::OnClickedPauseSong()
 {
+	
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (m_nPlayPause == 0)
 	{
@@ -809,11 +812,88 @@ void CWeeklyPlannerView::OnClickedNextSong()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_soundSP.SoundStop();
+	//CString tmp;
+	//tmp.Format(_T("%d"), m_soundSP.m_nSoundIndex);
+	//AfxMessageBox(tmp);
 
 	if (m_nPlayIndex >= 0 && m_nPlayIndex < m_soundSP.m_nSoundIndex)
 	{
 		m_nPlayIndex += 1;
+		//CString tmp;
+		//tmp.Format(_T("%s"), m_soundSP.m_strSoundName[m_nPlayIndex]);
+		//AfxMessageBox(tmp);
+
 		m_soundSP.SoundPlay(m_nPlayIndex);
 		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	}
+}
+
+
+void CWeeklyPlannerView::OnBnClickedSongs()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	static TCHAR BASED_CODE szFilter[] = _T("wav 파일(*.wav)|*.wav|모든파일(*.*)|*.*||");
+	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_ALLOWMULTISELECT, szFilter);
+
+	CString SoundPath;
+	CString fileName;
+	
+	POSITION Pos;
+
+	CFileFind finder;
+	int m_nIndex = m_soundSP.m_nSoundIndex;
+
+	if (fileDlg.DoModal() == IDOK)
+	{
+		Pos = fileDlg.GetStartPosition();
+		while (Pos)
+		{
+			SoundPath = fileDlg.GetNextPathName(Pos);
+			
+			m_soundSP.m_strSoundPath[m_nIndex] = SoundPath;
+
+			finder.FindFile(SoundPath);
+			finder.FindNextFile();
+			m_soundSP.m_strSoundName[m_nIndex] = finder.GetFileTitle();
+			m_soundPlayList.InsertItem(m_soundPlayList.GetItemCount(), finder.GetFileTitle());
+			m_nIndex += 1;
+
+			finder.Close();
+		}
+		m_soundSP.m_nSoundIndex = m_nIndex;
+	}
+
+}
+
+
+void CWeeklyPlannerView::OnBnClickedButtonSoundDelete()
+{
+	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	POSITION pos = m_soundPlayList.GetFirstSelectedItemPosition();
+	while (pos != NULL)
+	{
+		int nitem = m_soundPlayList.GetNextSelectedItem(pos);
+		
+		m_soundSP.m_strSoundPath[nitem] = "";
+		m_soundSP.m_strSoundName[nitem] = "";
+		for (int i = nitem; i < m_soundSP.m_nSoundIndex; i++)
+		{
+			if (i + 1 == m_soundSP.m_nSoundIndex)
+				break;
+			m_soundSP.m_strSoundPath[i] = m_soundSP.m_strSoundPath[i + 1];
+			m_soundSP.m_strSoundPath[i + 1] = "";
+			m_soundSP.m_strSoundName[i] = m_soundSP.m_strSoundName[i + 1];
+			m_soundSP.m_strSoundName[i + 1] = "";
+		}
+		m_soundSP.m_nSoundIndex -= 1;
+		//CString tmp;
+		//tmp.Format(_T("%s"), m_soundSP.m_strSoundPath[nitem]);
+		//AfxMessageBox(tmp);
+		//tmp.Format(_T("%s"), m_soundSP.m_strSoundName[nitem]);
+		//AfxMessageBox(tmp);
+		m_soundPlayList.DeleteItem(nitem);
+		pos = m_soundPlayList.GetFirstSelectedItemPosition();
+		
+	
 	}
 }
