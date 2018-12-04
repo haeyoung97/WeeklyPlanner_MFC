@@ -89,6 +89,7 @@
 #define IDC_BUTTON_PROFILE_OPEN         1065
 #define IDC_BUTTON_PROFILE_DELETE       1066
 #define IDC_PLAYLIST                    1067
+#define IDC_BUTTON_SOUND_DELETE         1068
 
 // Next default values for new objects
 // 
@@ -96,7 +97,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        321
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1068
+#define _APS_NEXT_CONTROL_VALUE         1069
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
