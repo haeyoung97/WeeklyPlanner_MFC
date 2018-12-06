@@ -141,38 +141,6 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
-    POPUP "편집(&E)"
-    BEGIN
-        MENUITEM "실행 취소(&U)\tCtrl+Z",           ID_EDIT_UNDO
-        MENUITEM SEPARATOR
-        MENUITEM "잘라내기(&T)\tCtrl+X",            ID_EDIT_CUT
-        MENUITEM "복사(&C)\tCtrl+C",              ID_EDIT_COPY
-        MENUITEM "붙여넣기(&P)\tCtrl+V",            ID_EDIT_PASTE
-    END
-    POPUP "보기(&V)"
-    BEGIN
-        POPUP "도구 모음 및 도킹 창(&T)"
-        BEGIN
-            MENUITEM "<자리 표시자>",                    ID_VIEW_TOOLBAR
-        END
-        MENUITEM "상태 표시줄(&S)",                  ID_VIEW_STATUS_BAR
-        POPUP "응용 프로그램 모양(&A)"
-        BEGIN
-            MENUITEM "Windows 2000(&2)",            ID_VIEW_APPLOOK_WIN_2000
-            MENUITEM "Office XP(&X)",               ID_VIEW_APPLOOK_OFF_XP
-            MENUITEM "Windows XP(&W)",              ID_VIEW_APPLOOK_WIN_XP
-            MENUITEM "Office 2003(&3)",             ID_VIEW_APPLOOK_OFF_2003
-            MENUITEM "Visual Studio 200&5",         ID_VIEW_APPLOOK_VS_2005
-            MENUITEM "Visual Studio 200&8",         ID_VIEW_APPLOOK_VS_2008
-            POPUP "Office 2007(&7)"
-            BEGIN
-                MENUITEM "파랑 스타일(&B)",                  ID_VIEW_APPLOOK_OFF_2007_BLUE
-                MENUITEM "검정 스타일(&L)",                  ID_VIEW_APPLOOK_OFF_2007_BLACK
-                MENUITEM "은색 스타일(&S)",                  ID_VIEW_APPLOOK_OFF_2007_SILVER
-                MENUITEM "바다색 스타일(&A)",                 ID_VIEW_APPLOOK_OFF_2007_AQUA
-            END
-        END
-    END
     POPUP "도움말(&H)"
     BEGIN
         MENUITEM "WeeklyPlanner 정보(&A)...",     ID_APP_ABOUT

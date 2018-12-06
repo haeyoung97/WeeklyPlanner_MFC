@@ -10,6 +10,7 @@
 #include "afxdtctl.h"
 #include "WeeklyPlannerDoc.h"
 #include "SoundPlayer.h"
+#include "atltypes.h"
 
 class CWeeklyPlannerView : public CFormView
 {
@@ -139,6 +140,9 @@ public:
 	CStatic m_strSongName;
 	afx_msg void OnBnClickedSongs();
 	afx_msg void OnBnClickedButtonSoundDelete();
+	CRect winRect;
+	int m_nSizeProfileX;
+	int m_nSizeProfileY;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
