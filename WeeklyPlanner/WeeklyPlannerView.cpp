@@ -19,6 +19,8 @@
 #endif
 
 
+
+
 // CWeeklyPlannerView
 
 IMPLEMENT_DYNCREATE(CWeeklyPlannerView, CFormView)
@@ -79,6 +81,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, percent(1000)
 	, m_nPlayPause(0)
 	, m_nPlayIndex(0)
+	, m_nSizeProfileX(0)
+	, m_nSizeProfileY(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 
@@ -194,6 +198,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	((CButton*)GetDlgItem(IDC_DDAY_DELETE_BUTTON))->EnableWindow(FALSE);
 	//((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
 
+	// 뷰 크기 얻기
+	this->GetWindowRect(winRect);
+	m_nSizeProfileX = (int)winRect.right * 0.115;
+	m_nSizeProfileY = (int)winRect.bottom * 0.23;
 
 	//SoundList 설정
 	m_soundPlayList.InsertColumn(0, L"제목", LVCFMT_CENTER, 600);
@@ -610,8 +618,7 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 
 	//dimx, dimy : image size;
-	int dimx = 150;
-	int dimy = 160;
+	
 	static TCHAR BASED_CODE szFilter[] = _T("이미지 파일(*.bmp, *.jpg, *.png)|*.bmp; *.jpg; *.png|모든파일(*.*)|*.*||");
 	CFileDialog dlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, szFilter);
 	if (IDOK == dlg.DoModal())
@@ -625,10 +632,10 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 		CDC mDC;
 		mDC.CreateCompatibleDC(screenDC);
 		CBitmap bitmap;
-		bitmap.CreateCompatibleBitmap(screenDC, dimx, dimy);
+		bitmap.CreateCompatibleBitmap(screenDC, m_nSizeProfileX, m_nSizeProfileY);
 		CBitmap *bmp = mDC.SelectObject(&bitmap);
 		mDC.SetStretchBltMode(HALFTONE);
-		profileImage.StretchBlt(mDC.m_hDC, 0, 0, dimx, dimy, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
+		profileImage.StretchBlt(mDC.m_hDC, 0, 0, m_nSizeProfileX, m_nSizeProfileY, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
 		mDC.SelectObject(bmp);
 
 		((CStatic*)GetDlgItem(IDC_PROFILE_PHOTO))->SetBitmap((HBITMAP)bitmap.Detach());
@@ -651,7 +658,7 @@ void CWeeklyPlannerView::OnPaint()
 	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
 
-	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 140, 140, LR_LOADMAP3DCOLORS);
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
 	m_pDefaultPicture->SetBitmap(hbmp);
 }
 
@@ -663,8 +670,9 @@ void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
 
-	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, 140, 140, LR_LOADMAP3DCOLORS);
+	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
 	m_pDefaultPicture->SetBitmap(hbmp);
+	
 }
 
 
@@ -798,12 +806,17 @@ void CWeeklyPlannerView::OnClickedPrevSong()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_soundSP.SoundStop();
-	if (m_nPlayIndex > 0 && m_nPlayIndex <= m_soundSP.m_nSoundIndex)
+	if (m_nPlayIndex <= 0) {
+		m_nPlayIndex = m_soundSP.m_nSoundIndex - 1;
+	}
+	
+	else 
 	{
 		m_nPlayIndex -= 1;
-		m_soundSP.SoundPlay(m_nPlayIndex);
-		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
 	}
+		
+	m_soundSP.SoundPlay(m_nPlayIndex);
+	m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
 
 }
 
@@ -813,19 +826,20 @@ void CWeeklyPlannerView::OnClickedNextSong()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_soundSP.SoundStop();
 	//CString tmp;
+	//tmp.Format(_T("%d"), m_nPlayIndex);
+	//AfxMessageBox(tmp);
+	if (m_nPlayIndex >= m_soundSP.m_nSoundIndex-1) {
+		
+		m_nPlayIndex = 0;
+	}
+	else {
+		m_nPlayIndex += 1;
+	}
+	//CString tmp;
 	//tmp.Format(_T("%d"), m_soundSP.m_nSoundIndex);
 	//AfxMessageBox(tmp);
-
-	if (m_nPlayIndex >= 0 && m_nPlayIndex < m_soundSP.m_nSoundIndex)
-	{
-		m_nPlayIndex += 1;
-		//CString tmp;
-		//tmp.Format(_T("%s"), m_soundSP.m_strSoundName[m_nPlayIndex]);
-		//AfxMessageBox(tmp);
-
-		m_soundSP.SoundPlay(m_nPlayIndex);
-		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
-	}
+	m_soundSP.SoundPlay(m_nPlayIndex);
+	m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
 }
 
 
