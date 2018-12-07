@@ -151,6 +151,8 @@ public:
 	// todo에 올라간 일정 수
 	int m_nTodoCnt;
 	CWeeklyPlannerView* pView;
+	CString strToday;
+	CString strTomorrow;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

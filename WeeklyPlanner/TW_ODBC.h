@@ -12,8 +12,10 @@ private:
 public:
 	TW_ODBC();
 	~TW_ODBC();
-	int ImportData();
+	int ImportData(CString strToday, CString strTomorrow);
 	unsigned long int record_num;
 	int m_dbDataCnt;
+	void DataSaveTodolist(CString strToday, CString strTomorrow);
+	void DataRemoveTodolist(CString strToday, CString strTomorrow);
 };
 

@@ -83,6 +83,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_nSizeProfileY(0)
 	, m_nTodoCnt(0)
 	, pView(NULL)
+	, strToday(_T(""))
+	, strTomorrow(_T(""))
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_odbc = new TW_ODBC();
@@ -168,9 +170,33 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	SYSTEMTIME sysTime;
 	memset(&sysTime, 0, sizeof(sysTime));
 	// DB에서 오늘 날짜 불러와서 변수에 저장할 수 있었으면 한다.
-	sysTime.wYear = 1998;
-	sysTime.wMonth = 4;
-	sysTime.wDay = 3;
+	// 현재 날짜 얻어오기
+	CTime ctime = CTime::GetCurrentTime();
+	if (ctime.GetDay() < 10) {
+		if (ctime.GetMonth() < 10) {
+			strToday.Format(L"%d-0%d-0%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay());
+			if (ctime.GetDay() == 9)
+				strTomorrow.Format(L"%d-0%d-%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay() + 1);
+			else
+				strTomorrow.Format(L"%d-0%d-0%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay() + 1);
+		}
+		else {
+			strToday.Format(L"%d-%d-0%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay());
+			if (ctime.GetDay() == 9)
+				strTomorrow.Format(L"%d-%d-%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay() + 1);
+			else
+				strTomorrow.Format(L"%d-%d-0%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay() + 1);
+		}
+	}
+	else {
+		strToday.Format(L"%d-%d-%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay());
+		strTomorrow.Format(L"%d-%d-%d", ctime.GetYear(), ctime.GetMonth(), ctime.GetDay() + 1);
+	}
+	
+
+	sysTime.wYear = ctime.GetYear();
+	sysTime.wMonth = ctime.GetMonth();
+	sysTime.wDay = ctime.GetDay();
 	VERIFY(m_cTodoStart.SetTime(&sysTime));
 	VERIFY(m_cTodoEnd.SetTime(&sysTime));
 
@@ -212,27 +238,11 @@ void CWeeklyPlannerView::OnInitialUpdate()
 		m_soundPlayList.InsertItem(i, m_soundSP.m_strSoundName[i]);
 	}
 
-
-	m_nTodoCnt = m_odbc->ImportData();
-	AfxMessageBox(_T("뭐지"));
-	CString tmp;
-	tmp.Format(_T("AAAAAA%d"), m_nTodoCnt);
-	for (int i = 0; i < m_nTodoCnt; i++) {
-		AfxMessageBox(_T("ASA"));
-		m_bChecked[i] = (bool)( m_arrayTodoBtn[i]->GetCheck());
-		if (m_bChecked[i] == 1) {
-			m_checkCnt++;
-			AfxMessageBox(_T("체크됨"));
-			
-		}
-	}
+	// DB에서 데이터 가져오기
+	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
 
 	UpdateTodoProgressBar(NULL);
 	Invalidate();
-
-
-	
-
 
 }
 
@@ -450,6 +460,8 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
 			m_TodoAchivePrgs.SetPos(m_checkCnt*percent);
 		}
 	}
+	m_odbc->DataRemoveTodolist(strToday, strTomorrow);
+	m_odbc->DataSaveTodolist(strToday, strTomorrow);
 }
 
 
@@ -482,20 +494,6 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	str += "  :  ";
 	str += m_strTodomemo;
 
-	//int i = 0;
-	
-	// 체크리스트에 올라간 일정 수  =  m_nTodoCnt;
-
-	//while (1) {
-	//	if (m_bChecked[m_nTodoCnt-1]) {
-	//		m_bChecked[m_nTodoCnt-1] = false;
-	//		break;
-	//	}
-	//	if (m_nTodoCnt == 8) {
-	//		break;
-	//	}
-	//}
-
 	if (m_nTodoCnt <= 7) {
 		m_nTodoCnt++;
 		m_arrayTodoCheck[m_nTodoCnt-1]->SetWindowText(str);
@@ -513,7 +511,6 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
 	pEdit->SetWindowText(_T(""));
 
-	// DB에 올리기
 }
 
 
@@ -681,11 +678,6 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 
 		((CStatic*)GetDlgItem(IDC_PROFILE_PHOTO))->SetBitmap((HBITMAP)bitmap.Detach());
 		ReleaseDC(screenDC);
-
-		//CImage img;
-		//img.Load(_T("res\\1.png"));
-		//img.BItBlt(pDC, x, y);
-
 	}
 }
 
@@ -717,63 +709,6 @@ void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 }
 
 
-//void CWeeklyPlannerView::OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
-//{
-//	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	NM_LISTVIEW * pNMListView = (NM_LISTVIEW *)pNMHDR;
-//	int iColumn = 2;
-//
-//	int nItem = m_ctrlDdayList.GetItemCount();
-//	CString ** arStr = new CString*[nItem];
-//	for (int i = 0; i < nItem; i++) {
-//		arStr[i] = new CString(m_ctrlDdayList.GetItemText(i, iColumn));
-//		m_ctrlDdayList.SetItemData(i, (LPARAM)arStr[i]);
-//	}
-//
-//	//첫번째 인수는 위에서 만든 함수, 두번째인수는 정렬 방식
-//	m_ctrlDdayList.SortItems(CompareFunc, (LPARAM)m_bSortAscending);
-//
-//	for (int i = 0; i < nItem; i++) {
-//		delete arStr[i];
-//	}
-//	delete[]arStr;
-//
-//	UpdateData(TRUE);
-//
-//	*pResult = 0;
-//}
-
-
-//void CWeeklyPlannerView::OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
-//{
-//	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-//	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-//	NM_LISTVIEW * pNMListView = (NM_LISTVIEW *)pNMHDR;
-//	int iColumn = 2;
-//
-//	int nItem = m_ctrlDdayList.GetItemCount();
-//	CString ** arStr = new CString*[nItem];
-//	for (int i = 0; i < nItem; i++) {
-//		arStr[i] = new CString(m_ctrlDdayList.GetItemText(i, iColumn));
-//		m_ctrlDdayList.SetItemData(i, (LPARAM)arStr[i]);
-//	}
-//
-//	//첫번째 인수는 위에서 만든 함수, 두번째인수는 정렬 방식
-//	m_ctrlDdayList.SortItems(CompareFunc, (LPARAM)m_bSortAscending);
-//
-//	for (int i = 0; i < nItem; i++) {
-//		delete arStr[i];
-//	}
-//	delete[]arStr;
-//
-//	UpdateData(TRUE);
-//
-//	*pResult = 0;
-//
-//}
-
-
 void CWeeklyPlannerView::OnLvnItemchangedDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
@@ -788,7 +723,6 @@ void CWeeklyPlannerView::OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResul
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	bool m_bListValid = m_ctrlDdayList.GetItemCount();
 	m_btnDeleteDday.EnableWindow(m_bListValid);
-//	m_btnModifyDday.EnableWindow(m_bListValid);
 	UpdateData(TRUE);
 
 	*pResult = 0;
@@ -867,8 +801,6 @@ void CWeeklyPlannerView::OnClickedNextSong()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_soundSP.SoundStop();
 	//CString tmp;
-	//tmp.Format(_T("%d"), m_nPlayIndex);
-	//AfxMessageBox(tmp);
 	if (m_nPlayIndex >= m_soundSP.m_nSoundIndex-1) {
 		
 		m_nPlayIndex = 0;
@@ -876,10 +808,7 @@ void CWeeklyPlannerView::OnClickedNextSong()
 	else {
 		m_nPlayIndex += 1;
 	}
-	//CString tmp;
-	//tmp.Format(_T("%d"), m_soundSP.m_nSoundIndex);
-	//AfxMessageBox(tmp);
-	m_soundSP.SoundPlay(m_nPlayIndex);
+m_soundSP.SoundPlay(m_nPlayIndex);
 	m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
 }
 
@@ -941,11 +870,6 @@ void CWeeklyPlannerView::OnBnClickedButtonSoundDelete()
 			m_soundSP.m_strSoundName[i + 1] = "";
 		}
 		m_soundSP.m_nSoundIndex -= 1;
-		//CString tmp;
-		//tmp.Format(_T("%s"), m_soundSP.m_strSoundPath[nitem]);
-		//AfxMessageBox(tmp);
-		//tmp.Format(_T("%s"), m_soundSP.m_strSoundName[nitem]);
-		//AfxMessageBox(tmp);
 		m_soundPlayList.DeleteItem(nitem);
 		pos = m_soundPlayList.GetFirstSelectedItemPosition();
 		
