@@ -1,0 +1,20 @@
+﻿  WeeklyPlannerView.cpp
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(193): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(202): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(203): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(213): error C2228: '.ImportData' 왼쪽에는 클래스/구조체/공용 구조체가 있어야 합니다.
+  c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(213): note: 'TW_ODBC *' 형식입니다.
+  c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(213): note: 대신 '->'을(를) 사용하려고 했습니까?
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(750): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  TW_ODBC.cpp
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  DdayAddDlg.cpp
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\ddayadddlg.cpp(113): warning C4244: '초기화 중': 'LONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  컴파일하고 있습니다...
+  WeeklyPlanner.cpp
+c:\users\박해영\source\weeklyplanner_mfc\weeklyplanner\weeklyplanner.cpp(5): fatal error C1041: 프로그램 데이터베이스 'C:\Users\박해영\source\WeeklyPlanner_MFC\WeeklyPlanner\Debug\vc140.pdb'을(를) 열 수 없습니다. 여러 CL.EXE에서 동일한 .PDB 파일에 쓰는 경우 /FS를 사용하십시오.
+  SoundPlayer.cpp
+  MainFrm.cpp
+  코드를 생성하고 있습니다...

@@ -18,9 +18,6 @@
 #define new DEBUG_NEW
 #endif
 
-
-
-
 // CWeeklyPlannerView
 
 IMPLEMENT_DYNCREATE(CWeeklyPlannerView, CFormView)
@@ -85,7 +82,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, m_nSizeProfileY(0)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
-
+	m_odbc = new TW_ODBC();
+	//
 	m_bChecked[8] = { true };
 	//
 	m_arrayTodoCheck[0] = &m_TodoCheck1;
@@ -159,6 +157,7 @@ void CWeeklyPlannerView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
 
+	
 	m_TodoAchivePrgs.SetRange(0, 1000);
 	m_cTodoStart.SetFormat(_T("tt  HH: mm"));
 	m_cTodoEnd.SetFormat(_T("tt  HH: mm"));
@@ -209,6 +208,9 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	{
 		m_soundPlayList.InsertItem(i, m_soundSP.m_strSoundName[i]);
 	}
+
+
+	m_odbc->ImportData();
 }
 
 void CWeeklyPlannerView::OnRButtonUp(UINT /* nFlags */, CPoint point)

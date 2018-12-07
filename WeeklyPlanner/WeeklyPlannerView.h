@@ -3,6 +3,7 @@
 //
 
 #pragma once
+
 #include "afxwin.h"
 #include "atlimage.h"
 #include "afxcmn.h"
@@ -12,8 +13,12 @@
 #include "SoundPlayer.h"
 #include "atltypes.h"
 
+#include "TW_ODBC.h"
+
+
 class CWeeklyPlannerView : public CFormView
 {
+
 protected: // serialization에서만 만들어집니다.
 	CWeeklyPlannerView();
 	DECLARE_DYNCREATE(CWeeklyPlannerView)
@@ -54,6 +59,8 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
+	TW_ODBC *m_odbc;
+
 	CButton m_btnMessagemodify;
 	afx_msg void OnClickedMessageModifyButton();
 	CEdit m_EditMessage;
@@ -131,7 +138,6 @@ public:
 	afx_msg void OnClickedPauseSong();
 	afx_msg void OnClickedPrevSong();
 	afx_msg void OnClickedNextSong();
-//	CSoundPlayer m_soundSP;
 	int m_nPlayPause;
 	int m_nPlayIndex;
 	CButton m_btnPlayPause;
