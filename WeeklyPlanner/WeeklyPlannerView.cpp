@@ -231,6 +231,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	m_nSizeProfileX = (int)winRect.right * 0.115;
 	m_nSizeProfileY = (int)winRect.bottom * 0.23;
 
+	// 프로필 이미지 DC
+	m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	m_strDefaultImagePath = L"res\\default_Image.bmp";
+
 	//SoundList 설정
 	m_soundPlayList.InsertColumn(0, L"제목", LVCFMT_CENTER, 600);
 	for (int i = 0; i < m_soundSP.m_nSoundIndex; i++)
@@ -665,6 +669,8 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 
 		CImage profileImage;
 		profileImage.Load(m_strProfilePath);
+		m_strDefaultImagePath = m_strProfilePath;
+		
 
 		CDC *screenDC = GetDC();
 		CDC mDC;
@@ -676,7 +682,7 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 		profileImage.StretchBlt(mDC.m_hDC, 0, 0, m_nSizeProfileX, m_nSizeProfileY, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
 		mDC.SelectObject(bmp);
 
-		((CStatic*)GetDlgItem(IDC_PROFILE_PHOTO))->SetBitmap((HBITMAP)bitmap.Detach());
+		m_pDefaultPicture->SetBitmap((HBITMAP)bitmap.Detach());
 		ReleaseDC(screenDC);
 	}
 }
@@ -688,11 +694,27 @@ void CWeeklyPlannerView::OnPaint()
 					   // 그리기 메시지에 대해서는 CFormView::OnPaint()을(를) 호출하지 마십시오.
 
 	//프로필 디폴트 등록
-	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
-	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
+	//CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	//assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
 
-	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
-	m_pDefaultPicture->SetBitmap(hbmp);
+	//HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
+	//m_pDefaultPicture->SetBitmap(hbmp);
+
+	CImage profileImage;
+	profileImage.Load(m_strDefaultImagePath);
+
+	CDC *screenDC = GetDC();
+	CDC mDC;
+	mDC.CreateCompatibleDC(screenDC);
+	CBitmap bitmap;
+	bitmap.CreateCompatibleBitmap(screenDC, m_nSizeProfileX, m_nSizeProfileY);
+	CBitmap *bmp = mDC.SelectObject(&bitmap);
+	mDC.SetStretchBltMode(HALFTONE);
+	profileImage.StretchBlt(mDC.m_hDC, 0, 0, m_nSizeProfileX, m_nSizeProfileY, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
+	mDC.SelectObject(bmp);
+
+	m_pDefaultPicture->SetBitmap((HBITMAP)bitmap.Detach());
+	ReleaseDC(screenDC);
 }
 
 
@@ -700,7 +722,7 @@ void CWeeklyPlannerView::OnPaint()
 void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
+	//CStatic* m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 	assert(m_pDefaultPicture && "주소값을 읽어올 수 없습니다.");
 
 	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);

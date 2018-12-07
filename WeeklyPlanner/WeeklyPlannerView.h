@@ -153,6 +153,8 @@ public:
 	CWeeklyPlannerView* pView;
 	CString strToday;
 	CString strTomorrow;
+	CStatic* m_pDefaultPicture;
+	CString m_strDefaultImagePath;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
