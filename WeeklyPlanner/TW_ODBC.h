@@ -12,6 +12,8 @@ private:
 public:
 	TW_ODBC();
 	~TW_ODBC();
-	void ImportData();
+	int ImportData();
+	unsigned long int record_num;
+	int m_dbDataCnt;
 };
 

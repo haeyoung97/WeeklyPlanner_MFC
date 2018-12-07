@@ -12,7 +12,6 @@
 #include "WeeklyPlannerDoc.h"
 #include "SoundPlayer.h"
 #include "atltypes.h"
-
 #include "TW_ODBC.h"
 
 
@@ -149,6 +148,9 @@ public:
 	CRect winRect;
 	int m_nSizeProfileX;
 	int m_nSizeProfileY;
+	// todo에 올라간 일정 수
+	int m_nTodoCnt;
+	CWeeklyPlannerView* pView;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
