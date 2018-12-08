@@ -99,7 +99,7 @@ BOOL CWeeklyPlannerApp::InitInstance()
 
 	InitContextMenuManager();
 
-	InitKeyboardManager();
+	//InitKeyboardManager();
 
 	InitTooltipManager();
 	CMFCToolTipInfo ttParams;
