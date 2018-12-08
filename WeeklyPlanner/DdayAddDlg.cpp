@@ -96,7 +96,7 @@ void CDdayAddDlg::OnBnClickedOk()
 	UpdateData(TRUE);
 	//pView 통해 WeeklyPlannerView의 m_timeNewDday, m_strNewDdayTitle, m_strNewDdayMemo에  값 전달
 	CTime tSelected, nowTime;
-	CString strDdayTitle, strDday, strTmp;
+	CString strDdayTitle, strDday, strTmp, strforQ;
 	CListCtrl* ctrlDdayList = &(pView->m_ctrlDdayList);
 
 	int nCount =ctrlDdayList->GetItemCount()+1;
@@ -130,6 +130,25 @@ void CDdayAddDlg::OnBnClickedOk()
 	//ctrlDdayList->SetItem(index, 0, LVIF_TEXT, strDday, 0, 0, 0, NULL);
 	ctrlDdayList->SetItem(index, 1, LVIF_TEXT, strDdayTitle, 0, 0, 0, NULL);
 	ctrlDdayList->SetItem(index, 2, LVIF_TEXT, strDday, 0, 0, 0, NULL);
+	////////////////////////////////////////////////////////////
+
+	strforQ.Format(L"INSERT INTO dday VALUES ('%s', '%s')", strTmp, strDdayTitle);
+
+	SQLHSTMT h_statement_forDday;
+
+
+	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, pView->m_odbc->GetMh_odbc(), &h_statement_forDday)) {
+		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+
+		RETCODE ret = SQLExecDirect(h_statement_forDday, (SQLWCHAR*)(const wchar_t *)strforQ, SQL_NTS);
+
+		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
+		}
+
+		SQLEndTran(SQL_HANDLE_ENV, pView->m_odbc->GetMh_odbc(), SQL_COMMIT);
+		SQLFreeHandle(SQL_HANDLE_STMT, h_statement_forDday);
+
+	}
 
 	CDialogEx::OnOK();
 
