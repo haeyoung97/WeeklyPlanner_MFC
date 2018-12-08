@@ -51,6 +51,9 @@
     <ClInclude Include="TW_ODBC.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="HistoryView.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WeeklyPlanner.cpp">
@@ -78,6 +81,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="TW_ODBC.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="HistoryView.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

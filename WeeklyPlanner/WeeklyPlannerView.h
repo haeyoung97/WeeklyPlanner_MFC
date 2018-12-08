@@ -155,6 +155,8 @@ public:
 	CString strTomorrow;
 	CStatic* m_pDefaultPicture;
 	CString m_strDefaultImagePath;
+	afx_msg void OnHistoryView();
+	HACCEL m_hAccelTable;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

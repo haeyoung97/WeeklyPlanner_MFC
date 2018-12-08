@@ -10,6 +10,7 @@
 #include "WeeklyPlannerView.h"
 #include "SoundPlayer.h"
 #include "DdayAddDlg.h"
+#include "HistoryView.h"
 
 #ifndef SHARED_HANDLERS
 #include "WeeklyPlanner.h"
@@ -61,6 +62,7 @@ ON_BN_CLICKED(IDC_PREV_SONG, &CWeeklyPlannerView::OnClickedPrevSong)
 ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
 ON_BN_CLICKED(IDC_SONGS, &CWeeklyPlannerView::OnBnClickedSongs)
 ON_BN_CLICKED(IDC_BUTTON_SOUND_DELETE, &CWeeklyPlannerView::OnBnClickedButtonSoundDelete)
+ON_COMMAND(ID_HISTORY_VIEW, &CWeeklyPlannerView::OnHistoryView)
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -231,6 +233,9 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	m_nSizeProfileX = (int)winRect.right * 0.115;
 	m_nSizeProfileY = (int)winRect.bottom * 0.23;
 
+	// Ctrl+R acceleratror 등록?
+	//m_hAccelTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_HISTORY_VIEW));
+
 	// 프로필 이미지 DC
 	m_pDefaultPicture = (CStatic*)GetDlgItem(IDC_PROFILE_PHOTO);
 	m_strDefaultImagePath = L"res\\default_Image.bmp";
@@ -339,6 +344,11 @@ BOOL CWeeklyPlannerView::PreTranslateMessage(MSG* pMsg)
 		}
 
 	}
+	//if (m_hAccelTable != NULL)
+	//{
+	//	if (TranslateAccelerator(m_hWnd, m_hAccelTable, pMsg))
+	//		return true;
+	//}
 
 	return CFormView::PreTranslateMessage(pMsg);
 }
@@ -920,4 +930,12 @@ void CWeeklyPlannerView::OnBnClickedButtonSoundDelete()
 		
 	
 	}
+}
+
+
+void CWeeklyPlannerView::OnHistoryView()
+{
+	// TODO: 여기에 명령 처리기 코드를 추가합니다.
+	CHistoryView view;
+	view.DoModal();
 }

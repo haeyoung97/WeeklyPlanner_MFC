@@ -35,6 +35,7 @@
 #define IDD_DIALOG_PROFILE_MODIFY       318
 #define IDB_BITMAP1                     320
 #define IDC_BITMAP_PROFILE_DEFAULT      320
+#define IDD_DIALOG_HISTORY              321
 #define IDC_MESSAGE                     1001
 #define IDC_BUTTON1                     1002
 #define IDC_BUTTON2                     1003
@@ -90,14 +91,20 @@
 #define IDC_BUTTON_PROFILE_DELETE       1066
 #define IDC_PLAYLIST                    1067
 #define IDC_BUTTON_SOUND_DELETE         1068
+#define IDC_DATETIMEPICKER_HISTORY      1069
+#define IDC_LIST_HISTORY                1070
+#define IDC_PROGRESS_HISTORY            1071
+#define IDC_BUTTON_HISTORY_OK           1072
+#define ID_32771                        32771
+#define ID_HISTORY_VIEW                 32772
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        321
-#define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1069
+#define _APS_NEXT_RESOURCE_VALUE        323
+#define _APS_NEXT_COMMAND_VALUE         32775
+#define _APS_NEXT_CONTROL_VALUE         1073
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

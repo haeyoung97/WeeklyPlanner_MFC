@@ -190,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DdayAddDlg.h" />
+    <ClInclude Include="HistoryView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="ProfileModifyDlg.h" />
     <ClInclude Include="Resource.h" />
@@ -203,6 +204,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DdayAddDlg.cpp" />
+    <ClCompile Include="HistoryView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="ProfileModifyDlg.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
