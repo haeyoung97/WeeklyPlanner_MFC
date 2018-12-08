@@ -95,6 +95,15 @@
 #define IDC_LIST_HISTORY                1070
 #define IDC_PROGRESS_HISTORY            1071
 #define IDC_BUTTON_HISTORY_OK           1072
+#define IDC_STATIC_PERECENT             1073
+#define IDC_STATIC_CHECK1               1074
+#define IDC_STATIC_CHECK2               1075
+#define IDC_STATIC_CHECK3               1076
+#define IDC_STATIC_CHECK4               1077
+#define IDC_STATIC_CHECK5               1078
+#define IDC_STATIC_CHECK6               1079
+#define IDC_STATIC_CHECK7               1080
+#define IDC_STATIC_CHECK8               1081
 #define ID_32771                        32771
 #define ID_HISTORY_VIEW                 32772
 
@@ -104,7 +113,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        323
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1073
+#define _APS_NEXT_CONTROL_VALUE         1082
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

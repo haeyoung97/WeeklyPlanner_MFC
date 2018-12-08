@@ -13,6 +13,7 @@
 #include "SoundPlayer.h"
 #include "atltypes.h"
 #include "TW_ODBC.h"
+#include "HistoryView.h"
 
 
 class CWeeklyPlannerView : public CFormView
@@ -157,6 +158,7 @@ public:
 	CString m_strDefaultImagePath;
 	afx_msg void OnHistoryView();
 	HACCEL m_hAccelTable;
+	CHistoryView view;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

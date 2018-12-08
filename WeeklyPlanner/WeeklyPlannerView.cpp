@@ -10,7 +10,6 @@
 #include "WeeklyPlannerView.h"
 #include "SoundPlayer.h"
 #include "DdayAddDlg.h"
-#include "HistoryView.h"
 
 #ifndef SHARED_HANDLERS
 #include "WeeklyPlanner.h"
@@ -87,6 +86,7 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, pView(NULL)
 	, strToday(_T(""))
 	, strTomorrow(_T(""))
+	, view(NULL)
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_odbc = new TW_ODBC();
@@ -475,7 +475,7 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
 		}
 	}
 	m_odbc->DataRemoveTodolist(strToday, strTomorrow);
-	m_odbc->DataSaveTodolist(strToday, strTomorrow);
+	m_odbc->DataSaveTodolist();
 }
 
 
@@ -777,7 +777,6 @@ void CWeeklyPlannerView::OnBnClickedDdayDeleteButton()
 	}
 
 	strforQ.Format(L"DELETE FROM dday WHERE Title = '%s'", strTitle);
-	AfxMessageBox(strTitle);
 
 	SQLHSTMT h_statement_forDday;
 
@@ -936,6 +935,6 @@ void CWeeklyPlannerView::OnBnClickedButtonSoundDelete()
 void CWeeklyPlannerView::OnHistoryView()
 {
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
-	CHistoryView view;
+	//view = new CHistoryView;
 	view.DoModal();
 }

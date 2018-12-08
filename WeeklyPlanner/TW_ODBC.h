@@ -15,9 +15,10 @@ public:
 	int ImportData(CString strToday, CString strTomorrow);
 	unsigned long int record_num;
 	int m_dbDataCnt;
-	void DataSaveTodolist(CString strToday, CString strTomorrow);
+	void DataSaveTodolist();
 	void DataRemoveTodolist(CString strToday, CString strTomorrow);
 	SQLHANDLE GetMh_Env();
 	SQLHDBC GetMh_odbc();
+	void LoadHistoryTodolist(CString strToday, CString strTomorrow);
 };
 

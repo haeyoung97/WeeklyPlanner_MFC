@@ -25,11 +25,17 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-//	CDateTimeCtrl m_ctrlHistory;
-//	COleDateTime m_vHistory;
-//	CDateTimeCtrl m_ctrlHistory;
 	COleDateTime m_vHistory;
 	afx_msg void OnBnClickedButtonHistoryOk();
-	CListBox m_listHistory;
 	CProgressCtrl m_progressHistory;
+	CStatic m_historyCheck1;
+	CStatic m_historyCheck2;
+	CStatic m_historyCheck3;
+	CStatic m_historyCheck4;
+	CStatic m_historyCheck5;
+	CStatic m_historyCheck6;
+	CStatic m_historyCheck7;
+	CStatic m_historyCheck8;
+	CStatic m_historyPercent;
+	CStatic* m_arrayHistoryCheck[8];
 };

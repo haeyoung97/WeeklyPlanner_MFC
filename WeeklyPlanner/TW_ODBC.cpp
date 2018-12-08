@@ -4,6 +4,7 @@
 
 #include "MainFrm.h"
 #include "WeeklyPlannerView.h"
+#include "HistoryView.h"
 
 #pragma comment(lib, "odbc32.lib")
 
@@ -13,9 +14,9 @@
 
 // 서버탐색기를 이용하여 ODBC 연결하기
 // 스키마 이름, 아이디, 패스워드, 일정내용명, DB칼럼명 (날짜, 내용) 기록
-#define DBSchemas L""
-#define DBID L"WP_User"
-#define DBPassword L""
+#define DBSchemas L"WeeklyPlanner"
+#define DBID L"haey"
+#define DBPassword L"parkhy8426852!@!"
 #define DBContents Memo
 #define DBDdaytitle Title
 
@@ -92,17 +93,14 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
 
-	int cnt = -1;
-	AfxMessageBox(_T("TEST"));
-	//CString tmp;
-	//tmp.Format(L"SELECT * FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
-	wchar_t query_str[256] = L"SELECT * FROM todolist";
+	int checkEnabled = 0;
+	CString tmp;
+	tmp.Format(L"SELECT * FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
 	wchar_t query_str_forDday[256] = L"SELECT * FROM dday";
 	
 	// table 가져오기
-	//wchar_t* query_str = tmp.GetBuffer();
+	wchar_t* query_str = tmp.GetBuffer();
 
-	//wchar_t query_str = (L"SELECT * FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
 	// 읽어온 데이터의 상태를 기록할 변수
 	unsigned short record_state[MAX_COUNT];
 	unsigned short record_state_forDday;
@@ -153,7 +151,7 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 
 		SQLBindCol(h_statement, 1, SQL_WCHAR, raw_data[0].date, sizeof(wchar_t) * 20, NULL);
 		SQLBindCol(h_statement, 2, SQL_SMALLINT, &raw_data[0].isDone, sizeof(int), NULL);
-		SQLBindCol(h_statement, 3, SQL_WCHAR, &raw_data[0].DBContents, sizeof(wchar_t) * 20, NULL);
+		SQLBindCol(h_statement, 3, SQL_WCHAR, &raw_data[0].DBContents, sizeof(wchar_t) * 100, NULL);
 
 		SQLBindCol(h_statement_forDday, 1, SQL_WCHAR, raw_data_forDday.date, sizeof(wchar_t) * 11, NULL);
 		SQLBindCol(h_statement_forDday, 2, SQL_WCHAR, raw_data_forDday.Title, sizeof(wchar_t) * 20, NULL);
@@ -162,35 +160,52 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 		ret_code = SQLExecDirect(h_statement, (SQLWCHAR*)query_str, SQL_NTS);
 		ret_code_forDday = SQLExecDirect(h_statement_forDday, (SQLWCHAR*)query_str_forDday, SQL_NTS);
 
+		if (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
+			// SQL 명령문의 실행 결과로 받은 데이터를 ListBox에 추가한다.
+			ret_code = SQLFetchScroll(h_statement, SQL_FETCH_PREV, 0);
+			while (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
 
-		while (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
-			if (record_state[0] != SQL_ROW_DELETED && record_state[0] != SQL_ROW_ERROR) {
-				str.Format(L"%s, %d, %s", raw_data[0].date, raw_data[0].isDone, raw_data[0].DBContents);
-				AfxMessageBox(_T("ㄹ호롤" + str));
-
-
-				//데이터 불러온 후 체크리스트에 추가하기 (출력?)
-				while (1) {
-					if (pView->m_arrayTodoCheck[m_dbDataCnt]->IsWindowEnabled() == false) {
-						break;
+				// 데이터 개수만큼 반복하면서 작업한다.
+				// 가져온 데이터가 삭제된 정보가 아니라면 해당 속성으로
+				// 합쳐서 문자열로 구성하고 AfxMessageBox에 등록한다.
+				if (record_state[0] != SQL_ROW_DELETED && record_state[0] != SQL_ROW_ERROR) {
+					str.Format(L"%s, %d, %s", raw_data[0].date, raw_data[0].isDone, raw_data[0].DBContents);
+					//데이터 불러온 후 체크리스트에 추가하기 (출력?)
+					while (1) {
+						if (pView->m_arrayTodoCheck[m_dbDataCnt]->IsWindowEnabled() == false) {
+							break;
+						}
+						m_dbDataCnt++;
 					}
-					m_dbDataCnt++;
+					CString strContents;
+					strContents.Format(_T("%s"), raw_data[0].DBContents);
+					pView->m_arrayTodoCheck[m_dbDataCnt]->SetWindowText(strContents);
+
+					if (raw_data[0].isDone == 1) {
+						pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(true);
+						pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(true);
+						pView->m_arrayTodoCheck[m_dbDataCnt]->SetCheck(1);
+						pView->m_bChecked[m_dbDataCnt] = false;
+						pView->m_checkCnt++;
+						checkEnabled++;
+					}
+					else if (raw_data[0].isDone == 0) {
+						pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(true);
+						pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(true);
+						pView->m_arrayTodoCheck[m_dbDataCnt]->SetCheck(0);
+						pView->m_bChecked[m_dbDataCnt] = false;
+						checkEnabled++;
+					}
+					else {
+						pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(false);
+						pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(false);
+						pView->m_bChecked[m_dbDataCnt] = true;
+					}
 				}
-
-				CString strContents;
-				strContents.Format(_T("%s"), raw_data[0].Memo);
-
-				pView->m_arrayTodoCheck[m_dbDataCnt]->SetWindowText(strContents);
-				pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(true);
-				pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(true);
-
-				if (raw_data[0].isDone == true) {
-					pView->m_arrayTodoCheck[m_dbDataCnt]->SetCheck(1);
-					pView->m_checkCnt++;
-				}
-
-				cnt = m_dbDataCnt;
 			}
+		}
+		else {
+			DataSaveTodolist();
 		}
 
 		while (ret_code_forDday = SQLFetchScroll(h_statement_forDday, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
@@ -245,12 +260,11 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 
 	}
 
-
-	return cnt+1;
+	return checkEnabled;
 }
 
 
-void TW_ODBC::DataSaveTodolist(CString strToday, CString strTomorrow)
+void TW_ODBC::DataSaveTodolist()
 {
 	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
 	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
@@ -313,9 +327,6 @@ void TW_ODBC::DataRemoveTodolist(CString strToday, CString strTomorrow)
 		// 성공적으로 완료되었는지 체크한다.
 		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) result = 1;
 
-		if (result)
-			AfxMessageBox(_T("DELETE = SUCCESS!!"));
-
 		// 명령 수행이 완료되었다는 것을 설정한다.
 		SQLEndTran(SQL_HANDLE_ENV, mh_environment, SQL_COMMIT);
 		// Query 문을 위해 할당한 메모리를 해제한다.
@@ -333,4 +344,120 @@ SQLHANDLE TW_ODBC::GetMh_Env()
 SQLHDBC TW_ODBC::GetMh_odbc()
 {
 	return mh_odbc;
+}
+
+
+void TW_ODBC::LoadHistoryTodolist(CString strToday, CString strTomorrow)
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
+	CString strPercent;
+	for (int i = 0; i < 8; i++)
+		(pView->view).m_arrayHistoryCheck[i]->SetWindowText(_T(""));
+	(pView->view).m_progressHistory.SetPos(0);
+	strPercent.Format(_T("0"));
+	(pView->view.m_historyPercent).SetWindowText(strPercent);
+
+	int checkEnable = 0, writeList = 0, arrayCnt = 0;
+	CString tmp, str;
+	tmp.Format(L"SELECT * FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
+	
+	// table 가져오기
+	wchar_t* query_str = tmp.GetBuffer();
+
+	// 읽어온 데이터의 상태를 기록할 변수
+	unsigned short record_state[MAX_COUNT];
+
+	// 읽어온 데이터를 저장할 변수
+	TodoList raw_data[MAX_COUNT];
+
+	//데이터를 저장할 배열을 초기화 한다.
+	memset(raw_data, 0, sizeof(raw_data));
+
+	HSTMT h_statement;	RETCODE ret_code;
+
+	// Query 문을 위한 메모리를 할당한다.
+	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
+		// Query 문을 실행할 때 타임 아웃을 설정한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+
+		// 가져온 데이터를 저장할 메모리의 크기를 설정한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_BIND_TYPE, (SQLPOINTER)sizeof(raw_data), 0);
+
+		// 데이터를 가져올 때 동시성에 대한 방식을 설정한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_CURSOR_TYPE, (SQLPOINTER)SQL_CURSOR_KEYSET_DRIVEN, SQL_IS_UINTEGER);
+
+		// 데이터를 가져오는 최대 단위를 설정한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_NUMBER, (SQLPOINTER)MAX_COUNT, SQL_IS_UINTEGER);
+
+		// 읽은 데이터의 상태를 저장할 변수의 주소를 전달한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_STATUS_PTR, record_state, 0);
+
+
+		// 테이블에서 가져온 데이터를 속성별로 raw_data 변수에 저장하기 위해서
+		// 속성별로 저장할 메모리 위치를 설정한다.
+
+		SQLBindCol(h_statement, 1, SQL_WCHAR, raw_data[0].date, sizeof(wchar_t) * 20, NULL);
+		SQLBindCol(h_statement, 2, SQL_SMALLINT, &raw_data[0].isDone, sizeof(int), NULL);
+		SQLBindCol(h_statement, 3, SQL_WCHAR, &raw_data[0].DBContents, sizeof(wchar_t) * 100, NULL);
+
+		// SQL 명령문을 실행한다.
+		ret_code = SQLExecDirect(h_statement, (SQLWCHAR*)query_str, SQL_NTS);
+
+		if (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
+			// SQL 명령문의 실행 결과로 받은 데이터를 ListBox에 추가한다.
+			ret_code = SQLFetchScroll(h_statement, SQL_FETCH_PREV, 0);
+			while (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
+
+				if (record_state[0] != SQL_ROW_DELETED && record_state[0] != SQL_ROW_ERROR) {
+					str.Format(L"%s, %d, %s", raw_data[0].date, raw_data[0].isDone, raw_data[0].DBContents);
+					//데이터 불러온 후 체크리스트에 추가하기 (출력?)
+					
+					CString strContents;
+
+					if (raw_data[0].isDone == 1) {
+						strContents.Format(_T("< Complete >  %s"), raw_data[0].DBContents);
+						(pView->view).m_arrayHistoryCheck[arrayCnt]->SetWindowText(strContents);
+						checkEnable++;
+						writeList++;
+					}
+					else if (raw_data[0].isDone == 0) {
+						strContents.Format(_T("< Proceeding >  %s"), raw_data[0].DBContents);
+						(pView->view).m_arrayHistoryCheck[arrayCnt]->SetWindowText(strContents);
+						writeList++;
+					}
+					else {
+						strContents.Format(_T("< No Events >"));
+						(pView->view).m_arrayHistoryCheck[arrayCnt]->SetWindowText(strContents);
+					}
+				}
+				arrayCnt++;
+			}
+			if (writeList == 0 || checkEnable == 0) {
+				(pView->view).m_progressHistory.SetPos(0);
+				strPercent.Format(_T("0"));
+				(pView->view.m_historyPercent).SetWindowText(strPercent);
+			}
+			else {
+				if (writeList == checkEnable) {
+					(pView->view).m_progressHistory.SetPos(1000);
+					strPercent.Format(_T("100"));
+					(pView->view.m_historyPercent).SetWindowText(strPercent);
+				}
+				else {
+					int percent = 1000 / writeList;
+					percent = 1000 / writeList;
+					(pView->view).m_progressHistory.SetPos(checkEnable*percent);
+					strPercent.Format(_T("%d"), percent);
+					(pView->view.m_historyPercent).SetWindowText(strPercent);
+				}
+			}
+
+		}
+		else {
+			CString strContents;
+			strContents.Format(_T("< There is no record of this day. >"), raw_data[0].DBContents);
+			(pView->view).m_arrayHistoryCheck[0]->SetWindowText(strContents);
+		}
+	}
 }
