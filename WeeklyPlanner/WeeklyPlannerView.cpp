@@ -754,14 +754,37 @@ void CWeeklyPlannerView::OnInsertitemDdayListCntl(NMHDR *pNMHDR, LRESULT *pResul
 void CWeeklyPlannerView::OnBnClickedDdayDeleteButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CString strforQ, strTitle;
+
 	if (m_nDdayListSelectedItem >= 0) {
+		strTitle = m_ctrlDdayList.GetItemText(m_nDdayListSelectedItem, 1);
+
 		m_ctrlDdayList.DeleteItem(m_nDdayListSelectedItem);
 		m_nDdayListSelectedItem = -1;
 	}
 	if (m_ctrlDdayList.GetItemCount() == 0) {
 		m_btnDeleteDday.EnableWindow(FALSE);
 	}
-	UpdateData(TRUE);
+
+	strforQ.Format(L"DELETE FROM dday WHERE Title = '%s'", strTitle);
+	AfxMessageBox(strTitle);
+
+	SQLHSTMT h_statement_forDday;
+
+
+	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, m_odbc->GetMh_odbc(), &h_statement_forDday)) {
+		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+
+		RETCODE ret = SQLExecDirect(h_statement_forDday, (SQLWCHAR*)(const wchar_t *)strforQ, SQL_NTS);
+
+		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
+		}
+
+		SQLEndTran(SQL_HANDLE_ENV, m_odbc->GetMh_odbc(), SQL_COMMIT);
+		SQLFreeHandle(SQL_HANDLE_STMT, h_statement_forDday);
+
+	}
+		UpdateData(TRUE);
 }
 
 void CWeeklyPlannerView::OnClickDdayListCntl(NMHDR *pNMHDR, LRESULT *pResult)

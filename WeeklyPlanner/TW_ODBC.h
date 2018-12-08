@@ -17,5 +17,7 @@ public:
 	int m_dbDataCnt;
 	void DataSaveTodolist(CString strToday, CString strTomorrow);
 	void DataRemoveTodolist(CString strToday, CString strTomorrow);
+	SQLHANDLE GetMh_Env();
+	SQLHDBC GetMh_odbc();
 };
 
