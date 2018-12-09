@@ -159,6 +159,8 @@ public:
 	afx_msg void OnHistoryView();
 	HACCEL m_hAccelTable;
 	CHistoryView view;
+	CString m_strOldPath;
+	CString m_strProfileMessage;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
