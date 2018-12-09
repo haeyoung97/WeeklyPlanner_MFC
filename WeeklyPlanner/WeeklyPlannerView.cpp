@@ -87,6 +87,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	, strToday(_T(""))
 	, strTomorrow(_T(""))
 	, view(NULL)
+	, m_strOldPath(_T(""))
+	, m_strProfileMessage(_T(""))
 {
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_odbc = new TW_ODBC();
@@ -679,8 +681,10 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 
 		CImage profileImage;
 		profileImage.Load(m_strProfilePath);
+		m_strOldPath = m_strDefaultImagePath;
 		m_strDefaultImagePath = m_strProfilePath;
 		
+		m_odbc->SaveProfilePath(m_strDefaultImagePath, m_strOldPath);
 
 		CDC *screenDC = GetDC();
 		CDC mDC;

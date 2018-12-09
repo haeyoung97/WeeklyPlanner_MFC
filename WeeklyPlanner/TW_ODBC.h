@@ -20,5 +20,6 @@ public:
 	SQLHANDLE GetMh_Env();
 	SQLHDBC GetMh_odbc();
 	void LoadHistoryTodolist(CString strToday, CString strTomorrow);
+	void SaveProfilePath(CString strPath, CString strOldPath);
 };
 
