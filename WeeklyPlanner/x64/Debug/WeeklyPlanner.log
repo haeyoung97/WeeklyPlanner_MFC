@@ -1,1 +1,20 @@
-﻿
+﻿  stdafx.cpp
+c:\program files (x86)\microsoft visual studio 14.0\vc\atlmfc\include\atlplus.h(26): warning C4467: ATL 특성은 사용되지 않습니다.
+  WeeklyPlannerView.cpp
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(226): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(235): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(236): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(760): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  WeeklyPlannerDoc.cpp
+  WeeklyPlanner.cpp
+  TW_ODBC.cpp
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\tw_odbc.cpp(259): warning C4244: '초기화 중': 'LONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SoundPlayer.cpp
+  ProfileModifyDlg.cpp
+  MainFrm.cpp
+  HistoryView.cpp
+  DdayAddDlg.cpp
+c:\users\정상아\desktop\mfc\weeklyplanner_mfc\weeklyplanner\ddayadddlg.cpp(113): warning C4244: '초기화 중': 'LONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  WeeklyPlanner.vcxproj -> C:\Users\정상아\Desktop\MFC\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.exe
+  WeeklyPlanner.vcxproj -> C:\Users\정상아\Desktop\MFC\WeeklyPlanner_MFC\x64\Debug\WeeklyPlanner.pdb (Partial PDB)

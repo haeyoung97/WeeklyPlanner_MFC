@@ -62,6 +62,7 @@ ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
 ON_BN_CLICKED(IDC_SONGS, &CWeeklyPlannerView::OnBnClickedSongs)
 ON_BN_CLICKED(IDC_BUTTON_SOUND_DELETE, &CWeeklyPlannerView::OnBnClickedButtonSoundDelete)
 ON_COMMAND(ID_HISTORY_VIEW, &CWeeklyPlannerView::OnHistoryView)
+ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -251,6 +252,7 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	// DB에서 데이터 가져오기
 	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
+	//AfxMessageBox(m_strDefaultImagePath);
 
 	UpdateTodoProgressBar(NULL);
 	Invalidate();
@@ -307,7 +309,8 @@ void CWeeklyPlannerView::OnClickedMessageModifyButton()
 	else {
 		m_EditMessage.EnableWindow(false);
 		m_btnMessagemodify.SetWindowText(_T("수정"));
-
+		GetDlgItemText(IDC_MESSAGE, m_strProfileMessage);
+		//AfxMessageBox(m_strProfileMessage);
 		m_bModifyBtn = false;
 	}
 
@@ -683,8 +686,6 @@ void CWeeklyPlannerView::OnBnClickedButtonProfileOpen()
 		profileImage.Load(m_strProfilePath);
 		m_strOldPath = m_strDefaultImagePath;
 		m_strDefaultImagePath = m_strProfilePath;
-		
-		m_odbc->SaveProfilePath(m_strDefaultImagePath, m_strOldPath);
 
 		CDC *screenDC = GetDC();
 		CDC mDC;
@@ -713,18 +714,22 @@ void CWeeklyPlannerView::OnPaint()
 
 	//HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
 	//m_pDefaultPicture->SetBitmap(hbmp);
+	//AfxMessageBox(_T("호잇호잇"));
 
 	CImage profileImage;
 	profileImage.Load(m_strDefaultImagePath);
+
 
 	CDC *screenDC = GetDC();
 	CDC mDC;
 	mDC.CreateCompatibleDC(screenDC);
 	CBitmap bitmap;
+
 	bitmap.CreateCompatibleBitmap(screenDC, m_nSizeProfileX, m_nSizeProfileY);
 	CBitmap *bmp = mDC.SelectObject(&bitmap);
 	mDC.SetStretchBltMode(HALFTONE);
 	profileImage.StretchBlt(mDC.m_hDC, 0, 0, m_nSizeProfileX, m_nSizeProfileY, 0, 0, profileImage.GetWidth(), profileImage.GetHeight(), SRCCOPY);
+	
 	mDC.SelectObject(bmp);
 
 	m_pDefaultPicture->SetBitmap((HBITMAP)bitmap.Detach());
@@ -941,4 +946,16 @@ void CWeeklyPlannerView::OnHistoryView()
 	// TODO: 여기에 명령 처리기 코드를 추가합니다.
 	//view = new CHistoryView;
 	view.DoModal();
+}
+
+
+void CWeeklyPlannerView::OnDestroy()
+{
+
+	m_odbc->DeleteProfilePath(m_strDefaultImagePath, m_strOldPath);
+	m_odbc->SaveProfilePath(m_strDefaultImagePath, m_strOldPath);
+
+	CFormView::OnDestroy();
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 }

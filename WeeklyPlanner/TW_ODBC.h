@@ -21,5 +21,6 @@ public:
 	SQLHDBC GetMh_odbc();
 	void LoadHistoryTodolist(CString strToday, CString strTomorrow);
 	void SaveProfilePath(CString strPath, CString strOldPath);
+	void DeleteProfilePath(CString strPath, CString strOld);
 };
 

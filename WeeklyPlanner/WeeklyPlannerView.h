@@ -161,6 +161,7 @@ public:
 	CHistoryView view;
 	CString m_strOldPath;
 	CString m_strProfileMessage;
+	afx_msg void OnDestroy();
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전
