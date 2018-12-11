@@ -309,7 +309,6 @@ void CWeeklyPlannerView::OnClickedMessageModifyButton()
 	else {
 		m_EditMessage.EnableWindow(false);
 		m_btnMessagemodify.SetWindowText(_T("¼öÁ¤"));
-		GetDlgItemText(IDC_MESSAGE, m_strProfileMessage);
 		//AfxMessageBox(m_strProfileMessage);
 		m_bModifyBtn = false;
 	}
@@ -746,6 +745,7 @@ void CWeeklyPlannerView::OnClickedButtonProfileDelete()
 
 	HBITMAP hbmp = (HBITMAP)::LoadImage(AfxGetInstanceHandle(), MAKEINTRESOURCE(IDC_BITMAP_PROFILE_DEFAULT), IMAGE_BITMAP, m_nSizeProfileX, m_nSizeProfileY, LR_LOADMAP3DCOLORS);
 	m_pDefaultPicture->SetBitmap(hbmp);
+	m_strDefaultImagePath = L"res\\default_Image.bmp";
 	
 }
 
@@ -951,7 +951,7 @@ void CWeeklyPlannerView::OnHistoryView()
 
 void CWeeklyPlannerView::OnDestroy()
 {
-
+	GetDlgItemText(IDC_MESSAGE, m_strProfileMessage);
 	m_odbc->DeleteProfilePath(m_strDefaultImagePath, m_strOldPath);
 	m_odbc->SaveProfilePath(m_strDefaultImagePath, m_strOldPath);
 

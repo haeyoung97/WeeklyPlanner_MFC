@@ -170,13 +170,13 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 
 		SQLBindCol(h_statement, 1, SQL_WCHAR, raw_data[0].date, sizeof(wchar_t) * 20, NULL);
 		SQLBindCol(h_statement, 2, SQL_SMALLINT, &raw_data[0].isDone, sizeof(int), NULL);
-		SQLBindCol(h_statement, 3, SQL_WCHAR, &raw_data[0].DBContents, sizeof(wchar_t) * 100, NULL);
+		SQLBindCol(h_statement, 3, SQL_WCHAR, raw_data[0].DBContents, sizeof(wchar_t) * 100, NULL);
 
 		SQLBindCol(h_statement_forDday, 1, SQL_WCHAR, raw_data_forDday.date, sizeof(wchar_t) * 11, NULL);
 		SQLBindCol(h_statement_forDday, 2, SQL_WCHAR, raw_data_forDday.Title, sizeof(wchar_t) * 20, NULL);
 		
-		SQLBindCol(h_statement_forProfile, 1, SQL_WCHAR, &raw_data_forProfile[0].path, sizeof(wchar_t) * 80, NULL);
-		SQLBindCol(h_statement_forProfile, 2, SQL_WCHAR, &raw_data_forProfile[0].message, sizeof(wchar_t) * 20, NULL);
+		SQLBindCol(h_statement_forProfile, 1, SQL_WCHAR, raw_data_forProfile[0].path, sizeof(wchar_t) * 80, NULL);
+		SQLBindCol(h_statement_forProfile, 2, SQL_WCHAR, raw_data_forProfile[0].message, sizeof(wchar_t) * 20, NULL);
 
 		// SQL 명령문을 실행한다.
 		ret_code = SQLExecDirect(h_statement, (SQLWCHAR*)query_str, SQL_NTS);
@@ -290,30 +290,27 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 					//strProfile.Format(L"DELETE FROM weeklyplanner.profile WHERE path = '%s'", raw_data_forProfile[0].path);
 					int i = 0;
 					
-						CString temp;
-						temp.Format(_T("%s"), raw_data_forProfile[i].path);
-						AfxMessageBox(temp);
 
 						CString strMessage, strPath;
 						strMessage.Format(_T("%s"), raw_data_forProfile[i].message);
 						pView->m_EditMessage.SetWindowTextW(strMessage);
 
 						strPath.Format(_T("%s"), raw_data_forProfile[i].path);
-						strPath.Replace(_T("\\"), _T("\\\\"));
+						//strPath.Replace(_T("\\"), _T("\\\\"));
 
-						AfxMessageBox(strPath);
+						//AfxMessageBox(strPath);
 						pView->m_strDefaultImagePath = strPath;
 					
 				}
 			}
 		}
 		else {
-			AfxMessageBox(_T("하잇"));
+			
 			CString strPath = pView->m_strDefaultImagePath;
 			CString strOld = pView->m_strOldPath;
 
 			SaveProfilePath(strPath, strOld);
-			//SaveProfileMessage();
+			
 		}
 
 		// Query 문을 위해 할당한 메모리를 해제한다.
@@ -538,36 +535,35 @@ void TW_ODBC::SaveProfilePath(CString strPath, CString strOldPath)
 	strMessage = pView->m_strProfileMessage;
 	strPath = pView->m_strDefaultImagePath;
 	strOldPath = pView->m_strOldPath;
-	
+
 	strPath.Replace(_T("\\"), _T("\\\\"));
 
 	str.Format(L"INSERT INTO profile VALUES ('%s', '%s')", strPath, strMessage);
-	AfxMessageBox(str);
+	
+	//AfxMessageBox(strPath);
+	//AfxMessageBox(str);
 
 	const wchar_t* tmp = str;
 	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
 		// Query 문을 실행할 때 타임 아웃을 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
-		
+
 
 		// SQL 명령문을 실행한다.
 		RETCODE ret = SQLExecDirect(h_statement, (SQLWCHAR *)tmp, SQL_NTS);
-
 		// 성공적으로 완료되었는지 체크한다.
-		// 성공적으로 완료가 안됨...왜일까ㅏ아ㅏㅏㅏ
+		
 
 		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
 			result = 1;
-			AfxMessageBox(_T("히히헤헤"));
+			//AfxMessageBox(_T("히히헤헤"));
 		}
 
 		// 명령 수행이 완료되었다는 것을 설정한다.
 		SQLEndTran(SQL_HANDLE_ENV, mh_environment, SQL_COMMIT);
-
 		// Query 문을 위해 할당한 메모리를 해제한다.
 		SQLFreeHandle(SQL_HANDLE_STMT, h_statement);
 	}
-
 }
 
 
@@ -577,31 +573,35 @@ void TW_ODBC::DeleteProfilePath(CString strPath, CString strOld)
 	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
 
 	SQLHSTMT h_statement;
-	CString str, strMessage;
+	CString str, strMessage, str2;
 	int result = 0;
 
 	//strPath = pView->m_strDefaultImagePath;
 	strMessage = pView->m_strProfileMessage;
 	//strOld = pView->m_strOldPath;
 
-	strPath.Replace(_T("\\"), _T("\\\\"));
-
-	str.Format(L"DELETE FROM weeklyplanner.profile WHERE path = '%s'", strOld);
+	//strPath.Replace(_T("\\"), _T("\\\\"));
+	str2.Format(L"SET SQL_SAFE_UPDATES = 0");
+	str.Format(L"DELETE FROM weeklyplanner.profile");
 	//AfxMessageBox(_T("헤헤헤헤"));
 
 	const wchar_t* tmp = str;
+	const wchar_t* tmp2 = str2;
 	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
 		// Query 문을 실행할 때 타임 아웃을 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
 
 		// SQL 명령문을 실행한다.
 		RETCODE ret = SQLExecDirect(h_statement, (SQLWCHAR *)tmp, SQL_NTS);
+		RETCODE ret2 = SQLExecDirect(h_statement, (SQLWCHAR *)tmp2, SQL_NTS);
 
 		// 성공적으로 완료되었는지 체크한다.
-		// delete는 되는듯
 		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
 			result = 1;
 			//AfxMessageBox(_T("히히"));
+		}
+		if (ret2 == SQL_SUCCESS || ret2 == SQL_SUCCESS_WITH_INFO) {
+			//AfxMessageBox(_T("헤헿"));
 		}
 
 		// 명령 수행이 완료되었다는 것을 설정한다.
@@ -609,5 +609,6 @@ void TW_ODBC::DeleteProfilePath(CString strPath, CString strOld)
 		// Query 문을 위해 할당한 메모리를 해제한다.
 		SQLFreeHandle(SQL_HANDLE_STMT, h_statement);
 	}
+	
 }
 
