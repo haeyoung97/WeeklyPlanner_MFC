@@ -237,9 +237,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	//((CButton*)GetDlgItem(IDC_DDAY_MODIFY_BUTTON))->EnableWindow(FALSE);
 
 	// 뷰 크기 얻기
-	this->GetWindowRect(winRect);
-	m_nSizeProfileX = (int)winRect.right * 0.115;
-	m_nSizeProfileY = (int)winRect.bottom * 0.23;
+	
+	this->GetClientRect(winRect);
+	m_nSizeProfileX = (int)winRect.right * 0.155;
+	m_nSizeProfileY = (int)winRect.bottom * 0.35;
 
 	// Ctrl+R acceleratror 등록?
 	//m_hAccelTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_HISTORY_VIEW));
@@ -852,19 +853,20 @@ void CWeeklyPlannerView::OnClickedPauseSong()
 void CWeeklyPlannerView::OnClickedPrevSong()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	
 	m_soundSP.SoundStop();
-
+	
 	if (m_nPlayIndex <= 0) {
 		m_nPlayIndex = m_soundSP.m_nSoundIndex - 1;
 	}
-	
-	else 
+	else
 	{
 		m_nPlayIndex -= 1;
 	}
-		
-	m_soundSP.SoundPlay(m_nPlayIndex);
 	m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	if (m_nPlayPause == 1) {
+		m_soundSP.SoundPlay(m_nPlayIndex);
+	}
 
 }
 
@@ -872,17 +874,22 @@ void CWeeklyPlannerView::OnClickedPrevSong()
 void CWeeklyPlannerView::OnClickedNextSong()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
-	m_soundSP.SoundStop();
-	//CString tmp;
-	if (m_nPlayIndex >= m_soundSP.m_nSoundIndex-1) {
-		
-		m_nPlayIndex = 0;
-	}
-	else {
-		m_nPlayIndex += 1;
-	}
-m_soundSP.SoundPlay(m_nPlayIndex);
-	m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+	
+		m_soundSP.SoundStop();
+	
+
+		if (m_nPlayIndex >= m_soundSP.m_nSoundIndex - 1) {
+
+			m_nPlayIndex = 0;
+		}
+		else {
+			m_nPlayIndex += 1;
+		}
+		m_strSongName.SetWindowText(m_soundSP.m_strSoundName[m_nPlayIndex]);
+		if (m_nPlayPause == 1) {
+			m_soundSP.SoundPlay(m_nPlayIndex);
+		}
+
 }
 
 
