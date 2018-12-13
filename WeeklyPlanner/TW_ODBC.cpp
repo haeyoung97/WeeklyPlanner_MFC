@@ -17,14 +17,14 @@
 //#define DBSchemas L"WeeklyPlanner"
 //#define DBID L"haey"
 //#define DBPassword L"parkhy8426852!@!"
-//#define DBSchemas L"WeeklyPlanner"
-//#define DBID L"root"
-//#define DBPassword L"1234"
+#define DBSchemas L"WeeklyPlanner"
+#define DBID L"root"
+#define DBPassword L"1234"
 //#define DBContents Memo
 //#define DBDdaytitle Title
-#define DBSchemas L"wp_db"
-#define DBID L"WP_User"
-#define DBPassword L"tndtlfeo"
+//#define DBSchemas L"wp_db"
+//#define DBID L"WP_User"
+//#define DBPassword L"tndtlfeo"
 #define DBContents Memo
 #define DBDdaytitle Title
 
@@ -586,7 +586,8 @@ void TW_ODBC::DeleteProfilePath(CString strPath, CString strOld)
 	//strOld = pView->m_strOldPath;
 
 	//strPath.Replace(_T("\\"), _T("\\\\"));
-	str2.Format(L"SET SQL_SAFE_UPDATES = 0");
+
+	//str2.Format(L"SET SQL_SAFE_UPDATES = 0");
 	str.Format(L"DELETE FROM weeklyplanner.profile");
 	//AfxMessageBox(_T("헤헤헤헤"));
 
