@@ -113,6 +113,8 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	m_arrayTodoBtn[5] = &m_TodoBtn6;
 	m_arrayTodoBtn[6] = &m_TodoBtn7;
 	m_arrayTodoBtn[7] = &m_TodoBtn8;
+	
+	m_titleFont.CreateFont(23, 15, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("함초롬바탕"));
 }
 
 CWeeklyPlannerView::~CWeeklyPlannerView()
@@ -166,8 +168,11 @@ BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
 void CWeeklyPlannerView::OnInitialUpdate()
 {
 	CFormView::OnInitialUpdate();
+	GetDlgItem(IDC_DDAY_TITLE)->SetFont(&m_titleFont);
+	GetDlgItem(IDC_TODO_TITLE)->SetFont(&m_titleFont);
 
-	
+
+
 	m_TodoAchivePrgs.SetRange(0, 1000);
 	m_cTodoStart.SetFormat(_T("tt  HH: mm"));
 	m_cTodoEnd.SetFormat(_T("tt  HH: mm"));
@@ -255,7 +260,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	//AfxMessageBox(m_strDefaultImagePath);
 
 	UpdateTodoProgressBar(NULL);
+
+	m_EditMessage.SendMessage(WM_KILLFOCUS, NULL);
 	Invalidate();
+
 
 }
 
@@ -301,13 +309,14 @@ void CWeeklyPlannerView::OnClickedMessageModifyButton()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	if (!m_bModifyBtn) { //수정 일때
-		m_EditMessage.EnableWindow(true);
+		m_EditMessage.SetReadOnly(false);
 		m_btnMessagemodify.SetWindowText(_T("적용"));
+		m_EditMessage.SendMessage(WM_KILLFOCUS, NULL);
 		m_bModifyBtn = true;
 
 	}
 	else {
-		m_EditMessage.EnableWindow(false);
+		m_EditMessage.SetReadOnly(true);
 		m_btnMessagemodify.SetWindowText(_T("수정"));
 		//AfxMessageBox(m_strProfileMessage);
 		m_bModifyBtn = false;
@@ -844,6 +853,7 @@ void CWeeklyPlannerView::OnClickedPrevSong()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	m_soundSP.SoundStop();
+
 	if (m_nPlayIndex <= 0) {
 		m_nPlayIndex = m_soundSP.m_nSoundIndex - 1;
 	}

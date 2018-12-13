@@ -162,6 +162,8 @@ public:
 	CString m_strOldPath;
 	CString m_strProfileMessage;
 	afx_msg void OnDestroy();
+//	CFont m_titleFont;
+	CFont m_titleFont;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

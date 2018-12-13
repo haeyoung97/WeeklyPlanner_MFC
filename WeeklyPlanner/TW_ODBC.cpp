@@ -17,9 +17,14 @@
 //#define DBSchemas L"WeeklyPlanner"
 //#define DBID L"haey"
 //#define DBPassword L"parkhy8426852!@!"
-#define DBSchemas L"WeeklyPlanner"
-#define DBID L"root"
-#define DBPassword L"1234"
+//#define DBSchemas L"WeeklyPlanner"
+//#define DBID L"root"
+//#define DBPassword L"1234"
+//#define DBContents Memo
+//#define DBDdaytitle Title
+#define DBSchemas L"wp_db"
+#define DBID L"WP_User"
+#define DBPassword L"tndtlfeo"
 #define DBContents Memo
 #define DBDdaytitle Title
 
@@ -375,7 +380,7 @@ void TW_ODBC::DataRemoveTodolist(CString strToday, CString strTomorrow)
 	CString str;
 	int result = 0;
 
-	str.Format(L"DELETE FROM weeklyplanner.todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
+	str.Format(L"DELETE FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
 	const wchar_t* tmp = str;
 	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
 		// Query 문을 실행할 때 타임 아웃을 설정한다.
@@ -385,8 +390,8 @@ void TW_ODBC::DataRemoveTodolist(CString strToday, CString strTomorrow)
 		RETCODE ret = SQLExecDirect(h_statement, (SQLWCHAR *)tmp, SQL_NTS);
 
 		// 성공적으로 완료되었는지 체크한다.
-		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) result = 1;
-
+		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO)
+			result = 1;
 		// 명령 수행이 완료되었다는 것을 설정한다.
 		SQLEndTran(SQL_HANDLE_ENV, mh_environment, SQL_COMMIT);
 		// Query 문을 위해 할당한 메모리를 해제한다.

@@ -104,6 +104,7 @@
 #define IDC_STATIC_CHECK6               1079
 #define IDC_STATIC_CHECK7               1080
 #define IDC_STATIC_CHECK8               1081
+#define IDC_TODO_TITLE                  1082
 #define ID_32771                        32771
 #define ID_HISTORY_VIEW                 32772
 
@@ -113,7 +114,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        323
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1082
+#define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

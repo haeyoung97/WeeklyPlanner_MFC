@@ -1,1 +1,7 @@
-﻿
+﻿  WeeklyPlannerView.cpp
+c:\users\u3797\desktop\wp_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(232): warning C4244: '인수': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\u3797\desktop\wp_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(241): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\u3797\desktop\wp_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(242): warning C4244: '=': 'double'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\u3797\desktop\wp_project\weeklyplanner_mfc\weeklyplanner\weeklyplannerview.cpp(774): warning C4800: 'int': 'true' 또는 'false'로 bool 값을 강제하고 있습니다(성능 경고).
+  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\wp_project\WeeklyPlanner_MFC\Debug\WeeklyPlanner.exe
+  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\wp_project\WeeklyPlanner_MFC\Debug\WeeklyPlanner.pdb (Partial PDB)
