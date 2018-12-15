@@ -10,7 +10,7 @@ CSoundPlayer::CSoundPlayer()
 	: m_nSoundIndex(0)
 {
 	//default로 들어있는 Sound
-	m_strSoundPath[0] = _T("res\\MFC_SOUND\\Barroom_Ballet_Silent_Film_Light.wav");
+	/*m_strSoundPath[0] = _T("res\\MFC_SOUND\\Barroom_Ballet_Silent_Film_Light.wav");
 	m_strSoundPath[1] = _T("res\\MFC_SOUND\\Greedy.wav");
 	m_strSoundPath[2] = _T("res\\MFC_SOUND\\Merry_Go_Slower.wav");
 	m_strSoundPath[3] = _T("res\\MFC_SOUND\\Old_MacDonald.wav");
@@ -29,8 +29,8 @@ CSoundPlayer::CSoundPlayer()
 	m_strSoundName[6] = _T("Summer_Smile");
 	m_strSoundName[7] = _T("Toy_Piano");
 	m_strSoundName[8] = _T("Washington_Post");
-
-	m_nSoundIndex = 9;
+	*/
+	//m_nSoundIndex = 9;
 }
 
 

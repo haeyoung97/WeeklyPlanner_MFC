@@ -22,5 +22,8 @@ public:
 	void LoadHistoryTodolist(CString strToday, CString strTomorrow);
 	void SaveProfilePath(CString strPath, CString strOldPath);
 	void DeleteProfilePath(CString strPath, CString strOld);
+	void DeleteSound();
+	void DataSaveSound(CString SoundPath[50], CString SoundName[50]);
+	unsigned long record_sound;
 };
 
