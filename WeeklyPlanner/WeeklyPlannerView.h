@@ -164,6 +164,8 @@ public:
 	afx_msg void OnDestroy();
 //	CFont m_titleFont;
 	CFont m_titleFont;
+	CString SoundPath[50];
+	CString SoundName[50];
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

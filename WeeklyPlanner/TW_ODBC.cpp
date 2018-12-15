@@ -11,6 +11,7 @@
 
 // 데이터를 가져오는 최대 단위를 설정한다.
 #define MAX_COUNT 8
+#define MAX_SOUND 50
 
 // 서버탐색기를 이용하여 ODBC 연결하기
 // 스키마 이름, 아이디, 패스워드, 일정내용명, DB칼럼명 (날짜, 내용) 기록
@@ -44,10 +45,15 @@ struct profile {
 	wchar_t message[100];
 };
 
+struct sound {
+	wchar_t soundPath[256];
+	wchar_t soundName[100];
+};
 
 TW_ODBC::TW_ODBC()
 	: record_num(0)
 	, m_dbDataCnt(0)
+	, record_sound(0)
 {
 	// ODBC 드라이버에 연결을 위한 기본 정보를 설정한다.
 	SQLSetEnvAttr(NULL, SQL_ATTR_CONNECTION_POOLING, (SQLPOINTER)SQL_CP_ONE_PER_DRIVER, SQL_IS_INTEGER);
@@ -111,7 +117,8 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 	tmp.Format(L"SELECT * FROM todolist WHERE date >= '%s' AND date < '%s'", strToday, strTomorrow);
 	wchar_t query_str_forDday[256] = L"SELECT * FROM dday";
 	wchar_t query_str_forProfile[256] = L"SELECT * FROM profile";
-	
+	wchar_t query_str_forSound[256] = L"SELECT * FROM sound";
+
 	// table 가져오기
 	wchar_t* query_str = tmp.GetBuffer();
 
@@ -119,56 +126,68 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 	unsigned short record_state[MAX_COUNT];
 	unsigned short record_state_forDday;
 	unsigned short record_state_forProfile[MAX_COUNT];
+	unsigned short record_state_forSound[MAX_SOUND];
+
 
 	// 읽어온 데이터를 저장할 변수
 	TodoList raw_data[MAX_COUNT];
 	DdayData raw_data_forDday;
 	profile raw_data_forProfile[100];
+	sound raw_data_forSound[MAX_SOUND];
 
 
 	CString str;
 	CString strProfile;
+	CString strSound;
 
 	//데이터를 저장할 배열을 초기화 한다.
 	memset(raw_data, 0, sizeof(raw_data));
 	memset(&raw_data_forDday, 0, sizeof(raw_data_forDday));
 	memset(raw_data_forProfile, 0, sizeof(raw_data_forProfile));
+	memset(raw_data_forSound, 0, sizeof(raw_data_forSound));
 
-	HSTMT h_statement, h_statement_forDday, h_statement_forProfile;
-	RETCODE ret_code, ret_code_forDday, ret_code_forProfile;
+	HSTMT h_statement, h_statement_forDday, h_statement_forProfile, h_statement_forSound;
+	RETCODE ret_code, ret_code_forDday, ret_code_forProfile, ret_code_forSound;
 	// Query 문을 위한 메모리를 할당한다.
-	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement) && SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement_forDday) && SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement_forProfile)) {
+	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement) && SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement_forDday) && SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement_forProfile) && SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement_forSound)) {
 		record_num = 0;
+		record_sound = 0;
 		// Query 문을 실행할 때 타임 아웃을 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
 
 
 		// 가져온 데이터를 저장할 메모리의 크기를 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_BIND_TYPE, (SQLPOINTER)sizeof(raw_data), 0);
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_ROW_BIND_TYPE, (SQLPOINTER)sizeof(raw_data_forDday), 0);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_ROW_BIND_TYPE, (SQLPOINTER)sizeof(raw_data_forProfile), 0);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_ROW_BIND_TYPE, (SQLPOINTER)sizeof(raw_data_forSound), 0);
 
 
 		// 데이터를 가져올 때 동시성에 대한 방식을 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_CURSOR_TYPE, (SQLPOINTER)SQL_CURSOR_KEYSET_DRIVEN, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_CURSOR_TYPE, (SQLPOINTER)SQL_CURSOR_KEYSET_DRIVEN, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_CURSOR_TYPE, (SQLPOINTER)SQL_CURSOR_KEYSET_DRIVEN, SQL_IS_UINTEGER);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_CURSOR_TYPE, (SQLPOINTER)SQL_CURSOR_KEYSET_DRIVEN, SQL_IS_UINTEGER);
 
 		// 데이터를 가져오는 최대 단위를 설정한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_NUMBER, (SQLPOINTER)MAX_COUNT, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_ROW_NUMBER, (SQLPOINTER)MAX_COUNT, SQL_IS_UINTEGER);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_ROW_NUMBER, (SQLPOINTER)MAX_COUNT, SQL_IS_UINTEGER);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_ROW_NUMBER, (SQLPOINTER)MAX_SOUND, SQL_IS_UINTEGER);
 
 		// 읽은 데이터의 상태를 저장할 변수의 주소를 전달한다.
 		SQLSetStmtAttr(h_statement, SQL_ATTR_ROW_STATUS_PTR, record_state, 0);
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_ROW_STATUS_PTR, &record_state_forDday, 0);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_ROW_STATUS_PTR, record_state_forProfile, 0);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_ROW_STATUS_PTR, record_state_forSound, 0);
 
 		// 읽은 데이터의 개수를 저장할 변수의 주소를 전달한다.
 		SQLSetStmtAttr(h_statement_forDday, SQL_ATTR_ROWS_FETCHED_PTR, &record_num, 0);
 		SQLSetStmtAttr(h_statement_forProfile, SQL_ATTR_ROWS_FETCHED_PTR, &record_num, 0);
+		SQLSetStmtAttr(h_statement_forSound, SQL_ATTR_ROWS_FETCHED_PTR, &record_sound, 0);
 
 		// 테이블에서 가져온 데이터를 속성별로 raw_data 변수에 저장하기 위해서
 		// 속성별로 저장할 메모리 위치를 설정한다.
@@ -183,10 +202,14 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 		SQLBindCol(h_statement_forProfile, 1, SQL_WCHAR, raw_data_forProfile[0].path, sizeof(wchar_t) * 80, NULL);
 		SQLBindCol(h_statement_forProfile, 2, SQL_WCHAR, raw_data_forProfile[0].message, sizeof(wchar_t) * 20, NULL);
 
+		SQLBindCol(h_statement_forSound, 1, SQL_WCHAR, raw_data_forSound[0].soundPath, sizeof(wchar_t) * 80, NULL);
+		SQLBindCol(h_statement_forSound, 2, SQL_WCHAR, raw_data_forSound[0].soundName, sizeof(wchar_t) * 80, NULL);
+
 		// SQL 명령문을 실행한다.
 		ret_code = SQLExecDirect(h_statement, (SQLWCHAR*)query_str, SQL_NTS);
 		ret_code_forDday = SQLExecDirect(h_statement_forDday, (SQLWCHAR*)query_str_forDday, SQL_NTS);
 		ret_code_forProfile = SQLExecDirect(h_statement_forProfile, (SQLWCHAR*)query_str_forProfile, SQL_NTS);
+		ret_code_forSound = SQLExecDirect(h_statement_forSound, (SQLWCHAR*)query_str_forSound, SQL_NTS);
 
 		if (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
 			// SQL 명령문의 실행 결과로 받은 데이터를 ListBox에 추가한다.
@@ -317,11 +340,54 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 			SaveProfilePath(strPath, strOld);
 			
 		}
+		if (ret_code_forSound = SQLFetchScroll(h_statement_forSound, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
+			
+			CString strPath, strName;
+			ret_code_forSound = SQLFetchScroll(h_statement_forSound, SQL_FETCH_PREV, 0);
+
+			int i = 0;
+			//for (unsigned int i = 0; i < record_sound; i++) {
+			while (ret_code_forSound = SQLFetchScroll(h_statement_forSound, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
+				
+				// 데이터 개수만큼 반복하면서 작업한다.
+				// 가져온 데이터가 삭제된 정보가 아니라면 해당 속성으로
+				// 합쳐서 문자열로 구성하고 AfxMessageBox에 등록한다.
+				if (record_state_forSound[0] != SQL_ROW_DELETED && record_state_forSound[0] != SQL_ROW_ERROR) {
+					strSound.Format(L"%s, %s", raw_data_forSound[0].soundPath, raw_data_forSound[0].soundName);
+					
+					//CString* str;
+
+					strName.Format(_T("%s"), raw_data_forSound[0].soundName);
+
+					pView->m_soundSP.m_strSoundName[i] = strName;
+					strPath.Format(_T("%s"), raw_data_forSound[0].soundPath);
+					pView->m_soundSP.m_strSoundPath[i] = strPath;
+					i++;
+
+				}
+
+			}
+			
+			pView->m_soundSP.m_nSoundIndex = i;
+		}
+
+		else {
+
+			for (int i = 0; i < 9; i++) {
+				pView->m_soundSP.m_strSoundName[i] = pView->SoundName[i];
+				pView->m_soundSP.m_strSoundPath[i] = pView->SoundPath[i];
+				//ttmp.Format(_T("%s"), strName[i]);
+				//AfxMessageBox(ttmp);
+			}
+			pView->m_soundSP.m_nSoundIndex = 9;
+			DataSaveSound(pView->SoundPath, pView->SoundName);
+		}
 
 		// Query 문을 위해 할당한 메모리를 해제한다.
 		SQLFreeHandle(SQL_HANDLE_STMT, h_statement);
 		SQLFreeHandle(SQL_HANDLE_STMT, h_statement_forDday);
 		SQLFreeHandle(SQL_HANDLE_STMT, h_statement_forProfile);
+		SQLFreeHandle(SQL_HANDLE_STMT, h_statement_forSound);
 
 	}
 
@@ -618,3 +684,87 @@ void TW_ODBC::DeleteProfilePath(CString strPath, CString strOld)
 	
 }
 
+
+
+void TW_ODBC::DeleteSound()
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
+	CSoundPlayer pSound;
+
+	SQLHSTMT h_statement;
+
+	CString str, str2;
+	int result = 0;
+
+	str2.Format(L"SET SQL_SAFE_UPDATES = 0");
+	str.Format(L"DELETE FROM weeklyplanner.sound");
+
+
+	const wchar_t* tmp = str;
+	const wchar_t* tmp2 = str2;
+	if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
+		// Query 문을 실행할 때 타임 아웃을 설정한다.
+		SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+
+		// SQL 명령문을 실행한다.
+		RETCODE ret = SQLExecDirect(h_statement, (SQLWCHAR *)tmp, SQL_NTS);
+		RETCODE ret2 = SQLExecDirect(h_statement, (SQLWCHAR *)tmp2, SQL_NTS);
+
+		// 성공적으로 완료되었는지 체크한다.
+		if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
+			result = 1;
+
+		}
+		if (ret2 == SQL_SUCCESS || ret2 == SQL_SUCCESS_WITH_INFO) {
+
+		}
+
+		// 명령 수행이 완료되었다는 것을 설정한다.
+		SQLEndTran(SQL_HANDLE_ENV, mh_environment, SQL_COMMIT);
+		// Query 문을 위해 할당한 메모리를 해제한다.
+		SQLFreeHandle(SQL_HANDLE_STMT, h_statement);
+	}
+}
+
+
+void TW_ODBC::DataSaveSound(CString SoundPath[50], CString SoundName[50])
+{
+	CMainFrame* pFrame = (CMainFrame*)AfxGetMainWnd();
+	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
+
+	SQLHSTMT h_statement;
+	CString str, strPath, strName;
+	int result = 0;
+	int i = 0;
+
+	//	pView->m_soundSP.m_strSoundPath = SoundPath;
+
+	while (SoundPath[i] != "") {
+		strPath = SoundPath[i];
+		strName = SoundName[i];
+		strPath.Replace(_T("\\"), _T("\\\\"));
+		str.Format(L"INSERT INTO sound VALUES ('%s', '%s')", strPath, strName);
+
+		const wchar_t* tmp = str;
+		if (SQL_SUCCESS == SQLAllocHandle(SQL_HANDLE_STMT, mh_odbc, &h_statement)) {
+			// Query 문을 실행할 때 타임 아웃을 설정한다.
+			SQLSetStmtAttr(h_statement, SQL_ATTR_QUERY_TIMEOUT, (SQLPOINTER)15, SQL_IS_UINTEGER);
+
+			// SQL 명령문을 실행한다.
+			RETCODE ret = SQLExecDirect(h_statement, (SQLWCHAR *)tmp, SQL_NTS);
+
+			// 성공적으로 완료되었는지 체크한다.
+			if (ret == SQL_SUCCESS || ret == SQL_SUCCESS_WITH_INFO) {
+				result = 1;
+			}
+
+			// 명령 수행이 완료되었다는 것을 설정한다.
+			SQLEndTran(SQL_HANDLE_ENV, mh_environment, SQL_COMMIT);
+		}
+		i++;
+
+		// Query 문을 위해 할당한 메모리를 해제한다.
+		SQLFreeHandle(SQL_HANDLE_STMT, h_statement);
+	}
+}

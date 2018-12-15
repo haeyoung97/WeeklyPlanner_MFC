@@ -250,15 +250,38 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	m_strDefaultImagePath = L"res\\default_Image.bmp";
 
 	//SoundList 설정
+	SoundPath[0] = _T("res\\MFC_SOUND\\Barroom_Ballet_Silent_Film_Light.wav");
+	SoundPath[1] = _T("res\\MFC_SOUND\\Greedy.wav");
+	SoundPath[2] = _T("res\\MFC_SOUND\\Merry_Go_Slower.wav");
+	SoundPath[3] = _T("res\\MFC_SOUND\\Old_MacDonald.wav");
+	SoundPath[4] = _T("res\\MFC_SOUND\\Ponies_and_Balloons");
+	SoundPath[5] = _T("res\\MFC_SOUND\\Rainy_Day_Games");
+	SoundPath[6] = _T("res\\MFC_SOUND\\Summer_Smile.wav");
+	SoundPath[7] = _T("res\\MFC_SOUND\\Toy_Piano.wav");
+	SoundPath[8] = _T("res\\MFC_SOUND\\Washington_Post.wav");
+
+	SoundName[0] = _T("Barroom_Ballet_Silent_Film_Light");
+	SoundName[1] = _T("Greedy");
+	SoundName[2] = _T("Merry_Go_Slower");
+	SoundName[3] = _T("Old_MacDonald");
+	SoundName[4] = _T("Ponies_and_Balloons");
+	SoundName[5] = _T("Rainy_Day_Games");
+	SoundName[6] = _T("Summer_Smile");
+	SoundName[7] = _T("Toy_Piano");
+	SoundName[8] = _T("Washington_Post");
+
+	// DB에서 데이터 가져오기
+	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
+
+
+	//sound list 설정
 	m_soundPlayList.InsertColumn(0, L"제목", LVCFMT_CENTER, 600);
 	for (int i = 0; i < m_soundSP.m_nSoundIndex; i++)
 	{
 		m_soundPlayList.InsertItem(i, m_soundSP.m_strSoundName[i]);
 	}
 
-	// DB에서 데이터 가져오기
-	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
-	//AfxMessageBox(m_strDefaultImagePath);
+	
 
 	UpdateTodoProgressBar(NULL);
 
@@ -971,6 +994,16 @@ void CWeeklyPlannerView::OnDestroy()
 	GetDlgItemText(IDC_MESSAGE, m_strProfileMessage);
 	m_odbc->DeleteProfilePath(m_strDefaultImagePath, m_strOldPath);
 	m_odbc->SaveProfilePath(m_strDefaultImagePath, m_strOldPath);
+
+	m_odbc->DeleteSound();
+	m_odbc->DataSaveSound(m_soundSP.m_strSoundPath, m_soundSP.m_strSoundName);
+
+	for (int i = 0; i < m_soundSP.m_nSoundIndex; i++) {
+		m_soundSP.m_strSoundName[i] = "";
+		m_soundSP.m_strSoundPath[i] = "";
+		i++;
+	}
+	m_soundSP.m_nSoundIndex = 0;
 
 	CFormView::OnDestroy();
 
