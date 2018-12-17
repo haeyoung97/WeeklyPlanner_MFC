@@ -37,6 +37,8 @@ BEGIN_MESSAGE_MAP(CDdayAddDlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT_DDAY_MEMO, &CDdayAddDlg::OnEnChangeEditDdayMemo)
 	ON_BN_CLICKED(IDOK, &CDdayAddDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CDdayAddDlg::OnBnClickedCancel)
+	ON_WM_PAINT()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 
@@ -83,6 +85,9 @@ BOOL CDdayAddDlg::OnInitDialog()
 	GetDlgItem(IDOK)->SendMessage(WM_KILLFOCUS, NULL);
 	CMainFrame * pFrame = (CMainFrame*)AfxGetMainWnd();
 	pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
+
+	m_hBitmap = LoadBitmap(AfxGetApp()->m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_DDAY));
+	GetObject(m_hBitmap, sizeof(BITMAP), &m_hBit);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 예외: OCX 속성 페이지는 FALSE를 반환해야 합니다.
@@ -193,3 +198,40 @@ void CDdayAddDlg::OnBnClickedCancel()
 //
 //	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
 //}
+
+
+void CDdayAddDlg::OnPaint()
+{
+	CPaintDC dc(this); // device context for painting
+					   // TODO: 여기에 메시지 처리기 코드를 추가합니다.
+					   // 그리기 메시지에 대해서는 CDialogEx::OnPaint()을(를) 호출하지 마십시오.
+					   // 스크린과 호환되는 DC생성.
+	HDC hMemDC = CreateCompatibleDC(dc);
+	// 호환DC에 비트맵을 선정.
+	SelectObject(hMemDC, m_hBitmap);
+	// 메모리 DC에서 스크린 DC로 이미지 복사
+	BitBlt(dc, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, hMemDC, 0, 0, SRCCOPY);
+	// 메모리 DC삭제
+	DeleteDC(hMemDC);
+
+}
+
+
+HBRUSH CDdayAddDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	// TODO:  여기서 DC의 특성을 변경합니다.
+	switch (nCtlColor)
+	{
+	case (CTLCOLOR_STATIC):
+	{
+		pDC->SetBkColor(RGB(255, 255, 255));
+		return (HBRUSH)GetStockObject(NULL_BRUSH);
+	}
+	}
+
+
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
+}

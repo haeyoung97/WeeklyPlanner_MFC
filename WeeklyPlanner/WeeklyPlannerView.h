@@ -170,6 +170,7 @@ public:
 	//	BITMAP m_hBt;
 	HBITMAP m_hBitmap;
 	BITMAP m_hBit;
+//	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

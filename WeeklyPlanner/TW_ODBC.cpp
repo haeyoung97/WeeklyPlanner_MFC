@@ -15,19 +15,19 @@
 
 // 서버탐색기를 이용하여 ODBC 연결하기
 // 스키마 이름, 아이디, 패스워드, 일정내용명, DB칼럼명 (날짜, 내용) 기록
-#define DBSchemas L"WeeklyPlanner"
-#define DBID L"haey"
-#define DBPassword L""
+//#define DBSchemas L"WeeklyPlanner"
+//#define DBID L"haey"
+//#define DBPassword L""
 //#define DBSchemas L"WeeklyPlanner"
 //#define DBID L"root"
 //#define DBPassword L"1234"
-//#define DBContents Memo
-//#define DBDdaytitle Title
-//#define DBSchemas L"wp_db"
-//#define DBID L"WP_User"
-//#define DBPassword L"tndtlfeo"
-#define DBContents Todolist
+#define DBContents Memo
 #define DBDdaytitle Title
+#define DBSchemas L"wp_db"
+#define DBID L"WP_User"
+#define DBPassword L"tndtlfeo"
+//#define DBContents Todolist
+//#define DBDdaytitle Title
 
 struct TodoList {
 	wchar_t date[25];
@@ -655,7 +655,7 @@ void TW_ODBC::DeleteProfilePath(CString strPath, CString strOld)
 	//strPath.Replace(_T("\\"), _T("\\\\"));
 
 	//str2.Format(L"SET SQL_SAFE_UPDATES = 0");
-	str.Format(L"DELETE FROM weeklyplanner.profile");
+	str.Format(L"DELETE FROM profile");
 	//AfxMessageBox(_T("헤헤헤헤"));
 
 	const wchar_t* tmp = str;
@@ -698,8 +698,8 @@ void TW_ODBC::DeleteSound()
 	CString str, str2;
 	int result = 0;
 
-	str2.Format(L"SET SQL_SAFE_UPDATES = 0");
-	str.Format(L"DELETE FROM weeklyplanner.sound");
+	//str2.Format(L"SET SQL_SAFE_UPDATES = 0");
+	str.Format(L"DELETE FROM sound");
 
 
 	const wchar_t* tmp = str;

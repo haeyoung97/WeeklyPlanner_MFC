@@ -36,6 +36,9 @@
 #define IDB_BITMAP1                     320
 #define IDC_BITMAP_PROFILE_DEFAULT      320
 #define IDD_DIALOG_HISTORY              321
+#define IDB_BITMAP_MAIN                 327
+#define IDB_BITMAP_DDAY                 328
+#define IDB_BITMAP_HISTORY              329
 #define IDC_MESSAGE                     1001
 #define IDC_BUTTON1                     1002
 #define IDC_BUTTON2                     1003
@@ -76,6 +79,7 @@
 #define IDC_DDAY_MEMO                   1051
 #define IDC_DDAY_TITLE                  1052
 #define IDC_NUM_OF_DDAY                 1053
+#define IDC_TODO_TITLE2                 1053
 #define IDC_DDAY_FINISH                 1054
 #define IDC_WISE_SAYING                 1055
 #define IDC_TODO_START                  1056
@@ -112,7 +116,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        323
+#define _APS_NEXT_RESOURCE_VALUE        330
 #define _APS_NEXT_COMMAND_VALUE         32775
 #define _APS_NEXT_CONTROL_VALUE         1083
 #define _APS_NEXT_SYMED_VALUE           310

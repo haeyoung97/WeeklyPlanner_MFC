@@ -64,6 +64,7 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_COMMAND(ID_HISTORY_VIEW, &CWeeklyPlannerView::OnHistoryView)
 	ON_WM_DESTROY()
 	ON_WM_CTLCOLOR()
+//	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -161,9 +162,10 @@ void CWeeklyPlannerView::DoDataExchange(CDataExchange* pDX)
 BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
-	//  Window 클래스 또는 스타일을 수정합니다.
-	cs.cx = 1153;
-	cs.cy = 500;
+	////  Window 클래스 또는 스타일을 수정합니다.
+	//cs.cx = 1153;
+	//cs.cy = 500;
+
 
 	return CFormView::PreCreateWindow(cs);
 }
@@ -182,11 +184,11 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX8)->m_hWnd, L"", L"");
 
 	GetDlgItem(IDC_DDAY_TITLE)->SetFont(&m_titleFont);
-	GetDlgItem(IDC_TODO_TITLE)->SetFont(&m_titleFont);
+	GetDlgItem(IDC_TODO_TITLE2)->SetFont(&m_titleFont);
 
-	//m_hBitmap= LoadBitmap(AfxGetApp()->m_hInstance, MAKEINTRESOURCE(IDB_BITMAP2));
+	m_hBitmap= LoadBitmap(AfxGetApp()->m_hInstance, MAKEINTRESOURCE(IDB_BITMAP_MAIN));
 
-	//GetObject(m_hBitmap, sizeof(BITMAP), &m_hBit);
+	GetObject(m_hBitmap, sizeof(BITMAP), &m_hBit);
 	//// Dialog 위치및 크기 변경 ( full screen 만들기 위해 )
 	//SetWindowPos(NULL, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, SWP_NOZORDER);
 
@@ -256,8 +258,8 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	// 뷰 크기 얻기
 	
 	this->GetClientRect(winRect);
-	m_nSizeProfileX = (int)winRect.right * 0.155;
-	m_nSizeProfileY = (int)winRect.bottom * 0.35;
+	m_nSizeProfileX = (int)winRect.right * 0.156;
+	m_nSizeProfileY = (int)winRect.bottom * 0.34;
 
 	// Ctrl+R acceleratror 등록?
 	//m_hAccelTable = ::LoadAccelerators(AfxGetInstanceHandle(), MAKEINTRESOURCE(ID_HISTORY_VIEW));
@@ -570,14 +572,23 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	str += m_strTodomemo;
 
 	if (m_nTodoCnt <= 7) {
+
+		CRect Rect; 
+
 		m_nTodoCnt++;
-		m_arrayTodoCheck[m_nTodoCnt-1]->SetWindowText(str);
+		m_arrayTodoCheck[m_nTodoCnt - 1]->GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		InvalidateRect(Rect);
+
+		m_arrayTodoCheck[m_nTodoCnt - 1]->SetWindowText(str);
 		m_arrayTodoCheck[m_nTodoCnt-1]->EnableWindow(true);
 		m_arrayTodoCheck[m_nTodoCnt-1]->SetCheck(0);
 		m_arrayTodoBtn[m_nTodoCnt-1]->EnableWindow(true);
 		m_bChecked[m_nTodoCnt - 1] = false;
 		
 		UpdateTodoProgressBar(m_arrayTodoCheck[m_nTodoCnt]);
+		m_arrayTodoCheck[m_nTodoCnt-1]->SetWindowText(str);
+
 	}
 	else
 		AfxMessageBox(_T("일정을 추가할 수 없습니다."));
@@ -585,7 +596,6 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	//버튼 클릭 후 공간 비우기
 	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_ADD_TODO_MEMO);
 	pEdit->SetWindowText(_T(""));
-
 }
 
 
@@ -774,11 +784,11 @@ void CWeeklyPlannerView::OnPaint()
 
 	// 스크린과 호환되는 DC생성.
 	HDC hMemDC = CreateCompatibleDC(dc);
-	// 호환DC에 비트맵을 선정.
+	//// 호환DC에 비트맵을 선정.
 	SelectObject(hMemDC, m_hBitmap);
-	// 메모리 DC에서 스크린 DC로 이미지 복사
+	//// 메모리 DC에서 스크린 DC로 이미지 복사
 	BitBlt(dc, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, hMemDC, 0, 0, SRCCOPY);
-	// 메모리 DC삭제
+	//// 메모리 DC삭제
 	DeleteDC(hMemDC);
 
 	CImage profileImage;
@@ -799,6 +809,7 @@ void CWeeklyPlannerView::OnPaint()
 
 	m_pDefaultPicture->SetBitmap((HBITMAP)bitmap.Detach());
 	ReleaseDC(screenDC);
+
 }
 
 
@@ -1071,3 +1082,24 @@ HBRUSH CWeeklyPlannerView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
 	return hbr;
 }
+
+//BOOL CWeeklyPlannerView::OnEraseBkgnd(CDC* pDC)
+//{
+//	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+//	// 스크린과 호환되는 DC생성.
+//	CWnd *pWnd = AfxGetMainWnd();
+//	HWND hWnd = pWnd->m_hWnd;
+//
+//
+//	HDC hdc = ::GetDC(hWnd);
+//
+//	HDC hMemDC = CreateCompatibleDC(hdc);
+//	// 호환DC에 비트맵을 선정.
+//	SelectObject(hMemDC, m_hBitmap);
+//	// 메모리 DC에서 스크린 DC로 이미지 복사
+//	BitBlt(hdc, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, hMemDC, 0, 0, SRCCOPY);
+//	// 메모리 DC삭제
+//	DeleteDC(hMemDC);
+//
+//	return CFormView::OnEraseBkgnd(pDC);
+//}

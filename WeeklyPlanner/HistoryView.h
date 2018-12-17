@@ -38,4 +38,10 @@ public:
 	CStatic m_historyCheck8;
 	CStatic m_historyPercent;
 	CStatic* m_arrayHistoryCheck[8];
+	virtual BOOL OnInitDialog();
+	HBITMAP m_hBitmap;
+	BITMAP m_hBit;
+	afx_msg void OnPaint();
+//	afx_msg void OnColorizationColorChanged(DWORD dwColorizationColor, BOOL bOpacity);
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };

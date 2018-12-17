@@ -36,4 +36,8 @@ public:
 	CEdit m_editNewDdayTitle;
 	CEdit m_editNewDdayMemo;
 	CMonthCalCtrl m_ctrlDdayCal;
+	afx_msg void OnPaint();
+	HBITMAP m_hBitmap;
+	BITMAP m_hBit;
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 };
