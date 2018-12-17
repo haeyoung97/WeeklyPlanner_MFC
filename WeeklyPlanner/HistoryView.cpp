@@ -100,6 +100,7 @@ void CHistoryView::OnBnClickedButtonHistoryOk()
 	CWeeklyPlannerView* pView = (CWeeklyPlannerView*)pFrame->GetActiveView();
 	pView->m_odbc->LoadHistoryTodolist(strToday, strTomorrow);
 	
+	Invalidate();
 }
 
 
