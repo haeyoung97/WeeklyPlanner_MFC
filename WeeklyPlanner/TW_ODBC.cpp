@@ -78,7 +78,7 @@ TW_ODBC::TW_ODBC()
 			if (ret_code == SQL_SUCCESS || ret_code == SQL_SUCCESS_WITH_INFO) {
 				// ODBC를 사용하여 데이터베이스 서버에 성공적으로 접속한 경우
 				m_connect_flag = 1;
-				AfxMessageBox(_T("데이터베이스 서버 접속 성공"));
+				//AfxMessageBox(_T("데이터베이스 서버 접속 성공"));
 			}
 			else {
 				// 접속에 실패한 경우, 구성했던 메모리를 제거한다.
@@ -580,7 +580,8 @@ void TW_ODBC::LoadHistoryTodolist(CString strToday, CString strTomorrow)
 					percent = 1000 / writeList;
 					(pView->view).m_progressHistory.SetPos(checkEnable*percent);
 					percent = 100 / writeList;
-					strPercent.Format(_T("%d"), percent);
+					//strPercent.Format(_T("%d"), percent);
+					strPercent.Format(_T("%d"), percent*checkEnable);
 					(pView->view.m_historyPercent).SetWindowText(strPercent);
 				}
 			}

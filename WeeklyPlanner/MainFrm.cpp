@@ -157,7 +157,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
-	////  Window 클래스 또는 스타일을 수정합니다.
+	////  Window 클래스 또는 스타일을 수정합니다
+	cs.lpszName = _T("Planner");
+	cs.style &= ~FWS_ADDTOTITLE;
 	cs.style &= ~WS_THICKFRAME;     //크기를 늘렸다 줄렸다하는 기능을 비활성화
 	cs.style &= ~WS_MAXIMIZEBOX;	//최대화 아이콘 없앰
 

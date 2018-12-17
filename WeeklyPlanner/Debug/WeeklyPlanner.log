@@ -1,1 +1,4 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppClean.targets(76,5): warning : 'c:\users\u3797\desktop\weekp\weeklyplanner_mfc\debug\weeklyplanner.exe' 경로에 대한 액세스가 거부되었습니다.
+﻿  TW_ODBC.cpp
+c:\users\u3797\desktop\weekp\weeklyplanner_mfc\weeklyplanner\tw_odbc.cpp(287): warning C4244: '초기화 중': 'LONGLONG'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\WEEKP\WeeklyPlanner_MFC\Debug\WeeklyPlanner.exe
+  WeeklyPlanner.vcxproj -> C:\Users\u3797\Desktop\WEEKP\WeeklyPlanner_MFC\Debug\WeeklyPlanner.pdb (Partial PDB)

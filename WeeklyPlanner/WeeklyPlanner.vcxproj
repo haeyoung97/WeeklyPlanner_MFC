@@ -229,6 +229,10 @@
     <Image Include="res\bitmap4.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\default_Image.bmp" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\icon2.ico" />
+    <Image Include="res\iimages_l6w_icon.ico" />
+    <Image Include="res\images_l6w_icon.ico" />
     <Image Include="res\Toolbar.bmp" />
     <Image Include="res\Toolbar256.bmp" />
     <Image Include="res\WeeklyPlanner.ico" />
