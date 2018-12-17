@@ -306,14 +306,7 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	m_EditMessage.SendMessage(WM_KILLFOCUS, NULL);
 	Invalidate();
-	
-	CRect c;
-	GetActiveWindow()->GetClientRect(&c);
-	int a = c.Width();
-	int b = c.Height();
-	CString k;
-	k.Format(_T("%d,%d"), a, b);
-	AfxMessageBox(k);
+
 
 }
 
