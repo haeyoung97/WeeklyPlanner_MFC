@@ -89,7 +89,6 @@ void CHistoryView::OnBnClickedButtonHistoryOk()
 		strToday.Format(L"%d-%d-%d", m_vHistory.GetYear(), m_vHistory.GetMonth(), m_vHistory.GetDay());
 		strTomorrow.Format(L"%d-%d-%d", m_vHistory.GetYear(), m_vHistory.GetMonth(), m_vHistory.GetDay() + 1);
 	}
-	AfxMessageBox(strToday);
 
 	// 여기에서 디비 불러온 걸 리스트 박스에 집어넣으면 됩니다.
 	// 달성도 부분에서 프로그레스바는 그 체크 했는지 안했는지 부분 보고 계산?

@@ -162,10 +162,14 @@ public:
 	CString m_strOldPath;
 	CString m_strProfileMessage;
 	afx_msg void OnDestroy();
-//	CFont m_titleFont;
 	CFont m_titleFont;
 	CString SoundPath[50];
 	CString SoundName[50];
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	//	CBitmap m_background;
+	//	BITMAP m_hBt;
+	HBITMAP m_hBitmap;
+	BITMAP m_hBit;
 };
 
 #ifndef _DEBUG  // WeeklyPlannerView.cpp의 디버그 버전

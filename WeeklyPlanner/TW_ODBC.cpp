@@ -15,18 +15,18 @@
 
 // 서버탐색기를 이용하여 ODBC 연결하기
 // 스키마 이름, 아이디, 패스워드, 일정내용명, DB칼럼명 (날짜, 내용) 기록
-//#define DBSchemas L"WeeklyPlanner"
-//#define DBID L"haey"
-//#define DBPassword L"parkhy8426852!@!"
 #define DBSchemas L"WeeklyPlanner"
-#define DBID L"root"
-#define DBPassword L"1234"
+#define DBID L"haey"
+#define DBPassword L""
+//#define DBSchemas L"WeeklyPlanner"
+//#define DBID L"root"
+//#define DBPassword L"1234"
 //#define DBContents Memo
 //#define DBDdaytitle Title
 //#define DBSchemas L"wp_db"
 //#define DBID L"WP_User"
 //#define DBPassword L"tndtlfeo"
-#define DBContents Memo
+#define DBContents Todolist
 #define DBDdaytitle Title
 
 struct TodoList {
@@ -579,6 +579,7 @@ void TW_ODBC::LoadHistoryTodolist(CString strToday, CString strTomorrow)
 					int percent = 1000 / writeList;
 					percent = 1000 / writeList;
 					(pView->view).m_progressHistory.SetPos(checkEnable*percent);
+					percent = 100 / writeList;
 					strPercent.Format(_T("%d"), percent);
 					(pView->view.m_historyPercent).SetWindowText(strPercent);
 				}

@@ -52,17 +52,18 @@ BEGIN_MESSAGE_MAP(CWeeklyPlannerView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_OPEN, &CWeeklyPlannerView::OnBnClickedButtonProfileOpen)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BUTTON_PROFILE_DELETE, &CWeeklyPlannerView::OnClickedButtonProfileDelete)
-ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
-ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
-ON_BN_CLICKED(IDC_DDAY_DELETE_BUTTON, &CWeeklyPlannerView::OnBnClickedDdayDeleteButton)
-ON_NOTIFY(NM_CLICK, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnClickDdayListCntl)
-ON_BN_CLICKED(IDC_PAUSE_SONG, &CWeeklyPlannerView::OnClickedPauseSong)
-ON_BN_CLICKED(IDC_PREV_SONG, &CWeeklyPlannerView::OnClickedPrevSong)
-ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
-ON_BN_CLICKED(IDC_SONGS, &CWeeklyPlannerView::OnBnClickedSongs)
-ON_BN_CLICKED(IDC_BUTTON_SOUND_DELETE, &CWeeklyPlannerView::OnBnClickedButtonSoundDelete)
-ON_COMMAND(ID_HISTORY_VIEW, &CWeeklyPlannerView::OnHistoryView)
-ON_WM_DESTROY()
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnLvnItemchangedDdayListCntl)
+	ON_NOTIFY(LVN_INSERTITEM, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnInsertitemDdayListCntl)
+	ON_BN_CLICKED(IDC_DDAY_DELETE_BUTTON, &CWeeklyPlannerView::OnBnClickedDdayDeleteButton)
+	ON_NOTIFY(NM_CLICK, IDC_DDAY_LIST_CNTL, &CWeeklyPlannerView::OnClickDdayListCntl)
+	ON_BN_CLICKED(IDC_PAUSE_SONG, &CWeeklyPlannerView::OnClickedPauseSong)
+	ON_BN_CLICKED(IDC_PREV_SONG, &CWeeklyPlannerView::OnClickedPrevSong)
+	ON_BN_CLICKED(IDC_NEXT_SONG, &CWeeklyPlannerView::OnClickedNextSong)
+	ON_BN_CLICKED(IDC_SONGS, &CWeeklyPlannerView::OnBnClickedSongs)
+	ON_BN_CLICKED(IDC_BUTTON_SOUND_DELETE, &CWeeklyPlannerView::OnBnClickedButtonSoundDelete)
+	ON_COMMAND(ID_HISTORY_VIEW, &CWeeklyPlannerView::OnHistoryView)
+	ON_WM_DESTROY()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 // CWeeklyPlannerView 생성/소멸
@@ -161,17 +162,33 @@ BOOL CWeeklyPlannerView::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: CREATESTRUCT cs를 수정하여 여기에서
 	//  Window 클래스 또는 스타일을 수정합니다.
+	cs.cx = 1153;
+	cs.cy = 500;
 
 	return CFormView::PreCreateWindow(cs);
 }
 
 void CWeeklyPlannerView::OnInitialUpdate()
 {
-	CFormView::OnInitialUpdate();
+	CFormView::OnInitialUpdate(); SetWindowTheme(GetDlgItem(IDC_TODO_TITLE)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_TITLE)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX1)->m_hWnd, L"", L"");	SetWindowTheme(GetDlgItem(IDC_TODO_TITLE)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX2)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX3)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX4)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX5)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX6)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX7)->m_hWnd, L"", L"");
+	SetWindowTheme(GetDlgItem(IDC_TODO_CHECKBOX8)->m_hWnd, L"", L"");
+
 	GetDlgItem(IDC_DDAY_TITLE)->SetFont(&m_titleFont);
 	GetDlgItem(IDC_TODO_TITLE)->SetFont(&m_titleFont);
 
+	//m_hBitmap= LoadBitmap(AfxGetApp()->m_hInstance, MAKEINTRESOURCE(IDB_BITMAP2));
 
+	//GetObject(m_hBitmap, sizeof(BITMAP), &m_hBit);
+	//// Dialog 위치및 크기 변경 ( full screen 만들기 위해 )
+	//SetWindowPos(NULL, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, SWP_NOZORDER);
 
 	m_TodoAchivePrgs.SetRange(0, 1000);
 	m_cTodoStart.SetFormat(_T("tt  HH: mm"));
@@ -287,7 +304,14 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	m_EditMessage.SendMessage(WM_KILLFOCUS, NULL);
 	Invalidate();
-
+	
+	CRect c;
+	GetActiveWindow()->GetClientRect(&c);
+	int a = c.Width();
+	int b = c.Height();
+	CString k;
+	k.Format(_T("%d,%d"), a, b);
+	AfxMessageBox(k);
 
 }
 
@@ -748,6 +772,15 @@ void CWeeklyPlannerView::OnPaint()
 	//m_pDefaultPicture->SetBitmap(hbmp);
 	//AfxMessageBox(_T("호잇호잇"));
 
+	// 스크린과 호환되는 DC생성.
+	HDC hMemDC = CreateCompatibleDC(dc);
+	// 호환DC에 비트맵을 선정.
+	SelectObject(hMemDC, m_hBitmap);
+	// 메모리 DC에서 스크린 DC로 이미지 복사
+	BitBlt(dc, 0, 0, m_hBit.bmWidth, m_hBit.bmHeight, hMemDC, 0, 0, SRCCOPY);
+	// 메모리 DC삭제
+	DeleteDC(hMemDC);
+
 	CImage profileImage;
 	profileImage.Load(m_strDefaultImagePath);
 
@@ -1008,4 +1041,33 @@ void CWeeklyPlannerView::OnDestroy()
 	CFormView::OnDestroy();
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+}
+
+HBRUSH CWeeklyPlannerView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	HBRUSH hbr = CFormView::OnCtlColor(pDC, pWnd, nCtlColor);
+	UINT nID = pWnd->GetDlgCtrlID();
+	// TODO:  여기서 DC의 특성을 변경합니다.
+
+	switch (nCtlColor)
+	{
+	case (CTLCOLOR_STATIC):
+	{
+		pDC->SetBkColor(RGB(255, 255, 255));
+		return (HBRUSH)GetStockObject(NULL_BRUSH);
+	}
+	}
+
+	switch (nID)
+	{
+	case (IDC_TODO_TITLE):
+	{
+		pDC->SetBkColor(RGB(255, 255, 255));
+		return (HBRUSH)GetStockObject(NULL_BRUSH);
+	}
+	}
+
+
+	// TODO:  기본값이 적당하지 않으면 다른 브러시를 반환합니다.
+	return hbr;
 }
