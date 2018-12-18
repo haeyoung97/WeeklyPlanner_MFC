@@ -18,16 +18,17 @@
 //#define DBSchemas L"WeeklyPlanner"
 //#define DBID L"haey"
 //#define DBPassword L""
-//#define DBSchemas L"WeeklyPlanner"
-//#define DBID L"root"
-//#define DBPassword L"1234"
-#define DBContents Memo
-#define DBDdaytitle Title
-#define DBSchemas L"wp_db"
-#define DBID L"WP_User"
-#define DBPassword L"tndtlfeo"
 //#define DBContents Todolist
 //#define DBDdaytitle Title
+
+//#define DBID L"root"
+//#define DBPassword L"1234"
+//#define DBContents Memo
+//#define DBDdaytitle Title
+//#define DBSchemas L"wp_db"
+//#define DBID L"WP_User"
+//#define DBPassword L"tndtlfeo"
+
 
 struct TodoList {
 	wchar_t date[25];
@@ -214,24 +215,21 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 		if (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
 			// SQL 명령문의 실행 결과로 받은 데이터를 ListBox에 추가한다.
 			ret_code = SQLFetchScroll(h_statement, SQL_FETCH_PREV, 0);
+			m_dbDataCnt = -1;
 			while (ret_code = SQLFetchScroll(h_statement, SQL_FETCH_NEXT, 0) != SQL_NO_DATA) {
 
 				// 데이터 개수만큼 반복하면서 작업한다.
 				// 가져온 데이터가 삭제된 정보가 아니라면 해당 속성으로
 				// 합쳐서 문자열로 구성하고 AfxMessageBox에 등록한다.
+				
 				if (record_state[0] != SQL_ROW_DELETED && record_state[0] != SQL_ROW_ERROR) {
 					str.Format(L"%s, %d, %s", raw_data[0].date, raw_data[0].isDone, raw_data[0].DBContents);
+					m_dbDataCnt++;
 					//데이터 불러온 후 체크리스트에 추가하기 (출력?)
-					while (1) {
-						if (pView->m_arrayTodoCheck[m_dbDataCnt]->IsWindowEnabled() == false) {
-							break;
-						}
-						m_dbDataCnt++;
-					}
 					CString strContents;
 					strContents.Format(_T("%s"), raw_data[0].DBContents);
 					pView->m_arrayTodoCheck[m_dbDataCnt]->SetWindowText(strContents);
-
+					
 					if (raw_data[0].isDone == 1) {
 						pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(true);
 						pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(true);
@@ -244,7 +242,7 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 						pView->m_arrayTodoCheck[m_dbDataCnt]->EnableWindow(true);
 						pView->m_arrayTodoBtn[m_dbDataCnt]->EnableWindow(true);
 						pView->m_arrayTodoCheck[m_dbDataCnt]->SetCheck(0);
-						pView->m_bChecked[m_dbDataCnt] = false;
+						pView->m_bChecked[m_dbDataCnt] = false; 
 						checkEnabled++;
 					}
 					else {
@@ -376,8 +374,6 @@ int TW_ODBC::ImportData(CString strToday, CString strTomorrow)
 			for (int i = 0; i < 9; i++) {
 				pView->m_soundSP.m_strSoundName[i] = pView->SoundName[i];
 				pView->m_soundSP.m_strSoundPath[i] = pView->SoundPath[i];
-				//ttmp.Format(_T("%s"), strName[i]);
-				//AfxMessageBox(ttmp);
 			}
 			pView->m_soundSP.m_nSoundIndex = 9;
 			DataSaveSound(pView->SoundPath, pView->SoundName);

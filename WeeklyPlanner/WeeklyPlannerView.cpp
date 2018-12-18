@@ -96,8 +96,6 @@ CWeeklyPlannerView::CWeeklyPlannerView()
 	// TODO: 여기에 생성 코드를 추가합니다.
 	m_odbc = new TW_ODBC();
 	//
-	m_bChecked[8] = { true };
-	//
 	m_arrayTodoCheck[0] = &m_TodoCheck1;
 	m_arrayTodoCheck[1] = &m_TodoCheck2;
 	m_arrayTodoCheck[2] = &m_TodoCheck3;
@@ -291,8 +289,7 @@ void CWeeklyPlannerView::OnInitialUpdate()
 
 	// DB에서 데이터 가져오기
 	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
-
-
+	
 	//sound list 설정
 	m_soundPlayList.InsertColumn(0, L"제목", LVCFMT_CENTER, 600);
 	for (int i = 0; i < m_soundSP.m_nSoundIndex; i++)
@@ -300,13 +297,10 @@ void CWeeklyPlannerView::OnInitialUpdate()
 		m_soundPlayList.InsertItem(i, m_soundSP.m_strSoundName[i]);
 	}
 
-	
-
 	UpdateTodoProgressBar(NULL);
 
 	m_EditMessage.SendMessage(WM_KILLFOCUS, NULL);
 	Invalidate();
-
 
 }
 
@@ -516,7 +510,7 @@ void CWeeklyPlannerView::UpdateTodoProgressBar(CButton* m_checkBtn)
 			cnt++;
 		j++;
 	}
-	
+
 	if (cnt == 0 || m_checkCnt == 0) {
 		m_TodoAchivePrgs.SetPos(0);
 	}
@@ -567,7 +561,7 @@ void CWeeklyPlannerView::OnBnClickedAddTodoButton()
 	if (m_nTodoCnt <= 7) {
 
 		CRect Rect; 
-
+		
 		m_nTodoCnt++;
 		m_arrayTodoCheck[m_nTodoCnt - 1]->GetWindowRect(&Rect);
 		ScreenToClient(&Rect);
@@ -889,6 +883,11 @@ void CWeeklyPlannerView::OnClickedPauseSong()
 {
 	
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	CRect Rect;
+	m_strSongName.GetWindowRect(&Rect);
+	ScreenToClient(&Rect);
+	InvalidateRect(Rect);
+
 	if (m_nPlayPause == 0)
 	{
 		//AfxMessageBox(_T("음악음악"));
@@ -915,7 +914,10 @@ void CWeeklyPlannerView::OnClickedPrevSong()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	
 	m_soundSP.SoundStop();
-	
+	CRect Rect;
+	m_strSongName.GetWindowRect(&Rect);
+	ScreenToClient(&Rect);
+	InvalidateRect(Rect);
 	if (m_nPlayIndex <= 0) {
 		m_nPlayIndex = m_soundSP.m_nSoundIndex - 1;
 	}
@@ -936,7 +938,11 @@ void CWeeklyPlannerView::OnClickedNextSong()
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 	
 		m_soundSP.SoundStop();
-	
+
+		CRect Rect;
+		m_strSongName.GetWindowRect(&Rect);
+		ScreenToClient(&Rect);
+		InvalidateRect(Rect);
 
 		if (m_nPlayIndex >= m_soundSP.m_nSoundIndex - 1) {
 
