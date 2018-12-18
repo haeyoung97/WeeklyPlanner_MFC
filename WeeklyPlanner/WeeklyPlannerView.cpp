@@ -287,6 +287,11 @@ void CWeeklyPlannerView::OnInitialUpdate()
 	SoundName[7] = _T("Toy_Piano");
 	SoundName[8] = _T("Washington_Post");
 
+	for (int i = 0; i < 8; i++) {
+		m_bChecked[i] = true;
+	}
+
+
 	// DB에서 데이터 가져오기
 	m_nTodoCnt = m_odbc->ImportData(strToday, strTomorrow);
 	

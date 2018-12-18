@@ -138,13 +138,6 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "파일(&F)"
     BEGIN
-        MENUITEM "새로 만들기(&N)\tCtrl+N",          ID_FILE_NEW
-        MENUITEM "열기(&O)...\tCtrl+O",           ID_FILE_OPEN
-        MENUITEM "저장(&S)\tCtrl+S",              ID_FILE_SAVE
-        MENUITEM "다른 이름으로 저장(&A)...",           ID_FILE_SAVE_AS
-        MENUITEM SEPARATOR
-        MENUITEM "최근에 사용한 파일",                  ID_FILE_MRU_FILE1, GRAYED
-        MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
     POPUP "보기(&V)"

@@ -23,11 +23,11 @@
 
 //#define DBID L"root"
 //#define DBPassword L"1234"
-//#define DBContents Memo
-//#define DBDdaytitle Title
-//#define DBSchemas L"wp_db"
-//#define DBID L"WP_User"
-//#define DBPassword L"tndtlfeo"
+#define DBContents Memo
+#define DBDdaytitle Title
+#define DBSchemas L"wp_db"
+#define DBID L"WP_User"
+#define DBPassword L"tndtlfeo"
 
 
 struct TodoList {
