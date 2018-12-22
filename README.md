@@ -43,11 +43,89 @@
   
   > DB Table 구성 
   
-    1) TodoList DB
-  
-    2) DDay DB
-  
-    3) Profile DB
-  
-  4) Sound DB
-  
+    1. MySQL WorkBench 설치
+    2. ScheMas 생성 : weeklyplanner 이름으로 생성
+    3. Table 생성
+       1) TodoList DB
+          table name : todolist
+          Charset/Collation : utf8/utf8_bin
+          
+           < Column 1 >
+             ColumnName : date
+             Datatype : TIMESTAMP
+             Not Null : check
+             Default/Expression : CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+             
+           < Column 2 >
+             ColumnName : isDone
+             Datatype : TINYINT(4)
+             Default/Expression : NULL
+             
+           < Column 3 >
+             ColumnName : Todolist
+             Datatype : VARCHAR(45)
+             Default/Expression : NULL
+             
+             
+       2) DDay DB
+           table name : dday
+           Charset/Collation : utf8/utf8_bin
+           
+           < Column 1 >
+             ColumnName : Date
+             Datatype : VARCHAR(11)
+             Not Null : check
+             
+           < Column 2 >
+             ColumnName : Title
+             Datatype : VARCHAR(45)
+             Not Null : check
+
+
+       3) Profile DB  
+           table name : profile
+           Charset/Collation : utf8mb4/utf8mb4_bin
+           
+           < Column 1 >
+              ColumnName : path
+              Datatype : VARCHAR(100)
+              Not Null : check
+              
+           < Column 2 >
+              ColumnName : message
+              Datatype : VARCHAR(45)
+              Not Null : check
+              
+              
+       4) Sound DB
+           table name : sound
+           Charset/Collation : utf8mb4/utf8mb4_bin
+           
+           < Column 1 >
+             ColumnName : soundPath
+             Datatype : VARCHAR(100)
+             Not Null : check
+             
+           < Column 2 >
+             ColumnName : soundName
+             Datatype : VARCHAR(100)
+             Not Null : check
+
+
+##ODBC 연결
+
+    1. 'ODBC 데이터 원본(32비트)' 검색 후 실행
+    
+    2. 시스템 DSN 클릭
+    
+    3. 추가(D) 버튼 클릭
+    
+    4. MySQL ODBC 5.3 Unicode Driver 선택 후 마침 버튼 클릭
+    
+    5. Data Source Name : WeeklyPlanner 입력
+    
+    6. table 생성할 때 썼던 서버 주소와 port 번호, user 이름, 비밀번호 입력
+    
+    7. Database 콤보박스에서 이전에 만든 Schemas 선택
+    
+    8. OK 버튼 클릭
