@@ -1,7 +1,7 @@
 # WeeklyPlanner_MFC_2018
 ## 화면구성
 
-###메인화면 
+##메인화면
 
   1) Left  - (사용자의 프로필 사진 설정, 목표 설정 - edit control{변경, 수정 버튼}
     
