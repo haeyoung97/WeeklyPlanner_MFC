@@ -1,12 +1,19 @@
 # WeeklyPlanner_MFC_2018
 ## 화면구성
-1 초기화면 - 비밀번호 입력창 (이미지, static control, edit control, button control)
 
-2 메인화면 
+###메인화면 
 
-  1) 프로필 창 - (사용자의 프로필 사진 설정, 목표 설정 - edit control{변경, 수정 버튼}
+  1) Left  - (사용자의 프로필 사진 설정, 목표 설정 - edit control{변경, 수정 버튼}
+    
+     > Profile Panel
+     
+       * Profile Image & Profile Message
+      
+     > Sound Panel
+      
+       * Play & Stop & Prev & Next
   
-  2) 해야할 일 리스트
+  2) Center
   
     > 체크박스 { Daily 시간, 할 일}
     
@@ -15,28 +22,32 @@
     > 프로그레스바 {그날의 목표 달성치}
     
       
-  3) Tab Control
+  3) Right
   
-    1.Month List
-      1-1> D-day 설정 - 날짜의 의미 ex> 생일, 개학, 방학, 수능 등등
+    > D-Day
+        > D-day 설정 - 날짜의 의미 ex> 생일, 개학, 방학, 수능 등등
       
         * D-day 추가, 삭제, 수정
         
         > 모달대화상자 - 마감 날짜, 제목, 내용(메모) ( + 아이콘 )
         
-      1-2> 리스트 { Month 스크롤, 날짜, 할일, 완료,삭제,수정,추가 }
-      
-        >모달대화상자 - 일정 추가 및 수정 { 아이콘, 제목, 시작시간, 종료시간, 중요도설정, (알람) }
-        
-          * 정렬 순서 = 중요도 순 or 일정종료 순
           
-    2. 한눈에 보기 => 시간이 풍요로울 때 합시다.
-     
-  4) SDI 메뉴바 - 로그아웃 버튼
-
-## 프로젝트 일정
-### 목표치 = 2018.11.22 - 2018.11.26
-
-1 2018.11.22 틀 만들기 => 메인 창 - 2개, 모달대화상자 - 2개 + 한눈에보기
-
+  4) 이전 기록 보기
+  
+    > TodoList DB 이용
+      
+       * 특정 날짜의 데이터를 가져와 이전 일정 및 이전 달성률에 대해 보여준다.
+  
+##DB 구성
+  > DB 연결 방법
+  
+  > DB Table 구성 
+  
+    1) TodoList DB
+  
+    2) DDay DB
+  
+    3) Profile DB
+  
+  4) Sound DB
   
