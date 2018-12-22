@@ -9,25 +9,16 @@
 #pragma comment(lib, "odbc32.lib")
 
 
-// 데이터를 가져오는 최대 단위를 설정한다.
+// 데이터를 가져오는 최대 단위
 #define MAX_COUNT 8
 #define MAX_SOUND 50
 
 // 서버탐색기를 이용하여 ODBC 연결하기
-// 스키마 이름, 아이디, 패스워드, 일정내용명, DB칼럼명 (날짜, 내용) 기록
-//#define DBSchemas L"WeeklyPlanner"
-//#define DBID L"haey"
-//#define DBPassword L""
-//#define DBContents Todolist
-//#define DBDdaytitle Title
+// 스키마 이름, 유저이름, 패스워드 입력
 
-//#define DBID L"root"
-//#define DBPassword L"1234"
-#define DBContents Memo
-#define DBDdaytitle Title
-#define DBSchemas L"wp_db"
-#define DBID L"WP_User"
-#define DBPassword L"tndtlfeo"
+#define DBSchemas L"" //스키마 이름 
+#define DBID L"" //유저 이름
+#define DBPassword L""  //패스워드
 
 
 struct TodoList {
