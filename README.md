@@ -1,4 +1,8 @@
-# WeeklyPlanner_MFC_2018
+# WeeklyPlanner_MFC_2018 
+
+##### 주의 !      DB 설정 후 정상 작동. 아래의 "DB 구성" 참조 
+
+
 ## 화면구성
 
  ###  메인화면
@@ -38,7 +42,7 @@
       
        * 특정 날짜의 데이터를 가져와 이전 일정 및 이전 달성률에 대해 보여준다.
   
-##  DB 구성 
+#  DB 구성 
   
     1. MySQL WorkBench 설치
     2. ScheMas 생성 : weeklyplanner 이름으로 생성
