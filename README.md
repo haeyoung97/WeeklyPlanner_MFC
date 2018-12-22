@@ -126,3 +126,13 @@
     7. Database 콤보박스에서 이전에 만든 Schemas 선택
     
     8. OK 버튼 클릭
+
+## 코드에 정보 입력
+
+    1. WeeklyPlanner 폴더 내 TW_ODBC.cpp 열기
+    
+    2. #define DBID L"" -> user 이름 입력 (ex : #define DBID L"Hong")
+       #define DBPassword L"" -> 패스워드 입력 (ex : #define DBPassword L"1234")
+       
+    3. 수정된 내용 확인 후 
+     
