@@ -127,7 +127,7 @@
     
     8. OK 버튼 클릭
 
-## 코드에 정보 입력
+## TW_ODBC.cpp 
 
     1. WeeklyPlanner 폴더 내 TW_ODBC.cpp 열기
     
