@@ -1,7 +1,7 @@
 # WeeklyPlanner_MFC_2018
 ## 화면구성
 
-##메인화면
+ ###  메인화면
 
   1) Left  - (사용자의 프로필 사진 설정, 목표 설정 - edit control{변경, 수정 버튼}
     
@@ -38,7 +38,7 @@
       
        * 특정 날짜의 데이터를 가져와 이전 일정 및 이전 달성률에 대해 보여준다.
   
-##DB 구성 
+##  DB 구성 
   
     1. MySQL WorkBench 설치
     2. ScheMas 생성 : weeklyplanner 이름으로 생성
@@ -109,7 +109,7 @@
              Not Null : check
 
 
-##ODBC 연결
+##  ODBC 연결
 
     1. 'ODBC 데이터 원본(32비트)' 검색 후 실행
     
