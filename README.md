@@ -135,4 +135,5 @@
        #define DBPassword L"" -> 패스워드 입력 (ex : #define DBPassword L"1234")
        
     3. 수정된 내용 확인 후 저장
-     
+    
+    4. WeeklyPlanner.sln 파일 빌드
