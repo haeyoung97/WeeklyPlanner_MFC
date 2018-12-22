@@ -16,7 +16,7 @@
 // 서버탐색기를 이용하여 ODBC 연결하기
 // 스키마 이름, 유저이름, 패스워드 입력
 
-#define DBSchemas L"" //스키마 이름 
+#define DBSchemas L"weeklyplanner" //스키마 이름 
 #define DBID L"" //유저 이름
 #define DBPassword L""  //패스워드
 
@@ -75,11 +75,12 @@ TW_ODBC::TW_ODBC()
 			else {
 				// 접속에 실패한 경우, 구성했던 메모리를 제거한다.
 				AfxMessageBox(_T("데이터베이스 서버 접속 실패"));
-
 				if (mh_odbc != SQL_NULL_HDBC)
 					SQLFreeHandle(SQL_HANDLE_DBC, mh_odbc);
 				if (mh_environment != SQL_NULL_HENV)
 					SQLFreeHandle(SQL_HANDLE_ENV, mh_environment);
+				AfxGetMainWnd()->PostMessage(WM_CLOSE);
+
 			}
 		}
 	}
