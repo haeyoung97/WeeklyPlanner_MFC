@@ -38,10 +38,7 @@
       
        * 특정 날짜의 데이터를 가져와 이전 일정 및 이전 달성률에 대해 보여준다.
   
-##DB 구성
-  > DB 연결 방법
-  
-  > DB Table 구성 
+##DB 구성 
   
     1. MySQL WorkBench 설치
     2. ScheMas 생성 : weeklyplanner 이름으로 생성
